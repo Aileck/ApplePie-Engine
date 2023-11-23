@@ -149,7 +149,10 @@
     <ClCompile Include="ModuleTexture.cpp">
       <Filter>modules\source</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
+    <ClCompile Include="MyMesh.cpp">
+      <Filter>components\source</Filter>
+    </ClCompile>
+    <ClCompile Include="MyModel.cpp">
       <Filter>components\source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -386,11 +389,23 @@
     <ClInclude Include="ModuleTexture.h">
       <Filter>modules\header</Filter>
     </ClInclude>
-    <ClInclude Include="include\tinygltf\tiny_gltf.h">
-      <Filter>includes</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
+    <ClInclude Include="MyMesh.h">
       <Filter>components\header</Filter>
+    </ClInclude>
+    <ClInclude Include="MyModel.h">
+      <Filter>components\header</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tinygltf\tiny_gltf.h">
+      <Filter>includes\tiny_gltf</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tinygltf\stb_image.h">
+      <Filter>includes\tiny_gltf</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tinygltf\stb_image_write.h">
+      <Filter>includes\tiny_gltf</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tinygltf\json.hpp">
+      <Filter>includes\tiny_gltf</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -420,6 +435,9 @@
     </Filter>
     <Filter Include="components\source">
       <UniqueIdentifier>{9e8d63c5-627f-4cad-848b-6556b2b5fc0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\tiny_gltf">
+      <UniqueIdentifier>{1daa89c2-ecf4-4b5a-9327-86ef90e9791b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

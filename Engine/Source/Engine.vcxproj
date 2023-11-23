@@ -91,7 +91,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include\DirectXTex;.\include\MathGeoLib\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include\debug_draw;.\include\MathGeoLib;.\include\DirectXTex;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -106,7 +106,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include\DirectXTex;.\include\MathGeoLib\;.\include;.\SDL\include;glew-2.1.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include\debug_draw;.\include\MathGeoLib;.\include\DirectXTex;.\include;.\SDL\include;glew-2.1.0\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -123,7 +123,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include\DirectXTex;.\include\MathGeoLib\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include\debug_draw;.\include\MathGeoLib;.\include\DirectXTex;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,7 +142,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include\DirectXTex;.\include\MathGeoLib\;.\SDL\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include\debug_draw;.\include\MathGeoLib;.\include\DirectXTex;.\SDL\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -197,7 +197,8 @@
     <ClCompile Include="include\MathGeoLib\Time\Clock.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MyMesh.cpp" />
+    <ClCompile Include="MyModel.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="ModuleDebugDraw.cpp" />
     <ClCompile Include="ModuleImGUI.cpp" />
@@ -279,8 +280,12 @@
     <ClInclude Include="include\MathGeoLib\Math\sse_mathfun.h" />
     <ClInclude Include="include\MathGeoLib\Math\TransformOps.h" />
     <ClInclude Include="include\MathGeoLib\Time\Clock.h" />
+    <ClInclude Include="include\tinygltf\json.hpp" />
+    <ClInclude Include="include\tinygltf\stb_image.h" />
+    <ClInclude Include="include\tinygltf\stb_image_write.h" />
     <ClInclude Include="include\tinygltf\tiny_gltf.h" />
-    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MyMesh.h" />
+    <ClInclude Include="MyModel.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleCamera.h" />
     <ClInclude Include="ModuleDebugDraw.h" />
