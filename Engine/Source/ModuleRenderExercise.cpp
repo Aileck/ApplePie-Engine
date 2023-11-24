@@ -27,7 +27,11 @@ bool ModuleRenderExercise::Init()
 {
 	triangleVBO = CreateTriangleVBO();
 	
-	//RenderVBO(triangleVBO);
+	//// Enable texture
+	unsigned texture = App->GeTexture()->LoadTexture("Test-image-Baboon.ppm");
+
+	glActiveTexture(GL_TEXTURE5);
+	glBindTexture(GL_TEXTURE_2D, texture);
 	return true;
 }
 
@@ -107,11 +111,7 @@ void ModuleRenderExercise::RenderVBO(unsigned vbo)
 
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
-	//// Enable texture
-	unsigned texture = App->GeTexture()->LoadTexture("Test-image-Baboon.ppm");
-	
-	glActiveTexture(GL_TEXTURE5);
-	glBindTexture(GL_TEXTURE_2D, texture);
+
 
 	//delete currentTexture;
 
