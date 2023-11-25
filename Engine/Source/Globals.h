@@ -24,6 +24,7 @@ enum LogLevel {
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 #define TEXTURE_PATH R"(2D\Texture\)"
+#define MODEL_PATH R"(3D\)"
 #define SHADER_PATH R"(Shader\)"
 #define FULLSCREEN false
 #define VSYNC true
