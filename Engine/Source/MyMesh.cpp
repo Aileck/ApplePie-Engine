@@ -7,8 +7,6 @@
 #include "ModuleProgram.h"
 #include "./include/MathGeoLib/Math/MathAll.h"
 
-
-
 #define PROGRAM App->GetProgram()->program
 MyMesh::MyMesh()
 {
