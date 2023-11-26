@@ -155,6 +155,9 @@
     <ClCompile Include="MyModel.cpp">
       <Filter>components\source</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleLoadModel.cpp">
+      <Filter>modules\source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -406,6 +409,9 @@
     </ClInclude>
     <ClInclude Include="include\tinygltf\json.hpp">
       <Filter>includes\tiny_gltf</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleLoadModel.h">
+      <Filter>modules\header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

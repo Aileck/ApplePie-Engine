@@ -14,6 +14,7 @@ class ModuleProgram;
 class ModuleImGUI;
 class ModuleDebugDraw;
 class ModuleCamera;
+class ModuleLoadModel;
 
 class Application
 {
@@ -35,12 +36,13 @@ public:
     ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
     ModuleCamera* GetCamera() { return camera; }
     ModuleTexture* GeTexture() { return texture; }
+    ModuleLoadModel* GeModelLoader() { return modelLoader; }
 
     void WriteIntoLog(char* logText, LogLevel level);
 
-    char* CreateFilePath(const char* address, const char* fileName);
+    const char* CreateFilePath(const char* address, const char* fileName);
 
-    wchar_t* createWideFilePath(const char* address, const char* fileName);
+    const wchar_t* CreateWideFilePath(const char* address, const char* fileName);
 
 private:
 
@@ -53,6 +55,7 @@ private:
     ModuleDebugDraw* debugDraw = nullptr;
     ModuleCamera* camera = nullptr;
     ModuleTexture* texture = nullptr;
+    ModuleLoadModel* modelLoader = nullptr;
 
     std::list<Module*> modules;
 

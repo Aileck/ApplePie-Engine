@@ -1,13 +1,13 @@
 #include "MyMesh.h"
 #include "SDL.h"
 #include "GL\glew.h"
-
+#include "Globals.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleProgram.h"
+#include "ModuleCamera.h"
 #include "./include/MathGeoLib/Math/MathAll.h"
 
-#define PROGRAM App->GetProgram()->program
 MyMesh::MyMesh()
 {
 }
@@ -16,9 +16,64 @@ MyMesh::~MyMesh()
 {
 }
 
+void MyMesh::InitializeMesh()
+{
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+	glBindBuffer(GL_ARRAY_BUFFER, vao);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3 + sizeof(float) * 2, (void*)0);
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3 + sizeof(float) * 2, (void*)(sizeof(float) * 3));
+	glDrawArrays(GL_TRIANGLES, 0, vertexCount);
+
+	glBindVertexArray(0);
+}
+
+
+void MyMesh::InitializeSeparatedArrayMesh()  // good for static meshes
+{
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+	glBindBuffer(GL_ARRAY_BUFFER, vao);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * vertexCount));
+
+	glBindVertexArray(0);
+}
+
+void MyMesh::InitializeInterleavedArraysMesh() //  good for dynamic meshes 
+{
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+	glBindBuffer(GL_ARRAY_BUFFER, vao);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3 + sizeof(float) * 2, (void*)0);
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3 + sizeof(float) * 2, (void*)(sizeof(float) * 3));
+
+	glBindVertexArray(0);
+}
+
+void MyMesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive)
+{
+	LoadVBO(model, mesh, primitive);
+	LoadEBO(model, mesh, primitive);
+}
 
 // Create Vertex Array Object (VAO)
-void MyMesh::LoadVAO(const Model& model, const Mesh& mesh, const Primitive& primitive)
+void MyMesh::LoadVBO(const Model& model, const Mesh& mesh, const Primitive& primitive)
 {
 	const auto& itPos = primitive.attributes.find("POSITION");
 	if (itPos != primitive.attributes.end())
@@ -30,17 +85,38 @@ void MyMesh::LoadVAO(const Model& model, const Mesh& mesh, const Primitive& prim
 		const Buffer& posBuffer = model.buffers[posView.buffer];
 		const unsigned char* bufferPos = &(posBuffer.data[posAcc.byteOffset + posView.byteOffset]);
 
-		glGenBuffers(1, &m_vbo);
+		// Create VBO and assign memories
+		glGenBuffers(1, &vbo); // 2
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+		// Pass VTX data to GPU
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * posAcc.count, nullptr, GL_STATIC_DRAW);
+
+		// GPU(VBO) to CPU
 		float3* ptr = reinterpret_cast<float3*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+		//void* ptr = (glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+
+		// Create verteix data
 		for (size_t i = 0; i < posAcc.count; ++i)
 		{
 			ptr[i] = *reinterpret_cast<const float3*>(bufferPos);
 			bufferPos += posView.byteStride;
 		}
+
+
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 
+		// Set local variables
 		vertexCount = posAcc.count;
+
+		int materialIndex = primitive.material;
+		/*LOG("%zu %i", model.materials.size(), materialIndex);*/
+		if (materialIndex >= 0) {
+			const Material& material = model.materials.at(materialIndex);
+			textureID = material.pbrMetallicRoughness.baseColorTexture.index;
+			enableTexture = true;
+		}
+
 	}
 }
 
@@ -49,10 +125,11 @@ void MyMesh::LoadEBO(const Model& model, const Mesh& mesh, const Primitive& prim
 {
 	if (primitive.indices >= 0)
 	{
+		enableEBO = true;
 		const Accessor& indAcc = model.accessors[primitive.indices];
 		const BufferView& indView = model.bufferViews[indAcc.bufferView];
-		glGenBuffers(1, &m_ebo);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+		glGenBuffers(1, &ebo);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indAcc.count, nullptr, GL_STATIC_DRAW);
 		unsigned int* ptr = reinterpret_cast<unsigned int*>(glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY));
 
@@ -62,29 +139,30 @@ void MyMesh::LoadEBO(const Model& model, const Mesh& mesh, const Primitive& prim
 		if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_INT)
 		{
 			const uint32_t* bufferInd = reinterpret_cast<const uint32_t*>(buffer);
-			for (uint32_t i = 0; i < primitive.indices; ++i) ptr[i] = bufferInd[i];
+			for (auto i = 0; i < primitive.indices; ++i)
+				ptr[i] = bufferInd[i];
 		}
-		/* TODO indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_SHORT*/
-		/* TODO indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_BYTE*/
+		else if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_SHORT)
+		{
+			const uint16_t* bufferInd = reinterpret_cast<const uint16_t*>(buffer);
+			for (auto i = 0; i < indAcc.count; ++i)
+				ptr[i] = static_cast<unsigned int>(bufferInd[i]);
+			
+		}
+		else if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_BYTE)
+		{
+			const uint8_t* bufferInd = reinterpret_cast<const uint8_t*>(buffer);
+			for (auto i = 0; i < indAcc.count; ++i)
+				ptr[i] = static_cast<unsigned int>(bufferInd[i]);
+		}
+		
 		glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 
+		// Set local variables
 		vertexCount = indAcc.count;
 	}
 }
 
-void MyMesh::CreateVAO()
-{
-	glGenVertexArrays(1, &m_vao);
-	glBindVertexArray(m_vao);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vao);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * vertexCount));
-
-	glBindVertexArray(0);
-}
 //void MyMesh::Render()
 //{
 //	glUseProgram(App->GetProgram()->program);
@@ -97,49 +175,78 @@ void MyMesh::CreateVAO()
 //}
 
 // Render with EBO
-void MyMesh::Render()
-{
-	glUseProgram(PROGRAM);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * vertexCount));
-	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
-}
+//void MyMesh::Render()
+//{
+//	glUseProgram(PROGRAM);
+//	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+//	glEnableVertexAttribArray(0);
+//	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+//	glEnableVertexAttribArray(1);
+//	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * vertexCount));
+//	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
+//}
 
 void MyMesh::RenderInterleavedArrays() // good for static meshes
 {
-	glUseProgram(PROGRAM);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+	//glUseProgram(PROGRAM);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+	//IF EBO
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3 + sizeof(float) * 2, (void*)0);
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3 + sizeof(float) * 2, (void*)(sizeof(float) * 3));
 	glDrawArrays(GL_TRIANGLES, 0, vertexCount);
 
+	//IF EBO
+	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
+
 }
 
 void MyMesh::RenderSeparatedArrays() //  good for dynamic meshes writing
 {
-	glUseProgram(PROGRAM);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+	//glUseProgram(PROGRAM);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * vertexCount));
-	glDrawArrays(GL_TRIANGLES, 0, vertexCount);
+
+	//IF EBO
+	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
 }
-
-
 
 void MyMesh::Draw(const std::vector<unsigned>& textures)
 {
+	// Verteix shader
+	float4x4 view = App->GetCamera()->camera->ViewMatrix();
+	float4x4 proj = App->GetCamera()->camera->ProjectionMatrix();
 	glUseProgram(App->GetProgram()->program);
-	glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, textures[materialIndex]);
-	glUniform1i(glGetUniformLocation(App->GetProgram()->program, "diffuse"), 0);
-	glBindVertexArray(m_vao);
-	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
+
+	glUniformMatrix4fv(0, 1, GL_TRUE, &modelMatrix[0][0]);
+	glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
+	glUniformMatrix4fv(2, 1, GL_TRUE, &proj[0][0]);
+	
+	// Fragment shader
+	if (enableTexture) {
+		glActiveTexture(GL_TEXTURE5);
+		glBindTexture(GL_TEXTURE_2D, textures[textureID]);
+	}
+
+	//glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+	if (enableEBO) {
+		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+		glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
+	}
+	else {
+		glDrawArrays(GL_TRIANGLES, 0, vertexCount);
+	}
+
 }

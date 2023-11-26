@@ -12,14 +12,12 @@
 
 ModuleRenderExercise::ModuleRenderExercise()
 {
-
 }
 
 // Destructor
 ModuleRenderExercise::~ModuleRenderExercise()
 {
 	CleanUp();
-	
 }
 
 // Called before render is available
@@ -27,7 +25,7 @@ bool ModuleRenderExercise::Init()
 {
 	triangleVBO = CreateTriangleVBO();
 	
-	//// Enable texture
+	// Enable texture
 	unsigned texture = App->GeTexture()->LoadTexture("Test-image-Baboon.ppm");
 
 	glActiveTexture(GL_TEXTURE5);

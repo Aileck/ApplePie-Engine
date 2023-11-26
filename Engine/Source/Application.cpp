@@ -9,6 +9,7 @@
 #include "ModuleDebugDraw.h"
 #include "ModuleCamera.h"
 #include "ModuleTexture.h"
+#include "ModuleLoadModel.h"
 
 using namespace std;
 
@@ -24,7 +25,9 @@ Application::Application()
 	modules.push_back(debugDraw = new ModuleDebugDraw());
 	modules.push_back(texture = new ModuleTexture()); 
 
-	modules.push_back(triangle = new ModuleRenderExercise());
+	//modules.push_back(triangle = new ModuleRenderExercise());
+	modules.push_back(modelLoader = new ModuleLoadModel());
+
 }
 
 Application::~Application()
@@ -76,7 +79,7 @@ void Application::WriteIntoLog(char* logText, LogLevel level)
 	editor->logConsole->AddLog(logText,level);
 }
 
-char* Application::CreateFilePath(const char* address, const char* fileName) {
+const char* Application::CreateFilePath(const char* address, const char* fileName) {
 	size_t fullPathSize = strlen(address) + strlen(fileName) + 2;
 
 	char* fullPath = new char[fullPathSize];
@@ -87,7 +90,7 @@ char* Application::CreateFilePath(const char* address, const char* fileName) {
 	return fullPath;
 }
 
-wchar_t* Application::createWideFilePath(const char* address, const char* fileName) {
+const wchar_t* Application::CreateWideFilePath(const char* address, const char* fileName) {
 	size_t addressLen = strlen(address) + 1;
 	size_t fileNameLen = strlen(fileName) + 1;
 

@@ -41,7 +41,7 @@ unsigned ModuleTexture::LoadTexture(const char* textureName)
     //1. Load image data with external library into CPU
     HRESULT result = E_FAIL;
 
-    const wchar_t* filePath = L"2D\\Texture\\/Test-image-Baboon.ppm";
+    const wchar_t* filePath = App->CreateWideFilePath(TEXTURE_PATH, textureName);
     //ScratchImage* imageData = new ScratchImage();
     ScratchImage imageData;
     result = LoadFromDDSFile(filePath, DDS_FLAGS_NONE, nullptr, imageData);
