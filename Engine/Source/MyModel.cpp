@@ -65,7 +65,7 @@ void MyModel::LoadMaterials(const tinygltf::Model& srcModel)
 void MyModel::Draw()
 {
 	for (int i = 0; i < Meshes.size(); i++) {
-		Meshes[i]->InitializeSeparatedArrayMesh();
+		Meshes[i]->RenderSeparatedArrays();
 		Meshes[i]->Draw(Textures);
 	}
 }

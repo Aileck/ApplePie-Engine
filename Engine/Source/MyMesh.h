@@ -18,6 +18,7 @@ public:
 	void LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
 	void LoadVAO();
 	void LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
+	void LoadVBOTest(const Model& model, const Mesh& mesh, const Primitive& primitive);
 	void LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
 
 	//void Render();

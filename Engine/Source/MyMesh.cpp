@@ -36,18 +36,18 @@ void MyMesh::InitializeMesh()
 
 void MyMesh::InitializeSeparatedArrayMesh()  // good for static meshes
 {
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-	glBindBuffer(GL_ARRAY_BUFFER, vao);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	//glGenVertexArrays(1, &vao);
+	//glBindVertexArray(vao);
+	//glBindBuffer(GL_ARRAY_BUFFER, vao);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	//glEnableVertexAttribArray(0);
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * vertexCount));
+	//glEnableVertexAttribArray(1);
+	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * vertexCount));
 
-	glBindVertexArray(0);
+	//glBindVertexArray(0);
 }
 
 void MyMesh::InitializeInterleavedArraysMesh() //  good for dynamic meshes 
@@ -68,21 +68,43 @@ void MyMesh::InitializeInterleavedArraysMesh() //  good for dynamic meshes
 
 void MyMesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive)
 {
-	LoadVBO(model, mesh, primitive);
+	LoadVAO();
+	LoadVBOTest(model, mesh, primitive);
+	//LoadVBO(model, mesh, primitive);
 	LoadEBO(model, mesh, primitive);
 }
 
+void MyMesh::LoadVAO() 
+{
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+	glBindBuffer(GL_ARRAY_BUFFER, vao);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3 + sizeof(float) * 2, (void*)0);
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3 + sizeof(float) * 2, (void*)(sizeof(float) * 3));
+	glBindVertexArray(0);
+}
 // Create Vertex Array Object (VAO)
 void MyMesh::LoadVBO(const Model& model, const Mesh& mesh, const Primitive& primitive)
 {
 	const auto& itPos = primitive.attributes.find("POSITION");
 	if (itPos != primitive.attributes.end())
 	{
+		// itPos->firt = label,  itPos->second = index
 		const Accessor& posAcc = model.accessors[itPos->second];
 		SDL_assert(posAcc.type == TINYGLTF_TYPE_VEC3);
 		SDL_assert(posAcc.componentType == GL_FLOAT);
+
+		// Which .bin file?
 		const BufferView& posView = model.bufferViews[posAcc.bufferView];
+
+		// Acess to .bin file
 		const Buffer& posBuffer = model.buffers[posView.buffer];
+
+		// Read .bin start point 
 		const unsigned char* bufferPos = &(posBuffer.data[posAcc.byteOffset + posView.byteOffset]);
 
 		// Create VBO and assign memories
@@ -94,7 +116,7 @@ void MyMesh::LoadVBO(const Model& model, const Mesh& mesh, const Primitive& prim
 
 		// GPU(VBO) to CPU
 		float3* ptr = reinterpret_cast<float3*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
-		//void* ptr = (glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+		//void* data = (glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 
 		// Create verteix data
 		for (size_t i = 0; i < posAcc.count; ++i)
@@ -102,9 +124,63 @@ void MyMesh::LoadVBO(const Model& model, const Mesh& mesh, const Primitive& prim
 			ptr[i] = *reinterpret_cast<const float3*>(bufferPos);
 			bufferPos += posView.byteStride;
 		}
+		ptr[0] = float3 (0.0, 0.0, 0.0);
+		ptr[1] = float3(1.0, 0.0, 0.0);
+		ptr[2] = float3(0.0, 1.0, 0.0);
+		glUnmapBuffer(GL_ARRAY_BUFFER);
 
+		// Set local variables
+		vertexCount = posAcc.count;
+
+		int materialIndex = primitive.material;
+		/*LOG("%zu %i", model.materials.size(), materialIndex);*/
+		if (materialIndex >= 0) {
+			const Material& material = model.materials.at(materialIndex);
+			textureID = material.pbrMetallicRoughness.baseColorTexture.index;
+			enableTexture = true;
+		}
+
+	}
+}void MyMesh::LoadVBOTest(const Model& model, const Mesh& mesh, const Primitive& primitive)
+{
+	const auto& itPos = primitive.attributes.find("POSITION");
+	if (itPos != primitive.attributes.end())
+	{
+		const Accessor& posAcc = model.accessors[itPos->second];
+		SDL_assert(posAcc.type == TINYGLTF_TYPE_VEC3);
+		SDL_assert(posAcc.componentType == GL_FLOAT);
+
+		// Which .bin file?
+		const BufferView& posView = model.bufferViews[posAcc.bufferView];
+
+		// Access to .bin file
+		const Buffer& posBuffer = model.buffers[posView.buffer];
+
+		// Read .bin start point
+		const unsigned char* bufferPos = &(posBuffer.data[posAcc.byteOffset + posView.byteOffset]);
+
+		// Create VBO and assign memories
+		glGenBuffers(1, &vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+		// Pass VTX data to GPU
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * posAcc.count, nullptr, GL_STATIC_DRAW);
+
+		// GPU(VBO) to CPU
+		float* ptr = reinterpret_cast<float*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+
+		// Create vertex data
+		for (size_t i = 0; i < posAcc.count; ++i)
+		{
+			ptr[i * 3] = reinterpret_cast<const float*>(bufferPos)[0];
+			ptr[i * 3 + 1] = reinterpret_cast<const float*>(bufferPos)[1];
+			ptr[i * 3 + 2] = reinterpret_cast<const float*>(bufferPos)[2];
+
+			bufferPos += posView.byteStride;  // Move to the next vertex
+		}
 
 		glUnmapBuffer(GL_ARRAY_BUFFER);
+
 
 		// Set local variables
 		vertexCount = posAcc.count;
@@ -210,7 +286,7 @@ void MyMesh::RenderSeparatedArrays() //  good for dynamic meshes writing
 {
 	//glUseProgram(PROGRAM);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
@@ -218,8 +294,8 @@ void MyMesh::RenderSeparatedArrays() //  good for dynamic meshes writing
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * vertexCount));
 
-	//IF EBO
-	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
+	////IF EBO
+	//glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
 }
 
 void MyMesh::Draw(const std::vector<unsigned>& textures)

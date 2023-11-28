@@ -11,7 +11,7 @@ ModuleLoadModel::~ModuleLoadModel()
 bool ModuleLoadModel::Init()
 {
     model = new MyModel();
-    model->Load("TriangleWithoutIndices.gltf");
+    model->Load("Triangle.gltf");
     
     return true;
 }
