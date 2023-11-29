@@ -168,15 +168,22 @@ void MyMesh::LoadVBO(const Model& model, const Mesh& mesh, const Primitive& prim
 
 		// GPU(VBO) to CPU
 		float* ptr = reinterpret_cast<float*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
-
+		size_t ptrSize = 0;
 		// Create vertex data
 		for (size_t i = 0; i < posAcc.count; ++i)
 		{
-			ptr[i * 3] = reinterpret_cast<const float*>(bufferPos)[0];
-			ptr[i * 3 + 1] = reinterpret_cast<const float*>(bufferPos)[1];
-			ptr[i * 3 + 2] = reinterpret_cast<const float*>(bufferPos)[2];
+			// Copy each component of the position vector
+			for (int j = 0; j < 3; ++j)
+			{
+				ptr[i * 3 + j] = *reinterpret_cast<const float*>(bufferPos);
+				bufferPos += sizeof(float);
+				ptrSize++;
+			}
+		}
 
-			bufferPos += posView.byteStride;  // Move to the next vertex
+		for (auto i = 0; i < ptrSize; i++)
+		{
+			LOG("%f", ptr[i]);
 		}
 
 		glUnmapBuffer(GL_ARRAY_BUFFER);
