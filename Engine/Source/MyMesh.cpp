@@ -211,6 +211,10 @@ void MyMesh::LoadEBO(const Model& model, const Mesh& mesh, const Primitive& prim
 		enableEBO = true;
 		const Accessor& indAcc = model.accessors[primitive.indices];
 		const BufferView& indView = model.bufferViews[indAcc.bufferView];
+
+		// Set local variables
+		indexCount = indAcc.count;
+
 		glGenBuffers(1, &ebo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indAcc.count, nullptr, GL_STATIC_DRAW);
@@ -222,27 +226,26 @@ void MyMesh::LoadEBO(const Model& model, const Mesh& mesh, const Primitive& prim
 		if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_INT)
 		{
 			const uint32_t* bufferInd = reinterpret_cast<const uint32_t*>(buffer);
-			for (auto i = 0; i < primitive.indices; ++i)
+			for (auto i = 0; i < indexCount; ++i)
 				ptr[i] = bufferInd[i];
 		}
 		else if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_SHORT)
 		{
 			const uint16_t* bufferInd = reinterpret_cast<const uint16_t*>(buffer);
-			for (auto i = 0; i < indAcc.count; ++i)
+			for (auto i = 0; i < indexCount; ++i)
 				ptr[i] = static_cast<unsigned int>(bufferInd[i]);
 			
 		}
 		else if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_BYTE)
 		{
 			const uint8_t* bufferInd = reinterpret_cast<const uint8_t*>(buffer);
-			for (auto i = 0; i < indAcc.count; ++i)
+			for (auto i = 0; i < indexCount; ++i)
 				ptr[i] = static_cast<unsigned int>(bufferInd[i]);
 		}
 		
 		glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 
-		// Set local variables
-		vertexCount = indAcc.count;
+
 	}
 }
 
