@@ -13,6 +13,7 @@ public:
 	~ModuleProgram();
 
 	bool Init();
+	void LoadShaderFile();
 	unsigned CreateProgram(unsigned vtx_shader, unsigned frg_shader);
 	char* LoadShaderSource(const char* shader_file_name, bool is_a_file);
 

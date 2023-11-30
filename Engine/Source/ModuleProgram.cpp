@@ -49,10 +49,10 @@ ModuleProgram::~ModuleProgram()
 bool ModuleProgram::Init() {
 	char *vtx_shader, *frg_shader = nullptr;
 	
-	//const char* VerteixShaderFile = App->CreateFilePath(SHADER_PATH, "triangleExerciceVertexTexture.glsl");
-	//const char* FragmentShaderFile = App->CreateFilePath(SHADER_PATH, "triangleExerciceFragmentTexture.glsl");
-	const char* VerteixShaderFile = App->CreateFilePath(SHADER_PATH, "triangleExerciceVertex.glsl");
-	const char* FragmentShaderFile = App->CreateFilePath(SHADER_PATH, "triangleExerciceFragment.glsl");
+	const char* VerteixShaderFile = App->CreateFilePath(SHADER_PATH, "triangleExerciceVertexTexture.glsl");
+	const char* FragmentShaderFile = App->CreateFilePath(SHADER_PATH, "triangleExerciceFragmentTexture.glsl");
+	//const char* VerteixShaderFile = App->CreateFilePath(SHADER_PATH, "triangleExerciceVertex.glsl");
+	//const char* FragmentShaderFile = App->CreateFilePath(SHADER_PATH, "triangleExerciceFragment.glsl");
 	vtx_shader = LoadShaderSource(VerteixShaderFile, true);
 	frg_shader = LoadShaderSource(FragmentShaderFile, true);  
 
@@ -68,6 +68,10 @@ bool ModuleProgram::Init() {
 	delete[] (VerteixShaderFile, FragmentShaderFile);
 	return true;
 
+}
+
+void ModuleProgram::LoadShaderFile()
+{
 }
 
 unsigned ModuleProgram::CreateProgram(unsigned vtx_shader, unsigned frg_shader)

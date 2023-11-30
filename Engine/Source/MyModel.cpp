@@ -42,7 +42,7 @@ void MyModel::Load(const char* assetFileName)
 			Meshes.push_back(mesh);
 		}
 	}
-	//LoadMaterials(model);
+	LoadMaterials(model);
 }
 
 void MyModel::LoadMaterials(const tinygltf::Model& srcModel)

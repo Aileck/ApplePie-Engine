@@ -11,7 +11,7 @@ ModuleLoadModel::~ModuleLoadModel()
 bool ModuleLoadModel::Init()
 {
     model = new MyModel();
-    model->Load("Triangle.gltf");
+    model->Load("BoxTextured.gltf");
     
     return true;
 }

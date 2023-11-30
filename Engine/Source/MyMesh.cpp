@@ -322,7 +322,7 @@ void MyMesh::Draw(const std::vector<unsigned>& textures)
 	// Fragment shader
 	if (enableTexture) {
 		glActiveTexture(GL_TEXTURE5);
-		glBindTexture(GL_TEXTURE_2D, textures[textureID]);
+		glBindTexture(GL_TEXTURE_2D, textures[0]);
 	}
 
 	//glBindBuffer(GL_ARRAY_BUFFER, vbo);

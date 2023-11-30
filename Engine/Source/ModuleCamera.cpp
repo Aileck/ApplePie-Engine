@@ -12,12 +12,12 @@
 #include "SDL.h"
 #include "Application.h"
 
-//const float CAMERA_MOV_SPEED = 0.005f;
-// const float CAMERA_ROT_SPEED = -math::pi / 3600.0f;
-//const float CAMERA_MOV_BOOST = 2.0f;
-const float CAMERA_MOV_SPEED = 0.1f;
-const float CAMERA_ROT_SPEED = -math::pi / 360.0f;
-const float CAMERA_MOV_BOOST = 20.0f;
+const float CAMERA_MOV_SPEED = 0.005f;
+ const float CAMERA_ROT_SPEED = -math::pi / 3600.0f;
+const float CAMERA_MOV_BOOST = 2.0f;
+//const float CAMERA_MOV_SPEED = 0.1f;
+//const float CAMERA_ROT_SPEED = -math::pi / 360.0f;
+//const float CAMERA_MOV_BOOST = 20.0f;
 ModuleCamera::ModuleCamera()
 {
 }
