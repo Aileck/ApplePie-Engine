@@ -65,7 +65,7 @@ bool ModuleOpenGL::Init()
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 
-	this->context = SDL_GL_CreateContext(App->GetWindow()->window);
+	context = SDL_GL_CreateContext(App->GetWindow()->window);
 
 	GLenum err = glewInit();
 	// … check for errors
@@ -138,7 +138,7 @@ update_status ModuleOpenGL::PostUpdate()
 bool ModuleOpenGL::CleanUp()
 {
 	LOG("Destroying renderer");
-	SDL_GL_DeleteContext(this->context);
+	SDL_GL_DeleteContext(context);
 	//Destroy window
 
 	return true;

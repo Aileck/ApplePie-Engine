@@ -20,5 +20,5 @@ public:
 	bool CheckIfPressed(SDL_Scancode keycode);
 
 private:
-	const Uint8 *keyboard = NULL;
+	const Uint8 *keyboard = nullptr;
 };

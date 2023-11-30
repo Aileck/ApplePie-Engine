@@ -63,7 +63,7 @@ bool ModuleProgram::Init() {
 	glObjectLabel(GL_SHADER, fragment, -1, FragmentShaderFile);
 
 
-	this->program = CreateProgram(vertex, fragment);
+	program = CreateProgram(vertex, fragment);
 
 	delete[] (VerteixShaderFile, FragmentShaderFile);
 	return true;
@@ -171,6 +171,6 @@ unsigned ModuleProgram::CompileShader(unsigned type, const char* source)
 
 bool ModuleProgram::CleanUp()
 {
-	glDeleteProgram(this->program);
+	glDeleteProgram(program);
 	return true;
 }

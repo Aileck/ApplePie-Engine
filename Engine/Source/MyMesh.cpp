@@ -163,13 +163,14 @@ void MyMesh::LoadVBO(const Model& model, const Mesh& mesh, const Primitive& prim
 		glGenBuffers(1, &vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
+		// Create vertex dat
 		// Pass VTX data to GPU
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * posAcc.count, nullptr, GL_STATIC_DRAW);
 
 		// GPU(VBO) to CPU
 		float* ptr = reinterpret_cast<float*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 		size_t ptrSize = 0;
-		// Create vertex data
+
 		for (size_t i = 0; i < posAcc.count; ++i)
 		{
 			// Copy each component of the position vector
@@ -181,13 +182,23 @@ void MyMesh::LoadVBO(const Model& model, const Mesh& mesh, const Primitive& prim
 			}
 		}
 
-		for (auto i = 0; i < ptrSize; i++)
-		{
-			LOG("%f", ptr[i]);
-		}
-
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 
+		// Create texture data
+		glBufferData(GL_TEXTURE_BUFFER, sizeof(float) * 2 * posAcc.count, nullptr, GL_STATIC_DRAW);
+
+		const unsigned char* bufferPosTexture = &(posBuffer.data[posAcc.byteOffset + posView.byteOffset]);
+		float* ptrTexture = reinterpret_cast<float*>(glMapBuffer(GL_TEXTURE_BUFFER, GL_WRITE_ONLY));
+
+		for (size_t i = 0; i < posAcc.count; ++i)
+		{
+			for (int j = 0; j < 2; ++j)
+			{
+				ptrTexture[i * 2 + j] = *reinterpret_cast<const float*>(bufferPos);
+				bufferPosTexture += sizeof(float) + 12;
+			}
+		}
+		glUnmapBuffer(GL_TEXTURE_BUFFER);
 
 		// Set local variables
 		vertexCount = posAcc.count;
