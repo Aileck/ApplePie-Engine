@@ -11,7 +11,10 @@ ModuleLoadModel::~ModuleLoadModel()
 bool ModuleLoadModel::Init()
 {
     model = new MyModel();
-    model->Load("BoxTextured.gltf");
+    //model->Load("triangleWithoutIndices.gltf");
+    //model->Load("BoxTextured.gltf");
+    model->Load("BakerHouse/BakerHouse.gltf");
+    //model->Load("Duck/Duck.gltf");
     
     return true;
 }

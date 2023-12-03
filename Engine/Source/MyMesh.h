@@ -9,7 +9,7 @@ public:
 	MyMesh();
 	~MyMesh();
 
-	void InitializeMesh();
+	/*void InitializeMesh();*/
 
 	void InitializeSeparatedArrayMesh();
 
@@ -19,6 +19,11 @@ public:
 	void LoadVAO();
 	void LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
 	void LoadVBOTest(const Model& model, const Mesh& mesh, const Primitive& primitive);
+	void LoadPosition(const Model& model, const Mesh& mesh, const Primitive& primitive, const int index/*, float* ptr*/);
+	void LoadPosition2(const Model& model, const int index, float* ptr, size_t& counter);
+	void LoadTexcoord2(const Model& model, const int index, float* ptr, size_t& counter);
+	void LoadTexcoord(const Model& model, const Mesh& mesh, const Primitive& primitive, const int index);
+	
 	void LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
 
 	//void Render();
@@ -35,10 +40,18 @@ private:
 	unsigned textureID = 0;
 
 	// Draw rule
+	bool enablePosition = false;
 	bool enableTexture = false;
 	bool enableEBO = false;
 
-	// MVP
-	float4x4 modelMatrix = float4x4::identity;
+	int numVerteixForBuffer = 0;
 
+
+
+	// MVP
+	//float4x4 modelMatrix = float4x4::identity;
+	float4x4 modelMatrix = float4x4::FromTRS(float3(2.0f, 2.0f, 2.0f),
+									float4x4::identity,
+									float3(5.0f, 5.0f, 5.0f)
+								);
 };
