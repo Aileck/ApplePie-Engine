@@ -31,16 +31,20 @@ void MyModel::Load(const char* assetFileName)
 		LOG("Error loading %s: %s", assetFileName, error.c_str());
 	}
 
+	size_t numMesh = 1;
 	for (const auto& srcMesh : model.meshes)
 	{
 
 		for (const auto& primitive : srcMesh.primitives)
 		{
-			MyMesh* mesh = new MyMesh();
-			mesh->LoadMesh(model, srcMesh, primitive);			
-			
-			Meshes.push_back(mesh);
+			if (true) {
+				MyMesh* mesh = new MyMesh();
+				mesh->LoadMesh(model, srcMesh, primitive);
+
+				Meshes.push_back(mesh);
+			}
 		}
+		numMesh++;
 	}
 	LoadMaterials(model);
 }
@@ -64,7 +68,7 @@ void MyModel::LoadMaterials(const tinygltf::Model& srcModel)
 
 void MyModel::Draw()
 {
-	for (int i = 0; i < Meshes.size(); i++) {
+	for (int i = Meshes.size() - 1; i >= 0; i--) {
 		Meshes[i]->RenderSeparatedArrays();
 		Meshes[i]->Draw(Textures);
 	}
