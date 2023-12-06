@@ -158,6 +158,9 @@
     <ClCompile Include="ModuleLoadModel.cpp">
       <Filter>modules\source</Filter>
     </ClCompile>
+    <ClCompile Include="FileComponent.cpp">
+      <Filter>components\source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -412,6 +415,9 @@
     </ClInclude>
     <ClInclude Include="ModuleLoadModel.h">
       <Filter>modules\header</Filter>
+    </ClInclude>
+    <ClInclude Include="FileComponent.h">
+      <Filter>components\header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

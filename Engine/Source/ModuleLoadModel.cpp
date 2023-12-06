@@ -14,8 +14,8 @@ bool ModuleLoadModel::Init()
     model = new MyModel();
     //model->Load("triangleWithoutIndices.gltf");
     //model->Load("BoxTextured.gltf");
-    model->Load("BakerHouse/BakerHouse.gltf");
-    //model->Load("Duck/Duck.gltf");
+    //model->Load("BakerHouse/BakerHouse.gltf");
+    model->Load("Duck/Duck.gltf");
     
     return true;
 }

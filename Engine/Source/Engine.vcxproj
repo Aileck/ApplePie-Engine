@@ -163,6 +163,7 @@
     <ClCompile Include="backends\imgui_tables.cpp" />
     <ClCompile Include="backends\imgui_widgets.cpp" />
     <ClCompile Include="ConsoleGUI.cpp" />
+    <ClCompile Include="FileComponent.cpp" />
     <ClCompile Include="include\MathGeoLib\Algorithm\Random\LCG.cpp" />
     <ClCompile Include="include\MathGeoLib\Geometry\AABB.cpp" />
     <ClCompile Include="include\MathGeoLib\Geometry\Capsule.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="backends\imstb_truetype.h" />
     <ClInclude Include="ConsoleGUI.h" />
     <ClInclude Include="Dummy.h" />
+    <ClInclude Include="FileComponent.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="include\MathGeoLib\Algorithm\Random\LCG.h" />
     <ClInclude Include="include\MathGeoLib\Geometry\AABB.h" />

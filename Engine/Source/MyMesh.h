@@ -19,10 +19,10 @@ public:
 	void LoadVAO();
 	void LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
 	void LoadVBOTest(const Model& model, const Mesh& mesh, const Primitive& primitive);
-	void LoadPosition(const Model& model, const Mesh& mesh, const Primitive& primitive, const int index/*, float* ptr*/);
+	void LoadPosition(const Model& model, const Mesh& mesh, const Primitive& primitive/*, float* ptr*/);
 	void LoadPosition2(const Model& model, const int index, float* ptr, size_t& counter);
 	void LoadTexcoord2(const Model& model, const int index, float* ptr, size_t& counter);
-	void LoadTexcoord(const Model& model, const Mesh& mesh, const Primitive& primitive, const int index);
+	void LoadTexcoord(const Model& model, const Mesh& mesh, const Primitive& primitive);
 	
 	void LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
 
@@ -44,7 +44,9 @@ private:
 	bool enableTexture = false;
 	bool enableEBO = false;
 
-	int numVerteixForBuffer = 0;
+	unsigned numVerteixForBuffer = 0;
+	int currentVerteixPosition = 0;
+	unsigned offsetVBO = 0;
 
 
 
@@ -52,6 +54,6 @@ private:
 	//float4x4 modelMatrix = float4x4::identity;
 	float4x4 modelMatrix = float4x4::FromTRS(float3(0.0f, 2.0f, 0.0f),
 									float4x4::identity,
-									float3(25.0f, 25.0f, 25.0f)
+									float3(0.01f, 0.01f, 0.010f)
 								);
 };

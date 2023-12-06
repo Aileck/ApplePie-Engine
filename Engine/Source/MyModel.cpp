@@ -9,6 +9,8 @@
 #define TINYGLTF_IMPLEMENTATION
 
 #include "./include/tinygltf/tiny_gltf.h"
+#include "FileComponent.h"
+
 
 using namespace tinygltf;
 MyModel::MyModel() {
@@ -20,7 +22,7 @@ MyModel::~MyModel() {
 
 void MyModel::Load(const char* assetFileName)
 {
-	const char* filePath = App->CreateFilePath(MODEL_PATH, assetFileName);
+	const char* filePath = FileComponent::CreateFilePath(MODEL_PATH, assetFileName);
 
 	TinyGLTF gltfContext;
 	Model model;
@@ -69,7 +71,7 @@ void MyModel::LoadMaterials(const tinygltf::Model& srcModel)
 void MyModel::Draw()
 {
 	for (int i = Meshes.size() - 1; i >= 0; i--) {
-		Meshes[i]->RenderSeparatedArrays();
+		//Meshes[i]->RenderSeparatedArrays();
 		Meshes[i]->Draw(Textures);
 	}
 }

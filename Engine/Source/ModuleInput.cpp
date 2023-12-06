@@ -57,6 +57,9 @@ update_status ModuleInput::PreUpdate()
             return UPDATE_CONTINUE;
         case SDL_KEYUP:
             return UPDATE_CONTINUE;
+        case SDL_DROPFILE:
+            HandleDropEvent(sdlEvent);
+            return UPDATE_CONTINUE;
         }
 
 
@@ -100,3 +103,13 @@ bool ModuleInput::CheckIfPressed(SDL_Scancode keycode) {
     }
     return keyboard[keycode];
 }
+
+void ModuleInput::HandleDropEvent(SDL_Event event)
+{
+    char* dropped_filedir = event.drop.file;
+
+
+    SDL_free(dropped_filedir);
+}
+
+

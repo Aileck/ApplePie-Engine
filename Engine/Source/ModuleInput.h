@@ -18,6 +18,7 @@ public:
 	bool CleanUp();
 
 	bool CheckIfPressed(SDL_Scancode keycode);
+	void HandleDropEvent(SDL_Event event);
 
 private:
 	const Uint8 *keyboard = nullptr;
