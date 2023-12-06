@@ -16,13 +16,22 @@ using namespace tinygltf;
 MyModel::MyModel() {
 
 }
+
+MyModel::MyModel(const char* assetFileName, bool exterior) {
+	Load(assetFileName,exterior);
+}
+
 MyModel::~MyModel() {
 
 }
 
-void MyModel::Load(const char* assetFileName)
+void MyModel::Load(const char* assetFileName, bool exterior)
 {
 	const char* filePath = FileComponent::CreateFilePath(MODEL_PATH, assetFileName);
+	if (exterior)
+	{
+		filePath = assetFileName;
+	}
 
 	TinyGLTF gltfContext;
 	Model model;

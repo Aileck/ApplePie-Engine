@@ -14,6 +14,8 @@ public:
 	update_status Update();
 	update_status PostUpdate();
 	bool CleanUp();
+
+	void LoadExteriorModel(const char* fullpath);
 private:
 	MyModel* model;
 };

@@ -1,8 +1,8 @@
 #include "FileComponent.h"
 
 #include<string>
-using namespace std;
 
+using namespace std;
 const char* FileComponent::CreateFilePath(const char* address, const char* fileName) {
 	size_t fullPathSize = strlen(address) + strlen(fileName) + 2;
 
@@ -42,28 +42,32 @@ const wchar_t* FileComponent::CreateWideFilePath(const char* address, const char
 	return fullPath;
 }
 
-void AnalyseFilePath(const char* fullpath, char* filePath, char* fileName, char* fileExtension) {
-	// Use C++ string class for convenient string manipulation
+void FileComponent::AnalyseFilePath(const char* fullpath, char* filePath, char* fileName, char* fileExtension) {
 	string fullPathString(fullpath);
 
-	// Find the position of the last slash
+	// Last slash
 	size_t lastSlashPos = fullPathString.find_last_of('/');
+	size_t lastBackslashPos = fullPathString.find_last_of('\\');
 
-	// Extract the path part
+	if (lastSlashPos == string::npos || (lastBackslashPos != string::npos && lastBackslashPos > lastSlashPos)) {
+		lastSlashPos = lastBackslashPos;
+	}
+	// Path
 	string path = fullPathString.substr(0, lastSlashPos + 1);
-	strcpy(filePath, path.c_str());
+	strcpy_s(filePath, _TRUNCATE, path.c_str());
 
-	// Extract the file name part
+	// Name
 	string fileNameWithExtension = fullPathString.substr(lastSlashPos + 1);
 
-	// Find the position of the last dot
+	// Last dot
 	size_t lastDotPos = fileNameWithExtension.find_last_of('.');
 
-	// Extract the file name part
+	// File name 
 	string fileOnly = fileNameWithExtension.substr(0, lastDotPos);
-	strcpy(fileName, fileOnly.c_str());
+	strcpy_s(fileName, _TRUNCATE, fileOnly.c_str());
 
-	// Extract the file extension part
+	// File extension 
 	string extension = fileNameWithExtension.substr(lastDotPos + 1);
-	strcpy(fileExtension, extension.c_str());
+	strcpy_s(fileExtension, _TRUNCATE, extension.c_str());
+
 }

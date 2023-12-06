@@ -12,8 +12,9 @@ class MyModel
 {
 public:
 	MyModel();
+	MyModel(const char* assetFileName, bool exterior = false);
 	~MyModel();
-	void Load(const char* assetFileName);
+	void Load(const char* assetFileName, bool exterior = false);
 	void LoadMaterials(const tinygltf::Model& srcModel);
 	void Draw();
 

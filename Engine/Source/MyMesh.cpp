@@ -91,69 +91,28 @@ void MyMesh::LoadPosition(const Model& model, const Mesh& mesh, const Primitive&
 		vertexCount += posAcc.count;
 
 		const auto& itUV = primitive.attributes.find("TEXCOORD_0");
-		enableTexture = true;
-		const Accessor& uvAcc = model.accessors[itUV->second];
-		SDL_assert(uvAcc.type == TINYGLTF_TYPE_VEC2);
-		SDL_assert(uvAcc.componentType == GL_FLOAT);
-		// Which .bin file?
-		const BufferView& uvView = model.bufferViews[uvAcc.bufferView];
-		// Access to .bin file
-		const Buffer& uvBuffer = model.buffers[uvView.buffer];
-		// Read .bin start point
-		const unsigned char* bufferUV = &(uvBuffer.data[uvAcc.byteOffset + uvView.byteOffset]);
-		// Bind the existing VBO
-		//glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		//glBufferData(GL_ARRAY_BUFFER, sizeof(float) *2* uvAcc.count, nullptr, GL_STATIC_DRAW);
-		//glBufferSubData(GL_ARRAY_BUFFER, offsetVBO, nullptr, GL_STATIC_DRAW);
-		// Map buffer and copy texcoord data
-		//float2* ptr = reinterpret_cast<float2*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
-		float2* uvs = reinterpret_cast<float2*>(glMapBufferRange(GL_ARRAY_BUFFER, sizeof(float) * 3 * posAcc.count, sizeof(float) * 2 * uvAcc.count, GL_MAP_WRITE_BIT));
-		for (size_t i = 0; i < uvAcc.count; ++i)
-		{
-			uvs[i] = *reinterpret_cast<const float2*>(bufferUV);
-			LOG("Address of uvs[%zu]: %p\n", i, static_cast<void*>(&uvs[i]));
-			LOG("(%f, %f)\n", uvs[i].x, uvs[i].y);
-			bufferUV += sizeof(float) * 2;
+		if (itUV != primitive.attributes.end()) {
+			enableTexture = true;
+			const Accessor& uvAcc = model.accessors[itUV->second];
+			SDL_assert(uvAcc.type == TINYGLTF_TYPE_VEC2);
+			SDL_assert(uvAcc.componentType == GL_FLOAT);
+			// Which .bin file?
+			const BufferView& uvView = model.bufferViews[uvAcc.bufferView];
+			// Access to .bin file
+			const Buffer& uvBuffer = model.buffers[uvView.buffer];
+			// Read .bin start point
+			const unsigned char* bufferUV = &(uvBuffer.data[uvAcc.byteOffset + uvView.byteOffset]);
+
+			float2* uvs = reinterpret_cast<float2*>(glMapBufferRange(GL_ARRAY_BUFFER, sizeof(float) * 3 * posAcc.count, sizeof(float) * 2 * uvAcc.count, GL_MAP_WRITE_BIT));
+			for (size_t i = 0; i < uvAcc.count; ++i)
+			{
+				uvs[i] = *reinterpret_cast<const float2*>(bufferUV);
+				LOG("Address of uvs[%zu]: %p\n", i, static_cast<void*>(&uvs[i]));
+				LOG("(%f, %f)\n", uvs[i].x, uvs[i].y);
+				bufferUV += sizeof(float) * 2;
+			}
+			glUnmapBuffer(GL_ARRAY_BUFFER);
 		}
-		glUnmapBuffer(GL_ARRAY_BUFFER);
-		//float3 ptrtmp = ptr[currentVerteixPosition];
-
-		//float* ptr = reinterpret_cast<float*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
-		//size_t ptrSize = 0;
-		//for (size_t i = 0; i < posAcc.count; ++i)
-		//{
-		//	// Copy each component of the position vector
-		//	for (int j = 0; j < 3; ++j)
-		//	{
-		//		ptr[i * 3 + j] = *reinterpret_cast<const float*>(bufferPos);
-		//		bufferPos += sizeof(float);
-		//		ptrSize++;
-		//	}
-		//}
-		//ptr[posAcc.count * 3] = 1;
-		//ptr[posAcc.count * 3 + 1] = 0.1;
-		//ptr[posAcc.count * 3 + 2] = 0.2;
-		//for (size_t i = 0; i < ptrSize; ++i)
-		//{
-		//	LOG("%f ", ptr[i]);
-		//	// Print a newline after every three elements
-		//	if ((i + 1) % 3 == 0)
-		//		LOG("\n");
-		//}
-		//float3* ptr = reinterpret_cast<float3*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
-		//size_t ptrSize = 0;
-		//for (size_t i = 0; i < posAcc.count; ++i)
-		//{
-		//	ptr[i] = *reinterpret_cast<const float3*>(bufferPos);
-		//	bufferPos += posView.byteStride;
-		//	for (size_t j = i - 2; j <= i; ++j)
-		//	{
-		//		LOG("ptr[%zu] = (%f, %f, %f)", j, ptr[j].x, ptr[j].y, ptr[j].z);
-		//	}
-		//	LOG(""); 
-		//}
-
-
 	}
 
 }

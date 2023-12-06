@@ -51,9 +51,9 @@ private:
 
 
 	// MVP
-	//float4x4 modelMatrix = float4x4::identity;
-	float4x4 modelMatrix = float4x4::FromTRS(float3(0.0f, 2.0f, 0.0f),
-									float4x4::identity,
-									float3(0.01f, 0.01f, 0.010f)
-								);
+	float4x4 modelMatrix = float4x4::identity;
+	//float4x4 modelMatrix = float4x4::FromTRS(float3(0.0f, 2.0f, 0.0f),
+	//								float4x4::identity,
+	//								float3(0.01f, 0.01f, 0.010f)
+	//							);
 };

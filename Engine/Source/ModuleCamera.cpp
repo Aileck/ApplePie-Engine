@@ -43,46 +43,18 @@ float4x4 LookAt(float3 target, float3 eye, float3 up) {
 bool ModuleCamera::Init()
 {
 	camera = new Frustum();
-	//
-	// Perspective matrix
-	//
-	camera->type = FrustumType::PerspectiveFrustum;
-	//frustum.SetPos(float3(0.0f, 1.0f, -2.0f));
-	camera->pos = float3(0.0f, 2.0f, -8.0f);
-	//camera->pos = float3(0.0f, 1.0f, -2.0f);
-	//frustum.SetFront(float3::unitZ);
-	//camera->front = float3::unitZ;
-	//camera->up = float3::unitY;
 
-	//frustum.SetViewPlaneDistances(0.1f, 200.0f);
+	camera->type = FrustumType::PerspectiveFrustum;
+	camera->pos = float3(0.0f, 2.0f, -8.0f);
+
 	camera->nearPlaneDistance = 0.1f;
 	camera->farPlaneDistance = 2100.0f;
-
-	//frustum.SetHorizontalFovAndAspectRatio(DEGTORAD * 90.0f, 1.3f);
 	camera->verticalFov = math::pi / 4.0f;
-
 	camera->horizontalFov = 2.f * atanf(tanf(camera->verticalFov * 0.5f) * (App->GetWindow()->currentWidth / App->GetWindow()->currentHeight));
-	//float4x4 projectionGL = camera->ProjectionMatrix().Transposed(); //<-- Important to transpose!
-	//Send the frustum projection matrix to OpenGL
-	// direct mode would be:
-	//glMatrixMode(GL_PROJECTION);
-	//glLoadMatrixf(*projectionGL.v);
-	//
-	// View matrix
-	//
-	//float3x3 rotationMatrix = float3x3::LookAt(frustum->front, dir, frustum->up, float3::unitY);
-	//frustum.SetFront(rotationMatrix.WorldX());
-	//frustum.SetUp(rotationMatrix.WorldY());
+
 	float4x4 view = LookAt(float3(0.0f, 0.0f, 0.0f), camera->pos, float3::unitY);
-	// 	camera->front = float3::unitZ;
 	camera->front = -view.WorldZ();
 	camera->up = view.WorldY();
-	//Send the frustum view matrix to OpenGL
-	// direct mode would be:
-	//float4x4 viewGL = float4x4(camera->ViewMatrix()).Transposed();
-	//glMatrixMode(GL_MODELVIEW);
-	//glLoadMatrixf(*viewGL.v);
-
 	initialView = camera->ViewMatrix();
 	return true;
 }
@@ -97,13 +69,6 @@ update_status ModuleCamera::Update()
 	HandleMovement();
 	HandleRotation();
 
-	//float4x4 projectionGL = camera->ProjectionMatrix().Transposed(); //<-- Important to transpose!
-	//glMatrixMode(GL_PROJECTION);
-	//glLoadMatrixf(*projectionGL.v);
-
-	//float4x4 viewGL = float4x4(camera->ViewMatrix()).Transposed();
-	//glMatrixMode(GL_MODELVIEW);
-	//glLoadMatrixf(*viewGL.v);
 	return UPDATE_CONTINUE;
 }
 
@@ -120,39 +85,40 @@ bool ModuleCamera::CleanUp()
 void ModuleCamera::HandleMovement()
 {
 	float finalSpeed = CAMERA_MOV_SPEED;
+	if (App->GetInput()->CheckIfMouseDown(SDL_BUTTON_RIGHT)) {
+		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_LSHIFT)) {
+			finalSpeed *= CAMERA_MOV_BOOST;
+		}
 
-	if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_LSHIFT)) {
-		finalSpeed *= CAMERA_MOV_BOOST;
-	}
+		// UP - DOWN
+		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_Q)) {
+			//ModifyCameraPosY(0.001f);
+			ModifyCameraPosY(finalSpeed);
+		}
+		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_E)) {
+			//ModifyCameraPosY(-0.001f);
+			ModifyCameraPosY(-finalSpeed);
+		}
 
-	// UP - DOWN
-	if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_Q)) {
-		//ModifyCameraPosY(0.001f);
-		ModifyCameraPosY(finalSpeed);
-	}
-	if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_E)) {
-		//ModifyCameraPosY(-0.001f);
-		ModifyCameraPosY(-finalSpeed);
-	}
+		// GO FOWARD - BACK
+		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_W)) {
+			//ModifyCameraPosY(0.001f);
+			ModifyCameraPosZ(finalSpeed);
+		}
+		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_S)) {
+			//ModifyCameraPosY(-0.001f);
+			ModifyCameraPosZ(-finalSpeed);
+		}
 
-	// GO FOWARD - BACK
-	if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_W)) {
-		//ModifyCameraPosY(0.001f);
-		ModifyCameraPosZ(finalSpeed);
-	}
-	if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_S)) {
-		//ModifyCameraPosY(-0.001f);
-		ModifyCameraPosZ(-finalSpeed);
-	}
-
-	// GO LEFT - RIGHT
-	if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_A)) {
-		//ModifyCameraPosY(0.001f);
-		ModifyCameraPosX(finalSpeed);
-	}
-	if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_D)) {
-		//ModifyCameraPosY(-0.001f);
-		ModifyCameraPosX(-finalSpeed);
+		// GO LEFT - RIGHT
+		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_A)) {
+			//ModifyCameraPosY(0.001f);
+			ModifyCameraPosX(finalSpeed);
+		}
+		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_D)) {
+			//ModifyCameraPosY(-0.001f);
+			ModifyCameraPosX(-finalSpeed);
+		}
 	}
 }
 

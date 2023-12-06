@@ -36,7 +36,7 @@ public:
     ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
     ModuleCamera* GetCamera() { return camera; }
     ModuleTexture* GeTexture() { return texture; }
-    ModuleLoadModel* GeModelLoader() { return modelLoader; }
+    ModuleLoadModel* GetModelLoader() { return modelLoader; }
 
     void WriteIntoLog(char* logText, LogLevel level);
 
