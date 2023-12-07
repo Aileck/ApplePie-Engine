@@ -10,6 +10,7 @@
 #include "backends\imgui_impl_sdl2.h"
 #include "backends\imgui_impl_opengl3.h"
 
+using namespace ImGui;
 ModuleImGUI::ModuleImGUI()
 {
 }
@@ -20,7 +21,7 @@ ModuleImGUI::~ModuleImGUI()
 
 bool ModuleImGUI::Init()
 {
-    ImGui::CreateContext();
+    CreateContext();
 
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
@@ -31,7 +32,7 @@ bool ModuleImGUI::Init()
     ImGui_ImplSDL2_InitForOpenGL(App->GetWindow()->window, App->GetOpenGL()->context);
     ImGui_ImplOpenGL3_Init(nullptr);
 
-    //logConsole = new ConsoleGUI();
+    logConsole = new ConsoleGUI();
 
     return true;
 }
@@ -40,44 +41,36 @@ update_status ModuleImGUI::PreUpdate()
 {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame(App->GetWindow()->window);
+    NewFrame();
+    Text("Hello, wolrd %d", 123);
 
-    //if (ImGui::Button("Save")) {}
-    //static char userInput[128] = "Hello, world!";
-    //float *userFloat = new float(0.0f);
-    //ImGui::InputText("string", userInput, IM_ARRAYSIZE(userInput));
-    //ImGui::SliderFloat("float", userFloat, 0.0f, 1.0f);
+    bool logOpen = true;
+    logConsole->Draw("Debug/Error log", &(logOpen));
 
-
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     return UPDATE_CONTINUE;
 }
 
 update_status ModuleImGUI::Update()
 {
-    return UPDATE_CONTINUE;
-    //ImGui::ShowDemoWindow();
-    //bool logOpen = true;
-    //logConsole->Draw("Debug/Error log", &(logOpen));
 
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-    ImGuiIO& io = ImGui::GetIO();
-
-    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-    {
-        ImGui::UpdatePlatformWindows();
-        ImGui::RenderPlatformWindowsDefault();
-    }
-
-    
-    //ImGui_ImplSDL2_ProcessEvent(App->GetInput()->currentEvent);
 
     return UPDATE_CONTINUE;
 }
 
 update_status ModuleImGUI::PostUpdate()
 {
+    ImGuiIO& io = ImGui::GetIO();
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        UpdatePlatformWindows();
+        RenderPlatformWindowsDefault();
+    }
+    SDL_GL_MakeCurrent(App->GetWindow()->window, App->GetOpenGL()->context);
 
+    ;
     return UPDATE_CONTINUE;
 }
 
@@ -90,6 +83,6 @@ bool ModuleImGUI::CleanUp()
 {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
-    ImGui::DestroyContext();
+    DestroyContext();
     return false;
 }

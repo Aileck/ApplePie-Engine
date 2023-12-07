@@ -1,6 +1,6 @@
 #pragma once
 
-#include<list>
+#include <list>
 #include "Globals.h"
 #include "Module.h"
 
@@ -15,6 +15,7 @@ class ModuleImGUI;
 class ModuleDebugDraw;
 class ModuleCamera;
 class ModuleLoadModel;
+class ModuleTimer;
 
 class Application
 {
@@ -37,15 +38,12 @@ public:
     ModuleCamera* GetCamera() { return camera; }
     ModuleTexture* GeTexture() { return texture; }
     ModuleLoadModel* GetModelLoader() { return modelLoader; }
+    ModuleTimer* GetModuleTimer() { return timer; }
 
-    void WriteIntoLog(char* logText, LogLevel level);
-
-    const char* CreateFilePath(const char* address, const char* fileName);
-
-    const wchar_t* CreateWideFilePath(const char* address, const char* fileName);
+    void WriteIntoLog(LogLevel level, const char* logText, ...);
 
 private:
-
+    // Modules
     ModuleOpenGL* render = nullptr;
     ModuleWindow* window = nullptr;
     ModuleInput* input = nullptr;
@@ -56,8 +54,11 @@ private:
     ModuleCamera* camera = nullptr;
     ModuleTexture* texture = nullptr;
     ModuleLoadModel* modelLoader = nullptr;
+    ModuleTimer* timer = nullptr;
 
     std::list<Module*> modules;
+
+    // Components
 
 };
 

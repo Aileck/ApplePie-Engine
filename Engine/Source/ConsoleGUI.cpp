@@ -14,6 +14,7 @@ ConsoleGUI::ConsoleGUI()
     Commands.push_back("CLASSIFY");
     AutoScroll = true;
     ScrollToBottom = false;
+    Items = {};
 }
 
 ConsoleGUI::~ConsoleGUI()
@@ -36,6 +37,14 @@ void ConsoleGUI::AddLog(const char* fmt, LogLevel level, ...) IM_FMTARGS(3)
     vsnprintf(buf, IM_ARRAYSIZE(buf), fmt, args);
     buf[IM_ARRAYSIZE(buf) - 1] = 0;
     va_end(args);
+    Items.push_back(new LogUnit(Strdup(buf), level));
+}
+
+void ConsoleGUI::AddLog(const char* fmt, LogLevel level, va_list args) IM_FMTARGS(3)
+{
+    char buf[1024];
+    vsnprintf(buf, IM_ARRAYSIZE(buf), fmt, args);
+    buf[IM_ARRAYSIZE(buf) - 1] = 0;
     Items.push_back(new LogUnit(Strdup(buf), level));
 }
 

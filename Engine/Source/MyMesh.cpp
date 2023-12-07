@@ -84,8 +84,6 @@ void MyMesh::LoadPosition(const Model& model, const Mesh& mesh, const Primitive&
 		currentVerteixPosition += posAcc.count;
 		offsetVBO = sizeof(float) * 3 * posAcc.count;
 		//ptr[posAcc.count + 2000] = float3(1.f, 2.f, 1.f);
-		LOG("First Address of ptr: %p\n", static_cast<void*>(&ptr[0]));
-		LOG("Last Address of ptr: %p\n", static_cast<void*>(&ptr[currentVerteixPosition]));
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 		// Set local variables
 		vertexCount += posAcc.count;
@@ -107,8 +105,6 @@ void MyMesh::LoadPosition(const Model& model, const Mesh& mesh, const Primitive&
 			for (size_t i = 0; i < uvAcc.count; ++i)
 			{
 				uvs[i] = *reinterpret_cast<const float2*>(bufferUV);
-				LOG("Address of uvs[%zu]: %p\n", i, static_cast<void*>(&uvs[i]));
-				LOG("(%f, %f)\n", uvs[i].x, uvs[i].y);
 				bufferUV += sizeof(float) * 2;
 			}
 			glUnmapBuffer(GL_ARRAY_BUFFER);
@@ -176,42 +172,14 @@ void MyMesh::LoadTexcoord(const Model& model, const Mesh& mesh, const Primitive&
 		const unsigned char* bufferUV = &(uvBuffer.data[uvAcc.byteOffset + uvView.byteOffset]);
 		// Bind the existing VBO
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		//glBufferData(GL_ARRAY_BUFFER, sizeof(float) *2* uvAcc.count, nullptr, GL_STATIC_DRAW);
-		//glBufferSubData(GL_ARRAY_BUFFER, offsetVBO, nullptr, GL_STATIC_DRAW);
 		// Map buffer and copy texcoord data
-		//float2* ptr = reinterpret_cast<float2*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 		float2* uvs = reinterpret_cast<float2*>(glMapBufferRange(GL_ARRAY_BUFFER, 2016 , sizeof(float) * 2 * uvAcc.count, GL_MAP_WRITE_BIT));
-		//reinterpret_cast<GLfloat*>(glMapBufferRange(GL_ARRAY_BUFFER, sizeof(float) * 3 * posAcc.count, sizeof(float) * 3 * additionalCount, GL_MAP_WRITE_BIT));
-		LOG("First Address of ptr: %p\n", static_cast<void*>(&uvs[0]));
 		for (size_t i = 0; i < uvAcc.count; ++i)
 		{
 			uvs[i] = *reinterpret_cast<const float2*>(bufferUV);
-			LOG("Address of uvs[%zu]: %p\n", i, static_cast<void*>(&uvs[i]));
-			LOG("(%f, %f)\n", uvs[i].x, uvs[i].y);
 			bufferUV += sizeof(float)*2;
 		}
 
-
-		//float* ptr = reinterpret_cast<float*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
-		//size_t ptrSize = 0;
-		////ptr[vertexCount * 3] = 1;
-		////ptr[vertexCount * 3 + 1] = 0.1;
-		////ptr[vertexCount * 3 + 2] = 0.2;
-		//for (size_t i = 0; i < uvAcc.count; ++i)
-		//{
-		//	for (int j = 0; j < 2; ++j)
-		//	{
-		//		// Copy each component of the texcoord vector
-		//		ptr[i * 2 + j] = *reinterpret_cast<const float*>(bufferUV);
-		//		bufferUV += sizeof(float);
-		//		ptrSize++;
-		//	}
-		//}
-		//for (size_t i = 0; i < uvAcc.count; ++i)
-		//{
-		//	LOG("(%f, %f)\n", uvs[i].x, uvs[i].y);
-		//	// Print a newline after every three elements
-		//}
 		// Unmap buffer
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 		vertexCount += uvAcc.count;
@@ -333,14 +301,10 @@ void MyMesh::Draw(const std::vector<unsigned>& textures)
 	if (enableTexture) {
 		glActiveTexture(GL_TEXTURE5);
 		glBindTexture(GL_TEXTURE_2D, textures[0]);
-		//glUniform1i(glGetUniformLocation(App->GetProgram()->program, "diffuse"), 0);
 	}
 
-	//glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBindVertexArray(vao);
 	if (enableEBO) {
-		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-		//glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
 	}
 	else {

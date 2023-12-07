@@ -25,7 +25,6 @@
     <ClCompile Include="backends\imgui_demo.cpp">
       <Filter>includes\backends</Filter>
     </ClCompile>
-    <ClCompile Include="ConsoleGUI.cpp" />
     <ClCompile Include="include\MathGeoLib\Algorithm\Random\LCG.cpp">
       <Filter>includes\mathgeolib</Filter>
     </ClCompile>
@@ -161,6 +160,12 @@
     <ClCompile Include="FileComponent.cpp">
       <Filter>components\source</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleTimer.cpp">
+      <Filter>modules\source</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleGUI.cpp">
+      <Filter>editor components\source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -193,7 +198,6 @@
     <ClInclude Include="backends\imstb_truetype.h">
       <Filter>includes\backends</Filter>
     </ClInclude>
-    <ClInclude Include="ConsoleGUI.h" />
     <ClInclude Include="include\MathGeoLib\Algorithm\Random\LCG.h">
       <Filter>includes\mathgeolib</Filter>
     </ClInclude>
@@ -419,6 +423,12 @@
     <ClInclude Include="FileComponent.h">
       <Filter>components\header</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleTimer.h">
+      <Filter>modules\header</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleGUI.h">
+      <Filter>editor components\header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="modules">
@@ -450,6 +460,15 @@
     </Filter>
     <Filter Include="includes\tiny_gltf">
       <UniqueIdentifier>{1daa89c2-ecf4-4b5a-9327-86ef90e9791b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor components">
+      <UniqueIdentifier>{81f6263e-595a-487f-879e-c60bc88cf9a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor components\header">
+      <UniqueIdentifier>{cc6c27a3-fa43-45ae-8ceb-158c8c174716}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor components\source">
+      <UniqueIdentifier>{9efa5274-26c6-432d-a75f-bb90952ca69a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

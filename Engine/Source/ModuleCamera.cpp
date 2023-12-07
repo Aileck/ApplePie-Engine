@@ -7,18 +7,21 @@
 #include "ModuleInput.h"
 #include "ModuleRenderExercise.h"
 #include "ModuleLoadModel.h"
+#include "ModuleTimer.h"
 
 
 #include "./GL/glew.h"
 #include "SDL.h"
 #include "Application.h"
 
-const float CAMERA_MOV_SPEED = 0.005f;
-const float CAMERA_ROT_SPEED = math::pi / 3600.0f;
+const float CAMERA_MOV_SPEED = 5.0f;
+const float CAMERA_ROT_SPEED = math::pi / 2.0f;
 const float CAMERA_MOV_BOOST = 2.0f;
 //const float CAMERA_MOV_SPEED = 0.1f;
 //const float CAMERA_ROT_SPEED = -math::pi / 360.0f;
 //const float CAMERA_MOV_BOOST = 20.0f;
+#define DELTA_TIME (App->GetModuleTimer()->GetDeltaTime())
+
 ModuleCamera::ModuleCamera()
 {
 }
@@ -134,7 +137,7 @@ void ModuleCamera::HandleMovement()
 void ModuleCamera::HandleRotation()
 {
 	if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_LEFT)) {
-		float3x3 rotationDeltaMatrix = float3x3::RotateY(CAMERA_ROT_SPEED); // = some rotation delta value
+		float3x3 rotationDeltaMatrix = float3x3::RotateY(CAMERA_ROT_SPEED * DELTA_TIME); // = some rotation delta value
 		float3 oldFront = camera->front.Normalized();
 		camera->front = rotationDeltaMatrix * oldFront;
 		float3 oldUp = camera->up.Normalized();
@@ -144,7 +147,7 @@ void ModuleCamera::HandleRotation()
 		//camera->up = newView.WorldY();
 	}
 	if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_RIGHT)) {
-		float3x3 rotationDeltaMatrix = float3x3::RotateY(-CAMERA_ROT_SPEED); // = some rotation delta value
+		float3x3 rotationDeltaMatrix = float3x3::RotateY(-CAMERA_ROT_SPEED * DELTA_TIME); // = some rotation delta value
 		float3 oldFront = camera->front.Normalized();
 		camera->front = rotationDeltaMatrix * oldFront;
 		float3 oldUp = camera->up.Normalized();
@@ -173,17 +176,17 @@ void ModuleCamera::FocusOn(float3 target)
 
 void ModuleCamera::ModifyCameraPosX(float X)
 {
-	camera->Translate(X * Cross(camera->front, camera->up));
+	camera->Translate(X * Cross(camera->front, camera->up) * DELTA_TIME);
 }
 
 void ModuleCamera::ModifyCameraPosY(float Y)
 {
-	camera->Translate(float3(0.0, Y,0.0));
+	camera->Translate(Y * camera->up * DELTA_TIME);
 }
 
 void ModuleCamera::ModifyCameraPosZ(float Z)
 {
-	camera->Translate(Z * camera->front);
+	camera->Translate(Z * camera->front * DELTA_TIME);
 }
 
 float4x4 ModuleCamera::LookAt(float3 target, float3 eye, float3 up) {

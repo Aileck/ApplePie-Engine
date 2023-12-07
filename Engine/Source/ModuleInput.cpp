@@ -147,7 +147,6 @@ bool ModuleInput::CheckIfMouseDown(Uint8 mouseEvent)
 
 int ModuleInput::GetMouseWheelValue()
 {
-    LOG("Weel: %i", wheelValueMouse);
     return wheelValueMouse;
 }
 

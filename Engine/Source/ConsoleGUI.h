@@ -64,6 +64,7 @@ public:
 
     void ClearLog();
     void AddLog(const char* fmt, LogLevel level, ...) IM_FMTARGS(3);
+    void AddLog(const char* fmt, LogLevel level, va_list args) IM_FMTARGS(3);
     void Draw(const char* title, bool* p_open);
     static void ShowConsole(bool* p_open);
 

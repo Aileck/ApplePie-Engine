@@ -54,7 +54,7 @@ void __stdcall OurOpenGLErrorFunction(GLenum source, GLenum type, GLuint id, GLe
 // Called before render is available
 bool ModuleOpenGL::Init()
 {
-	LOG("Creating Renderer context");
+
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
@@ -68,14 +68,8 @@ bool ModuleOpenGL::Init()
 	context = SDL_GL_CreateContext(App->GetWindow()->window);
 
 	GLenum err = glewInit();
-	// … check for errors
-	//App->GetEditor().
-	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
 
-	LOG("Vendor: %s", glGetString(GL_VENDOR));
-	LOG("Renderer: %s", glGetString(GL_RENDERER));
-	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
-	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+
 
 	//Initialize render pipeline options
 	glEnable(GL_DEPTH_TEST); // Enable depth test
@@ -90,6 +84,17 @@ bool ModuleOpenGL::Init()
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 	glDebugMessageCallback(&OurOpenGLErrorFunction, nullptr);
 	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr,true);
+	return true;
+}
+
+bool ModuleOpenGL::Start()
+{
+	App->WriteIntoLog(INFO_LOG, "Creating Renderer context");
+	App->WriteIntoLog(INFO_LOG, "Using Glew %s", glewGetString(GLEW_VERSION));
+	App->WriteIntoLog(INFO_LOG, "Vendor: %s", glGetString(GL_VENDOR));
+	App->WriteIntoLog(INFO_LOG, "Renderer: %s", glGetString(GL_RENDERER));
+	App->WriteIntoLog(INFO_LOG, "OpenGL version supported %s", glGetString(GL_VERSION));
+	App->WriteIntoLog(INFO_LOG, "GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 	return true;
 }
 
@@ -124,12 +129,6 @@ update_status ModuleOpenGL::Update()
 
 update_status ModuleOpenGL::PostUpdate()
 {
-	//App->GetDebugDraw()->Draw(
-	//	App->GetCamera()->camera->ViewMatrix() , 
-	//	App->GetCamera()->camera->ProjectionMatrix(), 
-	//	App->GetWindow()->currentWidth,
-	//	App->GetWindow()->currentHeight
-	//);
 	SDL_GL_SwapWindow(App->GetWindow() ->window);
 	return UPDATE_CONTINUE;
 }
