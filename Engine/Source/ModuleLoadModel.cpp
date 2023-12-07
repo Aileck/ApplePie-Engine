@@ -51,3 +51,8 @@ void ModuleLoadModel::LoadExteriorModel(const char* fullpath)
 
 
 }
+
+MyModel* ModuleLoadModel::GetModel() 
+{
+    return model;
+}

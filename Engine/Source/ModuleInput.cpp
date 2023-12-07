@@ -36,7 +36,7 @@ bool ModuleInput::Init()
 update_status ModuleInput::PreUpdate()
 {
     SDL_Event sdlEvent;
-
+    wheelValueMouse = 0;
     while (SDL_PollEvent(&sdlEvent) != 0)
     {
         // #editor module
@@ -45,47 +45,53 @@ update_status ModuleInput::PreUpdate()
         // end editor module
         switch (sdlEvent.type)
         {
-        case SDL_QUIT:
-            return UPDATE_STOP;
-        case SDL_WINDOWEVENT:
-            if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED || sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
-                App->GetOpenGL()->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
-            if (sdlEvent.window.event == SDL_WINDOWEVENT_CLOSE) {
+            case SDL_QUIT:
                 return UPDATE_STOP;
+            case SDL_WINDOWEVENT:
+                if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED || sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+                    App->GetOpenGL()->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
+                if (sdlEvent.window.event == SDL_WINDOWEVENT_CLOSE) {
+                    return UPDATE_STOP;
+                }
+                break;
+            case SDL_KEYDOWN:
+
+                //return UPDATE_CONTINUE;
+
+                break;
+
+            case SDL_KEYUP:
+                //return UPDATE_CONTINUE;
+                break;
+
+            case SDL_DROPFILE:
+                HandleDropEvent(sdlEvent);
+                //return UPDATE_CONTINUE;
+                break;
+
+            case SDL_MOUSEBUTTONDOWN:
+            {
+                auto it = std::find(pressedButtonsMouse.begin(), pressedButtonsMouse.end(), sdlEvent.button.button);
+                if (it == pressedButtonsMouse.end()) {
+                    pressedButtonsMouse.push_back(sdlEvent.button.button);
+                }
+                break;
             }
-            break;
-        case SDL_KEYDOWN:
 
-            //return UPDATE_CONTINUE;
-
-            break;
-
-        case SDL_KEYUP:
-            //return UPDATE_CONTINUE;
-            break;
-
-        case SDL_DROPFILE:
-            HandleDropEvent(sdlEvent);
-            //return UPDATE_CONTINUE;
-            break;
-
-        case SDL_MOUSEBUTTONDOWN:
-        {
-            auto it = std::find(pressedButtons.begin(), pressedButtons.end(), sdlEvent.button.button);
-            if (it == pressedButtons.end()) {
-                pressedButtons.push_back(sdlEvent.button.button);
+            case SDL_MOUSEBUTTONUP:
+            {
+                auto it = std::find(pressedButtonsMouse.begin(), pressedButtonsMouse.end(), sdlEvent.button.button);
+                if (it != pressedButtonsMouse.end()) {
+                    pressedButtonsMouse.erase(it);
+                }
+                break;
             }
-            break;
-        }
 
-        case SDL_MOUSEBUTTONUP:
-        {
-            auto it = std::find(pressedButtons.begin(), pressedButtons.end(), sdlEvent.button.button);
-            if (it != pressedButtons.end()) {
-                pressedButtons.erase(it);
+            case SDL_MOUSEWHEEL:
+            {
+                wheelValueMouse = sdlEvent.wheel.y;
+                break;
             }
-            break;
-        }
         }
 
     }
@@ -130,15 +136,19 @@ bool ModuleInput::CheckIfPressed(SDL_Scancode keycode) {
 
 bool ModuleInput::CheckIfMouseDown(Uint8 mouseEvent)
 {
-    LOG("Press %i", pressedButtons.size());
-    auto it = std::find(pressedButtons.begin(), pressedButtons.end(), mouseEvent);
+    auto it = std::find(pressedButtonsMouse.begin(), pressedButtonsMouse.end(), mouseEvent);
 
-    if (it != pressedButtons.end()) {
-        LOG("Press %i", pressedButtons.size());
+    if (it != pressedButtonsMouse.end()) {
         return true;
     }
 
     return false;
+}
+
+int ModuleInput::GetMouseWheelValue()
+{
+    LOG("Weel: %i", wheelValueMouse);
+    return wheelValueMouse;
 }
 
 
@@ -152,7 +162,6 @@ void ModuleInput::HandleDropEvent(SDL_Event event)
     FileComponent::AnalyseFilePath(dropped_filedir, filePath, fileName, fileExtension);
 
     if (strcmp(fileExtension,"gltf") == 0) {
-        LOG("Loading model: %s", fileName);
         App->GetModelLoader()->LoadExteriorModel(dropped_filedir);
     }
     else {

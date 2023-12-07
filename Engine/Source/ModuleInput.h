@@ -21,12 +21,14 @@ public:
 
 	bool CheckIfPressed(SDL_Scancode keycode);
 	bool CheckIfMouseDown(Uint8 mouseEvent);
+	int GetMouseWheelValue();
 	void HandleDropEvent(SDL_Event event);
 
 private:
 	const Uint8 *keyboard = nullptr;
 
 	// MouseEvents
-	std::list<Uint8> pressedButtons;
+	std::list<Uint8> pressedButtonsMouse;
+	Sint32 wheelValueMouse;
 
 };

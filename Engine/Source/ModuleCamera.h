@@ -17,9 +17,7 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
-	void HandleMovement();
 
-	void HandleRotation();
 	//const getter to get camera
 	
 	
@@ -33,5 +31,11 @@ private:
 	void ModifyCameraPosY(float Y);
 	void ModifyCameraPosZ(float Z);
 	float4x4 LookAt(float3 target, float3 eye, float3 up);
+
+	void HandleMovement();
+	void HandleRotation();
+	void HandleFocus();
+	void FocusOn(float3 target);
+
 };
 

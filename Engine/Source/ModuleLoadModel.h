@@ -16,6 +16,7 @@ public:
 	bool CleanUp();
 
 	void LoadExteriorModel(const char* fullpath);
+	MyModel* GetModel();
 private:
 	MyModel* model;
 };

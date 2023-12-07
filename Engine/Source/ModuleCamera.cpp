@@ -6,6 +6,7 @@
 #include "ModuleProgram.h"
 #include "ModuleInput.h"
 #include "ModuleRenderExercise.h"
+#include "ModuleLoadModel.h"
 
 
 #include "./GL/glew.h"
@@ -13,7 +14,7 @@
 #include "Application.h"
 
 const float CAMERA_MOV_SPEED = 0.005f;
- const float CAMERA_ROT_SPEED = -math::pi / 3600.0f;
+const float CAMERA_ROT_SPEED = math::pi / 3600.0f;
 const float CAMERA_MOV_BOOST = 2.0f;
 //const float CAMERA_MOV_SPEED = 0.1f;
 //const float CAMERA_ROT_SPEED = -math::pi / 360.0f;
@@ -68,6 +69,7 @@ update_status ModuleCamera::Update()
 {
 	HandleMovement();
 	HandleRotation();
+	HandleFocus();
 
 	return UPDATE_CONTINUE;
 }
@@ -85,6 +87,8 @@ bool ModuleCamera::CleanUp()
 void ModuleCamera::HandleMovement()
 {
 	float finalSpeed = CAMERA_MOV_SPEED;
+
+	// FPS-like movement
 	if (App->GetInput()->CheckIfMouseDown(SDL_BUTTON_RIGHT)) {
 		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_LSHIFT)) {
 			finalSpeed *= CAMERA_MOV_BOOST;
@@ -113,12 +117,17 @@ void ModuleCamera::HandleMovement()
 		// GO LEFT - RIGHT
 		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_A)) {
 			//ModifyCameraPosY(0.001f);
-			ModifyCameraPosX(finalSpeed);
+			ModifyCameraPosX(-finalSpeed);
 		}
 		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_D)) {
 			//ModifyCameraPosY(-0.001f);
-			ModifyCameraPosX(-finalSpeed);
+			ModifyCameraPosX(finalSpeed);
 		}
+	}
+
+	//ZOOM
+	else if (App->GetInput()->GetMouseWheelValue() != 0) {
+		ModifyCameraPosZ(finalSpeed * CAMERA_MOV_BOOST * App->GetInput()->GetMouseWheelValue());
 	}
 }
 
@@ -144,9 +153,27 @@ void ModuleCamera::HandleRotation()
 
 }
 
+void ModuleCamera::HandleFocus()
+{
+	if (App->GetModelLoader()->GetModel() != nullptr) {
+
+		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_F)) {
+			//ModifyCameraPosX(-finalSpeed);
+			FocusOn(float3(0.0f, 0.0f, 0.0f));
+		}
+	}
+}
+
+void ModuleCamera::FocusOn(float3 target)
+{
+	float4x4 view = LookAt(target, camera->pos, float3::unitY);
+	camera->front = -view.WorldZ();
+	camera->up = view.WorldY();
+}
+
 void ModuleCamera::ModifyCameraPosX(float X)
 {
-	camera->Translate(float3(X, 0.0, 0.0));
+	camera->Translate(X * Cross(camera->front, camera->up));
 }
 
 void ModuleCamera::ModifyCameraPosY(float Y)
@@ -156,7 +183,7 @@ void ModuleCamera::ModifyCameraPosY(float Y)
 
 void ModuleCamera::ModifyCameraPosZ(float Z)
 {
-	camera->Translate(float3(0.0, 0.0, Z));
+	camera->Translate(Z * camera->front);
 }
 
 float4x4 ModuleCamera::LookAt(float3 target, float3 eye, float3 up) {
