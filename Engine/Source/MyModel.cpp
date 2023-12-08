@@ -32,20 +32,20 @@ void MyModel::Load(const char* assetFileName, bool exterior)
 	{
 		filePath = assetFileName;
 	}
-	//App->WriteIntoLog(INFO_LOG, "Loading from %s", filePath);
+	App->WriteIntoLog(INFO_LOG, "Loading from %s", filePath);
 	TinyGLTF gltfContext;
 	Model model;
 	std::string error, warning;
 	bool loadOk = gltfContext.LoadASCIIFromFile(&model, &error, &warning, filePath);
 	if (!loadOk)
 	{
-		//App->WriteIntoLog(ERROR_LOG, "Error loading %s: %s", assetFileName, error.c_str());
+		App->WriteIntoLog(ERROR_LOG, "Error loading %s: %s", assetFileName, error.c_str());
 	}
 
 	size_t numMesh = 0;
 	for (const auto& srcMesh : model.meshes)
 	{
-		//App->WriteIntoLog(ERROR_LOG, "Loading mesh id %i", numMesh);
+		App->WriteIntoLog(INFO_LOG, "Loading mesh no. %i", numMesh);
 		for (const auto& primitive : srcMesh.primitives)
 		{
 			if (true) {
@@ -60,6 +60,7 @@ void MyModel::Load(const char* assetFileName, bool exterior)
 		
 	}
 	LoadMaterials(model);
+	App->WriteIntoLog(INFO_LOG, " %s Loaded", filePath);
 }
 
 void MyModel::LoadMaterials(const tinygltf::Model& srcModel)
@@ -67,7 +68,7 @@ void MyModel::LoadMaterials(const tinygltf::Model& srcModel)
 	size_t numTex = 0;
 	for (const auto& srcMaterial : srcModel.materials)
 	{  
-		//App->WriteIntoLog(ERROR_LOG, "Loading texture id %i", numTex);
+		App->WriteIntoLog(INFO_LOG, "Loading texture no. %i", numTex);
 		unsigned int textureId = 0;
 		if (srcMaterial.pbrMetallicRoughness.baseColorTexture.index >= 0)
 		{

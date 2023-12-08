@@ -47,8 +47,6 @@ void ModuleLoadModel::LoadExteriorModel(const char* fullpath)
     App->WriteIntoLog(INFO_LOG, "Deleting the current model");
     delete model;
     model = nullptr;
-
-    App->WriteIntoLog( INFO_LOG,"Loading from %s", fullpath);
     model = new MyModel(fullpath,true);
 
 

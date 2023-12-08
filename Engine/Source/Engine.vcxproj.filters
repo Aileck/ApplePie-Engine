@@ -166,6 +166,9 @@
     <ClCompile Include="ConsoleGUI.cpp">
       <Filter>editor components\source</Filter>
     </ClCompile>
+    <ClCompile Include="ConfigurationGUI.cpp">
+      <Filter>editor components\source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -427,6 +430,9 @@
       <Filter>modules\header</Filter>
     </ClInclude>
     <ClInclude Include="ConsoleGUI.h">
+      <Filter>editor components\header</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfigurationGUI.h">
       <Filter>editor components\header</Filter>
     </ClInclude>
   </ItemGroup>

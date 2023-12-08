@@ -21,6 +21,7 @@ void MyMesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, 
 	LoadVBO(model, mesh, primitive);
 	LoadEBO(model, mesh, primitive);
 	LoadVAO();
+	App->WriteIntoLog(INFO_LOG, "Rendering Pipeline Setted");
 }
 
 void MyMesh::LoadVAO() 
@@ -87,7 +88,7 @@ void MyMesh::LoadPosition(const Model& model, const Mesh& mesh, const Primitive&
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 		// Set local variables
 		vertexCount += posAcc.count;
-
+		App->WriteIntoLog(INFO_LOG, "Vertex Data Loades");
 		const auto& itUV = primitive.attributes.find("TEXCOORD_0");
 		if (itUV != primitive.attributes.end()) {
 			enableTexture = true;
@@ -108,6 +109,7 @@ void MyMesh::LoadPosition(const Model& model, const Mesh& mesh, const Primitive&
 				bufferUV += sizeof(float) * 2;
 			}
 			glUnmapBuffer(GL_ARRAY_BUFFER);
+			App->WriteIntoLog(INFO_LOG, "Texture Coordinates Loades");
 		}
 	}
 

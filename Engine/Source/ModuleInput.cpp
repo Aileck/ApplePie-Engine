@@ -21,16 +21,15 @@ ModuleInput::~ModuleInput()
 bool ModuleInput::Init()
 {
 	LOG("Init SDL input event system");
-	bool ret = true;
-	SDL_Init(0);
+    bool ret = true;
+    SDL_Init(0);
 
-	if(SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
-	{
-		LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
-		ret = false;
-	}
-
-	return ret;
+    if (SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
+    {
+        LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
+        ret = false;
+    }
+	return true;
 }
 
 update_status ModuleInput::PreUpdate()
@@ -97,15 +96,6 @@ update_status ModuleInput::PreUpdate()
     }
     keyboard = SDL_GetKeyboardState(NULL);
 
-    //if (keyboard[SDL_SCANCODE_W]) {
-    //    LOG("Press W\n");
-    //}
-    //if (keyboard[SDL_SCANCODE_Q]) {
-    //    LOG("Press Q\n");
-    //}
-
-    //LOG("Keyboard value: %hhu\n", *keyboard);
-
     return UPDATE_CONTINUE;
 }
 
@@ -126,11 +116,6 @@ bool ModuleInput::CleanUp()
 }
 
 bool ModuleInput::CheckIfPressed(SDL_Scancode keycode) {
-
-    
-    if (keyboard[keycode]) {
-        //LOG("Press");
-    }
     return keyboard[keycode];
 }
 
@@ -164,7 +149,7 @@ void ModuleInput::HandleDropEvent(SDL_Event event)
         App->GetModelLoader()->LoadExteriorModel(dropped_filedir);
     }
     else {
-        LOG("Unsupported extension: %s", fileExtension);
+        App->WriteIntoLog(ERROR_LOG, "Unsupported extension: %s", fileExtension);
     }
 
     SDL_free(dropped_filedir);

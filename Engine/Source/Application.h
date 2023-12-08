@@ -41,6 +41,7 @@ public:
     ModuleTimer* GetModuleTimer() { return timer; }
 
     void WriteIntoLog(LogLevel level, const char* logText, ...);
+    void OpenBrowser(const char* url);
 
 private:
     // Modules

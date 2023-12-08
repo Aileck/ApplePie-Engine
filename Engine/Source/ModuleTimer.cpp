@@ -17,7 +17,6 @@ bool ModuleTimer::Init()
 update_status ModuleTimer::PreUpdate()
 {
     ComputeDeltaTime();
-    //LOG("%f", deltaTime);
     return UPDATE_CONTINUE;
 }
 

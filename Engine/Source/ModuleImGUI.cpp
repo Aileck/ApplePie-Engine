@@ -10,6 +10,9 @@
 #include "backends\imgui_impl_sdl2.h"
 #include "backends\imgui_impl_opengl3.h"
 
+#include "ConsoleGUI.h"
+#include "ConfigurationGUI.h"
+
 using namespace ImGui;
 ModuleImGUI::ModuleImGUI()
 {
@@ -33,6 +36,7 @@ bool ModuleImGUI::Init()
     ImGui_ImplOpenGL3_Init(nullptr);
 
     logConsole = new ConsoleGUI();
+    conf = new ConfigurationGUI();
 
     return true;
 }
@@ -42,40 +46,75 @@ update_status ModuleImGUI::PreUpdate()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame(App->GetWindow()->window);
     NewFrame();
-    Text("Hello, wolrd %d", 123);
+    //ShowDemoWindow();
 
+    // MAIN MENU
+    DrawMainMenu();
+
+    // LOG WINDOW
     bool logOpen = true;
     logConsole->Draw("Debug/Error log", &(logOpen));
 
+    // CONF
+    conf->Draw();
+
+    // DEMO
+    ShowDemoWindow();
+    
+
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+    if (quit) {
+        return UPDATE_STOP;
+    }
     return UPDATE_CONTINUE;
 }
 
 update_status ModuleImGUI::Update()
 {
 
-
-
     return UPDATE_CONTINUE;
 }
 
 update_status ModuleImGUI::PostUpdate()
 {
-    ImGuiIO& io = ImGui::GetIO();
+    ImGuiIO& io = GetIO();
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
         UpdatePlatformWindows();
         RenderPlatformWindowsDefault();
     }
     SDL_GL_MakeCurrent(App->GetWindow()->window, App->GetOpenGL()->context);
-
-    ;
+    EndFrame();
     return UPDATE_CONTINUE;
 }
 
-void ModuleImGUI::DrawConsole()
+void ModuleImGUI::DrawMainMenu()
 {
+    if (ImGui::BeginMainMenuBar())
+    {
+        if (ImGui::BeginMenu("Editor"))
+        {
+            if (ImGui::MenuItem("Editor windows", NULL, true)) {
+                SDL_HideWindow(App->GetWindow()->window);
+            }
+            ImGui::Separator();
+            if (ImGui::MenuItem("About us")) {
+                
+            }
+            if (ImGui::MenuItem("Find us")) {
+                App->OpenBrowser("https://github.com/Aileck/ApplePie-Engine");
+            } 
+            ImGui::Separator();
+            if (ImGui::MenuItem("Quit")) 
+            {
+                quit = true;
+            }
+            ImGui::EndMenu();
+        }
+        ImGui::EndMainMenuBar();
+    }
 
 }
 

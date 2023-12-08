@@ -162,6 +162,7 @@
     <ClCompile Include="backends\imgui_impl_sdl2.cpp" />
     <ClCompile Include="backends\imgui_tables.cpp" />
     <ClCompile Include="backends\imgui_widgets.cpp" />
+    <ClCompile Include="ConfigurationGUI.cpp" />
     <ClCompile Include="ConsoleGUI.cpp" />
     <ClCompile Include="FileComponent.cpp" />
     <ClCompile Include="include\MathGeoLib\Algorithm\Random\LCG.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="backends\imstb_rectpack.h" />
     <ClInclude Include="backends\imstb_textedit.h" />
     <ClInclude Include="backends\imstb_truetype.h" />
+    <ClInclude Include="ConfigurationGUI.h" />
     <ClInclude Include="ConsoleGUI.h" />
     <ClInclude Include="Dummy.h" />
     <ClInclude Include="FileComponent.h" />

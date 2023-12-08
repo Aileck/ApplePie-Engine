@@ -48,7 +48,7 @@ void __stdcall OurOpenGLErrorFunction(GLenum source, GLenum type, GLuint id, GLe
 		case GL_DEBUG_SEVERITY_LOW: tmp_severity = "low"; break;
 		case GL_DEBUG_SEVERITY_NOTIFICATION: tmp_severity = "notification"; break;
 	};
-	LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
+	App->WriteIntoLog(SYSINFO_LOG, "<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
 }
 
 // Called before render is available
@@ -89,12 +89,12 @@ bool ModuleOpenGL::Init()
 
 bool ModuleOpenGL::Start()
 {
-	App->WriteIntoLog(INFO_LOG, "Creating Renderer context");
-	App->WriteIntoLog(INFO_LOG, "Using Glew %s", glewGetString(GLEW_VERSION));
-	App->WriteIntoLog(INFO_LOG, "Vendor: %s", glGetString(GL_VENDOR));
-	App->WriteIntoLog(INFO_LOG, "Renderer: %s", glGetString(GL_RENDERER));
-	App->WriteIntoLog(INFO_LOG, "OpenGL version supported %s", glGetString(GL_VERSION));
-	App->WriteIntoLog(INFO_LOG, "GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+	App->WriteIntoLog(SYSINFO_LOG, "Creating Renderer context");
+	App->WriteIntoLog(SYSINFO_LOG, "Using Glew %s", glewGetString(GLEW_VERSION));
+	App->WriteIntoLog(SYSINFO_LOG, "Vendor: %s", glGetString(GL_VENDOR));
+	App->WriteIntoLog(SYSINFO_LOG, "Renderer: %s", glGetString(GL_RENDERER));
+	App->WriteIntoLog(SYSINFO_LOG, "OpenGL version supported %s", glGetString(GL_VERSION));
+	App->WriteIntoLog(SYSINFO_LOG, "GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 	return true;
 }
 
@@ -136,7 +136,7 @@ update_status ModuleOpenGL::PostUpdate()
 // Called before quitting
 bool ModuleOpenGL::CleanUp()
 {
-	LOG("Destroying renderer");
+	App->WriteIntoLog(SYSINFO_LOG, "Destroying renderer");
 	SDL_GL_DeleteContext(context);
 	//Destroy window
 
@@ -147,7 +147,7 @@ bool ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 {
 	if (App->GetWindow()->currentWidth != width || App->GetWindow()->currentHeight != height) {
 		App->GetWindow()->SetCurrentWindowSize();
-		LOG("Resized");
+		App->WriteIntoLog(SYSINFO_LOG, "Resized");
 		return true;
 	}
 	else {

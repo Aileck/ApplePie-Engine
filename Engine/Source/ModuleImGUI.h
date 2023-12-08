@@ -3,7 +3,9 @@
 
 #include "Module.h"
 #include "SDL/include/SDL.h"
-#include "ConsoleGUI.h"
+
+class ConsoleGUI;
+class ConfigurationGUI;
 
 class ModuleImGUI :
     public Module
@@ -16,12 +18,17 @@ public:
 	update_status PreUpdate();
 	update_status Update();
 	update_status PostUpdate();
-
-	void DrawConsole();
-
 	bool CleanUp();
 
+	void DrawMainMenu();
+
+	ConsoleGUI* GetConsole() { return logConsole; };
+	
+
+private:
 	ConsoleGUI* logConsole = nullptr;
+	ConfigurationGUI* conf = nullptr;
+	bool quit = false;
 };
 
 #endif

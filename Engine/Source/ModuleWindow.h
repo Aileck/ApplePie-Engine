@@ -17,7 +17,6 @@ public:
 
 	// Called before quitting
 	bool Init();
-
 	// Called before quitting
 	bool CleanUp();
 

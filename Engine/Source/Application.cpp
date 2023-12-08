@@ -11,6 +11,8 @@
 #include "ModuleCamera.h"
 #include "ModuleTexture.h"
 #include "ModuleLoadModel.h"
+#include "ConsoleGUI.h"
+
 
 using namespace std;
 
@@ -81,21 +83,18 @@ void Application::WriteIntoLog(LogLevel level, const char* logText,  ...)
 {
 	va_list args;
 	va_start(args, logText);
-	editor->logConsole->AddLog(logText, level,args);
+	editor->GetConsole()->AddLog(logText, level,args);
 	va_end(args);
-
 }
 
-//void Application::WriteIntoLog(const char* logText, LogLevel level, bool writeIntoSysLog)
-//{
-//	editor->logConsole->AddLog(logText,level);
-//
-//	if (writeIntoSysLog)
-//	{
-//		LOG(logText);
-//	}
-//}
+void Application::OpenBrowser(const char* url)
+{
+	HINSTANCE result = ShellExecuteA(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
 
-//void Application::WriteIntoLog() {
-//
-//}
+	if ((intptr_t)result <= 32) {
+
+		DWORD error = GetLastError();
+		WriteIntoLog(ERROR_LOG, reinterpret_cast<LPSTR>(error));
+		WriteIntoLog(ERROR_LOG, "Cannot open %s", url);
+	}
+}

@@ -99,7 +99,6 @@ unsigned ModuleProgram::CreateProgram(unsigned vtx_shader, unsigned frg_shader)
 			int written = 0;
 			char* info = (char*)malloc(len);
 			glGetProgramInfoLog(program_id, len, &written, info);
-			LOG("Program Log Info: %s", info);
 			free(info);
 		}
 	}
@@ -134,7 +133,7 @@ char* ModuleProgram::LoadShaderSource(const char* shader_file_name, bool is_a_fi
 	}
 	else {
 
-		LOG("Cannot find file: %s", shader_file_name);
+		App->WriteIntoLog(ERROR_LOG, "Cannot find file: %s", shader_file_name);
 		exit(0);
 
 	}
@@ -145,7 +144,6 @@ unsigned ModuleProgram::CompileShader(unsigned type, const char* source)
 {
 	///For compiling both shaders we need to create two shader objects
 	unsigned shader_id = glCreateShader(type);
-	LOG("Source: %s", &source);
 	//Once created, we can attach data and compile each one:
 	glShaderSource(shader_id, 1, &source, 0);
 	glCompileShader(shader_id);
@@ -163,7 +161,7 @@ unsigned ModuleProgram::CompileShader(unsigned type, const char* source)
 			int written = 0;
 			char* info = (char*)malloc(len);
 			glGetShaderInfoLog(shader_id, len, &written, info);
-			LOG("Log Info: %s", info);
+			App->WriteIntoLog(SYSINFO_LOG, "Log Info: %s", info);
 			free(info);
 		}
 	}
