@@ -117,7 +117,7 @@ void ModuleImGUI::DrawMainMenu()
         ImGui::EndMainMenuBar();
     }
 
-    if (show_tool_about && ImGui::Begin("About us", &show_tool_about))
+    if (show_tool_about && Begin("About us", &show_tool_about))
     {
         ImGui::Text("%s is an Unity like 3D game engine. ", TITLE);
         ImGui::Text("Developed by Xinyu Jiang (xinyujiang721@gmail.com). Licensed under the MIT License.");
@@ -132,7 +132,7 @@ void ModuleImGUI::DrawMainMenu()
         ImGui::Text("- SDL 2.0");
         ImGui::Text("- ImGUI 1.89");
         ImGui::Text("- glew 2.1.0");
-        ImGui::Text("- DirectTex Oct 28 2023");
+        ImGui::Text("- DirectTex 2.0.1");
         ImGui::Text("- MathGeoLib");
         ImGui::Text("- Tiny_GLTF 2.0");
 
