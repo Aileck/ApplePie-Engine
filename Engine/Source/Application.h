@@ -38,7 +38,7 @@ public:
     ModuleCamera* GetCamera() { return camera; }
     ModuleTexture* GeTexture() { return texture; }
     ModuleLoadModel* GetModelLoader() { return modelLoader; }
-    ModuleTimer* GetModuleTimer() { return timer; }
+    ModuleTimer* GetTimer() { return timer; }
 
     void WriteIntoLog(LogLevel level, const char* logText, ...);
     void OpenBrowser(const char* url);

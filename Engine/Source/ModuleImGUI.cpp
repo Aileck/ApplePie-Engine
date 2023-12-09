@@ -2,6 +2,7 @@
 #include "ModuleOpenGL.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
+#include "ModuleTimer.h"
 #include "Globals.h"
 #include "Application.h"
 #include "SDL.h"
@@ -31,6 +32,7 @@ bool ModuleImGUI::Init()
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 
     ImGui_ImplSDL2_InitForOpenGL(App->GetWindow()->window, App->GetOpenGL()->context);
     ImGui_ImplOpenGL3_Init(nullptr);
@@ -47,6 +49,8 @@ update_status ModuleImGUI::PreUpdate()
     ImGui_ImplSDL2_NewFrame(App->GetWindow()->window);
     NewFrame();
     //ShowDemoWindow();
+    // GET FRAME
+    frameRates.AddNewFrame(App->GetTimer()->GetFrame());
 
     // MAIN MENU
     DrawMainMenu();
@@ -56,14 +60,14 @@ update_status ModuleImGUI::PreUpdate()
     logConsole->Draw("Debug/Error log", &(logOpen));
 
     // CONF
-    conf->Draw();
+    conf->Draw(frameRates);
 
     // DEMO
     ShowDemoWindow();
     
 
     ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    ImGui_ImplOpenGL3_RenderDrawData(GetDrawData());
 
     if (quit) {
         return UPDATE_STOP;
@@ -92,16 +96,13 @@ update_status ModuleImGUI::PostUpdate()
 
 void ModuleImGUI::DrawMainMenu()
 {
+
     if (ImGui::BeginMainMenuBar())
     {
         if (ImGui::BeginMenu("Editor"))
         {
-            if (ImGui::MenuItem("Editor windows", NULL, true)) {
-                SDL_HideWindow(App->GetWindow()->window);
-            }
-            ImGui::Separator();
-            if (ImGui::MenuItem("About us")) {
-                
+            if (ImGui::MenuItem("About us", NULL)) {
+                show_tool_about = !show_tool_about;
             }
             if (ImGui::MenuItem("Find us")) {
                 App->OpenBrowser("https://github.com/Aileck/ApplePie-Engine");
@@ -114,6 +115,28 @@ void ModuleImGUI::DrawMainMenu()
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
+    }
+
+    if (show_tool_about && ImGui::Begin("About us", &show_tool_about))
+    {
+        ImGui::Text("%s is an Unity like 3D game engine. ", TITLE);
+        ImGui::Text("Developed by Xinyu Jiang (xinyujiang721@gmail.com). Licensed under the MIT License.");
+        ImGui::Separator();
+        ImGui::Text("Current version %s", CURRENT_VERSION);
+        ImGui::Separator();
+        ImGui::Text("In the Apple Pie Engine, the apple metaphorizes the forbidden fruit in Eden. ");
+        ImGui::Text("I chose to comply and refrain from taking a bite (using Unity without delving into its principles). ");
+        ImGui::Text("Now, I choose to defy the will, picking and coocking it into a tasty apple pie, and pursue knowledge and freedom.");
+        ImGui::Separator();
+        ImGui::Text("Libraries:");
+        ImGui::Text("- SDL 2.0");
+        ImGui::Text("- ImGUI 1.89");
+        ImGui::Text("- glew 2.1.0");
+        ImGui::Text("- DirectTex Oct 28 2023");
+        ImGui::Text("- MathGeoLib");
+        ImGui::Text("- Tiny_GLTF 2.0");
+
+        ImGui::End();
     }
 
 }

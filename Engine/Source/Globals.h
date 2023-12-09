@@ -21,6 +21,7 @@ enum LogLevel {
 };
 
 // Configuration -----------
+#define CURRENT_VERSION "v0.01 Beta"
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 #define TEXTURE_PATH R"(2D\Texture\)"

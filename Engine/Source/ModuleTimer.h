@@ -14,6 +14,7 @@ public:
     update_status PreUpdate();
     bool CleanUp();
     inline float GetDeltaTime() const { return deltaTime; };
+    inline float GetFrame() const { return 1/deltaTime; };
 
 private:
     void ComputeDeltaTime();
