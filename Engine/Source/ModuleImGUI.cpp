@@ -3,6 +3,7 @@
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
 #include "ModuleTimer.h"
+#include "ModuleLoadModel.h"
 #include "Globals.h"
 #include "Application.h"
 #include "SDL.h"
@@ -13,6 +14,7 @@
 
 #include "ConsoleGUI.h"
 #include "ConfigurationGUI.h"
+#include "PropertiesGUI.h"
 
 using namespace ImGui;
 ModuleImGUI::ModuleImGUI()
@@ -39,6 +41,7 @@ bool ModuleImGUI::Init()
 
     logConsole = new ConsoleGUI();
     conf = new ConfigurationGUI();
+    gometryProperties = new PropertiesGUI();
 
     return true;
 }
@@ -62,6 +65,8 @@ update_status ModuleImGUI::PreUpdate()
     // CONF
     conf->Draw(frameRates);
 
+    // GEOMETRY
+    gometryProperties->Draw(App->GetModelLoader()->GetModel());
     // DEMO
     ShowDemoWindow();
     

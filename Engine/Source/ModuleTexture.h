@@ -2,6 +2,8 @@
 #include "Module.h"
 #include "Globals.h"
 
+class MyTexture;
+
 class ModuleTexture :
     public Module
 {
@@ -14,8 +16,7 @@ public:
 	update_status Update();
 	update_status PostUpdate();
 
-	//unsigned* LoadTexture(const char* textureName);
-	unsigned LoadTexture(const char* textureName);
+	MyTexture* LoadTexture(const char* textureName);
 
 };
 

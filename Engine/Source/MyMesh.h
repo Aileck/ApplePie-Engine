@@ -2,6 +2,8 @@
 #include "./include/tinygltf/tiny_gltf.h"
 #include "./include/MathGeoLib/Math/MathAll.h"
 
+class MyTexture;
+
 using namespace tinygltf;
 class MyMesh
 {
@@ -29,7 +31,11 @@ public:
 	//void Render();
 	void RenderInterleavedArrays();
 	void RenderSeparatedArrays();
-	void Draw(const std::vector<unsigned>& textures);
+	void Draw(const std::vector<MyTexture*>& textures);
+
+	inline int GetVerticesCount() const { return  vertexCount; }
+	inline int GetIndexCount() const { return  indexCount; }
+	inline int GetTextureID() const { return  textureID; }
 private:
 	unsigned vbo = 0;
 	unsigned vao = 0;

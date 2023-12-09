@@ -212,6 +212,8 @@
     <ClCompile Include="ModuleRenderExercise.cpp" />
     <ClCompile Include="ModuleTexture.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="MyTexture.cpp" />
+    <ClCompile Include="PropertiesGUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -304,6 +306,8 @@
     <ClInclude Include="ModuleRenderExercise.h" />
     <ClInclude Include="ModuleTexture.h" />
     <ClInclude Include="ModuleWindow.h" />
+    <ClInclude Include="MyTexture.h" />
+    <ClInclude Include="PropertiesGUI.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\MathGeoLib\Geometry\KDTree.inl" />

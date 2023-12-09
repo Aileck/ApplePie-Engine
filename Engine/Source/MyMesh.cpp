@@ -6,6 +6,7 @@
 #include "ModuleOpenGL.h"
 #include "ModuleProgram.h"
 #include "ModuleCamera.h"
+#include "MyTexture.h"
 #include "./include/MathGeoLib/Math/MathAll.h"
 
 MyMesh::MyMesh()
@@ -286,7 +287,7 @@ void MyMesh::RenderSeparatedArrays() //  good for dynamic meshes writing
 	//glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
 }
 
-void MyMesh::Draw(const std::vector<unsigned>& textures)
+void MyMesh::Draw(const std::vector<MyTexture*>& textures)
 {
 	// Verteix shader
 	float4x4 view = App->GetCamera()->camera->ViewMatrix();
@@ -302,7 +303,7 @@ void MyMesh::Draw(const std::vector<unsigned>& textures)
 	// Fragment shader
 	if (enableTexture) {
 		glActiveTexture(GL_TEXTURE5);
-		glBindTexture(GL_TEXTURE_2D, textures[0]);
+		glBindTexture(GL_TEXTURE_2D, textures[0]->getTextureID());
 	}
 
 	glBindVertexArray(vao);

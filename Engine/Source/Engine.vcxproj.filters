@@ -169,6 +169,10 @@
     <ClCompile Include="ConfigurationGUI.cpp">
       <Filter>editor components\source</Filter>
     </ClCompile>
+    <ClCompile Include="PropertiesGUI.cpp">
+      <Filter>editor components\source</Filter>
+    </ClCompile>
+    <ClCompile Include="MyTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -435,6 +439,10 @@
     <ClInclude Include="ConfigurationGUI.h">
       <Filter>editor components\header</Filter>
     </ClInclude>
+    <ClInclude Include="PropertiesGUI.h">
+      <Filter>editor components\header</Filter>
+    </ClInclude>
+    <ClInclude Include="MyTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="modules">

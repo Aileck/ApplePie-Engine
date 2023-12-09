@@ -4,6 +4,7 @@
 #include "GL\glew.h"
 #include "Application.h"
 #include "FileComponent.h"
+#include "MyTexture.h"
 
 using namespace DirectX;
 
@@ -37,7 +38,7 @@ update_status ModuleTexture::PostUpdate()
     return UPDATE_CONTINUE;
 }
 
-unsigned ModuleTexture::LoadTexture(const char* textureName)
+MyTexture* ModuleTexture::LoadTexture(const char* textureName)
 {
     //1. Load image data with external library into CPU
     HRESULT result = E_FAIL;
@@ -120,6 +121,7 @@ unsigned ModuleTexture::LoadTexture(const char* textureName)
 
     //delete(imageData);
 
-    return textureId;
+
+    return (new MyTexture(textureId, imWidth, imHeigh));
 }
 

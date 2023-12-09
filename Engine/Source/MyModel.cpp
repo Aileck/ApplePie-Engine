@@ -2,6 +2,7 @@
 #include "MyModel.h"
 #include "Application.h"
 #include "ModuleTexture.h"
+#include "MyTexture.h"
 
 #define TINYGLTF_NO_STB_IMAGE_WRITE
 #define TINYGLTF_NO_STB_IMAGE
@@ -69,17 +70,17 @@ void MyModel::LoadMaterials(const tinygltf::Model& srcModel)
 	for (const auto& srcMaterial : srcModel.materials)
 	{  
 		App->WriteIntoLog(INFO_LOG, "Loading texture no. %i", numTex);
-		unsigned int textureId = 0;
 		if (srcMaterial.pbrMetallicRoughness.baseColorTexture.index >= 0)
 		{
 			const Texture& texture = srcModel.textures[srcMaterial.pbrMetallicRoughness.baseColorTexture.index];
 			const Image& image = srcModel.images[texture.source];
 			
 			const char* imageUri = image.uri.c_str();
-			textureId = (App->GeTexture()->LoadTexture(imageUri));
+			Textures.push_back((App->GeTexture()->LoadTexture(imageUri)));
+			numTex++;
 		}
-		Textures.push_back(textureId);
-		numTex++;
+		
+		
 	}
 }
 

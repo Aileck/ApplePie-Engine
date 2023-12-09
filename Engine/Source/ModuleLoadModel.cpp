@@ -12,9 +12,9 @@ ModuleLoadModel::~ModuleLoadModel()
 bool ModuleLoadModel::Init()
 {
     model = new MyModel();
-    model->Load("Triangle.gltf");
+    //model->Load("Triangle.gltf");
     //model->Load("BoxTextured.gltf");
-    //model->Load("BakerHouse/BakerHouse.gltf");
+    model->Load("BakerHouse/BakerHouse.gltf");
     //model->Load("Duck/Duck.gltf");
     
     return true;
@@ -52,7 +52,3 @@ void ModuleLoadModel::LoadExteriorModel(const char* fullpath)
 
 }
 
-MyModel* ModuleLoadModel::GetModel() 
-{
-    return model;
-}

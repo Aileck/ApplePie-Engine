@@ -53,6 +53,7 @@ private:
 
 class ConsoleGUI;
 class ConfigurationGUI;
+class PropertiesGUI;
 
 class ModuleImGUI :
     public Module
@@ -76,6 +77,7 @@ private:
     FrameRateData frameRates;
 	ConsoleGUI* logConsole = nullptr;
 	ConfigurationGUI* conf = nullptr;
+    PropertiesGUI* gometryProperties = nullptr;
 
 	bool show_tool_about = false;
 

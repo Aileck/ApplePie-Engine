@@ -7,6 +7,9 @@
 
 #include "MyMesh.h"
 #include <vector>
+
+class MyTexture;
+
 using namespace tinygltf;
 class MyModel
 {
@@ -18,8 +21,10 @@ public:
 	void LoadMaterials(const tinygltf::Model& srcModel);
 	void Draw();
 
+	inline std::vector<MyMesh*> GetMeshed() const { return Meshes; }
+	inline std::vector<MyTexture*> GetTextures() const { return Textures; }
 private:
 	std::vector<MyMesh*> Meshes;
-	std::vector<unsigned int> Textures;
+	std::vector<MyTexture*> Textures;
 };
 

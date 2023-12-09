@@ -6,6 +6,7 @@
 #include "ModuleProgram.h"
 #include "ModuleCamera.h"
 #include "ModuleTexture.h"
+#include "MyTexture.h"
 #include "SDL.h"
 #include "GL\glew.h"
 #include "./include/MathGeoLib/Geometry/Frustum.h"
@@ -26,10 +27,10 @@ bool ModuleRenderExercise::Init()
 	triangleVBO = CreateTriangleVBO();
 	
 	// Enable texture
-	unsigned texture = App->GeTexture()->LoadTexture("Test-image-Baboon.ppm");
+	MyTexture* texture = App->GeTexture()->LoadTexture("Test-image-Baboon.ppm");
 
 	glActiveTexture(GL_TEXTURE5);
-	glBindTexture(GL_TEXTURE_2D, texture);
+	glBindTexture(GL_TEXTURE_2D, texture->getTextureID());
 	return true;
 }
 

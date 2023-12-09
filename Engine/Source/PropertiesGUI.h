@@ -1,7 +1,9 @@
 #pragma once
+
+class MyModel;
 class PropertiesGUI
 {
 public:
-	void Draw();
+	void Draw(const MyModel* model);
 };
 
