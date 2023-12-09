@@ -634,8 +634,8 @@ update_status  ModuleDebugDraw::PreUpdate()
 update_status  ModuleDebugDraw::Update()
 {
     Draw(
-        App->GetCamera()->camera->ViewMatrix(),
-        App->GetCamera()->camera->ProjectionMatrix(), 
+        App->GetCamera()->GetCamera()->ViewMatrix(),
+        App->GetCamera()->GetCamera()->ProjectionMatrix(),
         App->GetWindow()->GetCurrentWidth(),
         App->GetWindow()->GetCurrentHeight()
     );

@@ -80,8 +80,8 @@ void ModuleRenderExercise::RenderVBO(unsigned vbo)
 	//								);
 	float4x4 model = float4x4::identity;
 
-	float4x4 view = App->GetCamera()->camera->ViewMatrix();
-	float4x4 proj = App->GetCamera()->camera->ProjectionMatrix();
+	float4x4 view = App->GetCamera()->GetCamera()->ViewMatrix();
+	float4x4 proj = App->GetCamera()->GetCamera()->ProjectionMatrix();
 	glUseProgram(App->GetProgram()->program);
 	// Set the values of the matrix uniform variables
 	

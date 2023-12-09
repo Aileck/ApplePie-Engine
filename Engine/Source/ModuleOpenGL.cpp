@@ -100,22 +100,11 @@ bool ModuleOpenGL::Start()
 
 update_status ModuleOpenGL::PreUpdate()
 {
-	//a.Setup glViewport to 0, 0, window_width, window_height if window is resized :
-	//	i.Use SDL_GetWindowSize
-	//b.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-	//c.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT
-	
-	//a
 	int h, w;
 	SDL_GetWindowSize(App->GetWindow()->GetWindow(), &w, &h);
-
-	if (WindowResized(w, h)) {
-		glViewport(0,0,w,h);
-	}
-	//b
+	glViewport(0, 0, w, h);
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-	//c
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	return UPDATE_CONTINUE;
 }
@@ -143,16 +132,10 @@ bool ModuleOpenGL::CleanUp()
 	return true;
 }
 
-bool ModuleOpenGL::WindowResized(unsigned width, unsigned height)
+void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 {
-	if (App->GetWindow()->GetCurrentWidth() != width || App->GetWindow()->GetCurrentHeight() != height) {
-		App->GetWindow()->SetCurrentWindowSize();
-		App->WriteIntoLog(SYSINFO_LOG, "Resized");
-		return true;
-	}
-	else {
-		return false;
-	}
+	App->WriteIntoLog(SYSINFO_LOG, "Resized");
+	glViewport(0, 0, width, height);
 }
 
 void* ModuleOpenGL::GetContext()

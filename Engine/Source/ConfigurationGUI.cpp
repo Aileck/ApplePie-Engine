@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleImGUI.h"
+#include "ModuleCamera.h"
 #include "SDL.h"
 #include "GL\glew.h"
 #include "DirectXTex.h"
@@ -93,6 +94,111 @@ void ConfigurationGUI::Draw(FrameRateData frames)
             App->GetWindow()->SetBorderless(editorNoBorder);
         }
 	}
+    if (ImGui::CollapsingHeader("Camera Configuration")) {
+        static char bufX[80];
+        sprintf_s(bufX, sizeof(bufX), "%f", App->GetCamera()->GetCamera()->pos.x);
+        static char bufY[80];
+        sprintf_s(bufY, sizeof(bufY), "%f", App->GetCamera()->GetCamera()->pos.y);
+        static char bufZ[80];
+        sprintf_s(bufZ, sizeof(bufZ), "%f", App->GetCamera()->GetCamera()->pos.z);
+
+        static char bufFrontX[80];
+        sprintf_s(bufFrontX, sizeof(bufFrontX), "%f", App->GetCamera()->GetCamera()->front.x);
+        static char bufFrontY[80];
+        sprintf_s(bufFrontY, sizeof(bufFrontY), "%f", App->GetCamera()->GetCamera()->front.y);
+        static char bufFrontZ[80];
+        sprintf_s(bufFrontZ, sizeof(bufFrontZ), "%f", App->GetCamera()->GetCamera()->front.z);
+
+        static char bufUpX[80];    
+        sprintf_s(bufUpX, sizeof(bufUpX), "%f", App->GetCamera()->GetCamera()->up.x);
+        static char bufUpY[80];     
+        sprintf_s(bufUpY, sizeof(bufUpY), "%f", App->GetCamera()->GetCamera()->up.y);
+        static char bufUpZ[80];       
+        sprintf_s(bufUpZ, sizeof(bufUpZ), "%f", App->GetCamera()->GetCamera()->up.z);
+        
+        //sprintf_s(bufHeight, sizeof(bufHeight), "%d", temporalHeight);
+        //sprintf_s(bufWidth, sizeof(bufWidth), "%d", temporalWidth);
+
+
+        ImGui::Text("Position");
+        ImGui::Text("X");
+        ImGui::SameLine();
+        ImGui::SetNextItemWidth(50);
+        if (ImGui::InputText("##X1", bufX, 80, ImGuiInputTextFlags_CallbackEdit, InputSizeCallback)) 
+        {
+            App->GetCamera()->SetCameraPosX(std::atof(bufX));
+        }
+        ImGui::SameLine();
+        
+        ImGui::Text("Y");
+        ImGui::SameLine();
+        ImGui::SetNextItemWidth(50);
+        if (ImGui::InputText("##Y1", bufY, 80, ImGuiInputTextFlags_CallbackEdit, InputSizeCallback))
+        {
+            App->GetCamera()->SetCameraPosX(std::atof(bufY));
+        }
+        ImGui::SameLine();
+
+        ImGui::Text("Z");
+        ImGui::SameLine();
+        ImGui::SetNextItemWidth(50);
+        if (ImGui::InputText("##Z1", bufZ, 80, ImGuiInputTextFlags_CallbackEdit, InputSizeCallback))
+        {
+        }
+
+        ImGui::Text("Front");
+        ImGui::Text("X");
+        ImGui::SameLine();
+        ImGui::SetNextItemWidth(50);
+        if(ImGui::InputText("##X2", bufFrontX, 80, ImGuiInputTextFlags_CallbackEdit, InputSizeCallback))
+        {
+        
+        }
+        ImGui::SameLine();
+
+        ImGui::Text("Y");
+        ImGui::SameLine();
+        ImGui::SetNextItemWidth(50);
+        if (ImGui::InputText("##Y2", bufFrontY, 80, ImGuiInputTextFlags_CallbackEdit, InputSizeCallback))
+        {
+        }
+        ImGui::SameLine();
+
+        ImGui::Text("Z");
+        ImGui::SameLine();
+        ImGui::SetNextItemWidth(50);
+        if (ImGui::InputText("##Z2", bufFrontZ, 80, ImGuiInputTextFlags_CallbackEdit, InputSizeCallback)) 
+        {
+        }
+
+
+        ImGui::Text("Up");
+        ImGui::Text("X");
+        ImGui::SameLine();
+        ImGui::SetNextItemWidth(50);
+        if (ImGui::InputText("##X3", bufUpX, 80, ImGuiInputTextFlags_CallbackEdit, InputSizeCallback))
+        {
+        }
+
+        ImGui::SameLine();
+
+        ImGui::Text("Y");
+        ImGui::SameLine();
+        ImGui::SetNextItemWidth(50);
+        if (ImGui::InputText("##Y3", bufUpY, 80, ImGuiInputTextFlags_CallbackEdit, InputSizeCallback))
+        {
+        }
+        ImGui::SameLine();
+
+        ImGui::Text("Z");
+        ImGui::SameLine();
+        ImGui::SetNextItemWidth(50);
+        if (ImGui::InputText("##Z3", bufUpZ, 80, ImGuiInputTextFlags_CallbackEdit, InputSizeCallback))
+        {
+        }
+
+
+    }
 	if (ImGui::CollapsingHeader("System Information")) {
         // RAM
         try {

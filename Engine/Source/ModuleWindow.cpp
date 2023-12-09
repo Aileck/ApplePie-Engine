@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+#include <cmath>
 
 ModuleWindow::ModuleWindow()
 {
@@ -24,10 +25,22 @@ bool ModuleWindow::Init()
 	}
 	else
 	{
-		//Create window
+		// Initialize with default value window 
 		int width = SCREEN_WIDTH;
 		int height = SCREEN_HEIGHT;
 		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
+
+		// Try to adapt monitor size
+		int displayIndex = 0; 
+		SDL_DisplayMode dm;
+		if (SDL_GetCurrentDisplayMode(displayIndex, &dm) != 0) {
+			SDL_Quit();
+			return -1;
+		}
+
+		// Try to not to fulfill all
+		width = std::ceil(dm.w - dm.w * 0.1);
+		height = std::ceil(dm.h - dm.h * 0.1);
 
 		if(FULLSCREEN == true)
 		{
@@ -47,7 +60,6 @@ bool ModuleWindow::Init()
 		else
 		{
 			//Get window surface
-			
 			screen_surface = SDL_GetWindowSurface(window);
 		}
 	}
@@ -71,16 +83,16 @@ bool ModuleWindow::CleanUp()
 	return true;
 }
 
-void ModuleWindow::SetCurrentWindowSize()
-{
-	int h;
-	int w;
-
-	SDL_GetWindowSize(App->GetWindow()->window, &w, &h);
-
-	currentHeight = h;
-	currentWidth = w;
-}
+//void ModuleWindow::SetCurrentWindowSize()
+//{
+//	int h;
+//	int w;
+//
+//	SDL_GetWindowSize(App->GetWindow()->window, &w, &h);
+//
+//	currentHeight = h;
+//	currentWidth = w;
+//}
 
 void ModuleWindow::SetWindowSize(int height, int width)
 {

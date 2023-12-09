@@ -290,8 +290,8 @@ void MyMesh::RenderSeparatedArrays() //  good for dynamic meshes writing
 void MyMesh::Draw(const std::vector<MyTexture*>& textures)
 {
 	// Verteix shader
-	float4x4 view = App->GetCamera()->camera->ViewMatrix();
-	float4x4 proj = App->GetCamera()->camera->ProjectionMatrix();
+	float4x4 view = App->GetCamera()->GetCamera()->ViewMatrix();
+	float4x4 proj = App->GetCamera()->GetCamera()->ProjectionMatrix();
 	glUseProgram(App->GetProgram()->program);
 
 	glUniformMatrix4fv(0, 1, GL_TRUE, &modelMatrix[0][0]);

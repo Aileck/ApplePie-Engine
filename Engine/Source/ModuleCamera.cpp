@@ -204,5 +204,3 @@ float4x4 ModuleCamera::LookAt(float3 target, float3 eye, float3 up) {
 
 	return matrix;
 }
-
-//void 

@@ -20,7 +20,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	void SetCurrentWindowSize();
+	//void SetCurrentWindowSize();
 	void SetWindowSize(int height, int width);
 	void SetFullscreen(bool active);
 	void SetBorderless(bool active);
