@@ -65,7 +65,7 @@ bool ModuleOpenGL::Init()
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 
-	context = SDL_GL_CreateContext(App->GetWindow()->window);
+	context = SDL_GL_CreateContext(App->GetWindow()->GetWindow());
 
 	GLenum err = glewInit();
 
@@ -107,7 +107,7 @@ update_status ModuleOpenGL::PreUpdate()
 	
 	//a
 	int h, w;
-	SDL_GetWindowSize(App->GetWindow()->window, &w, &h);
+	SDL_GetWindowSize(App->GetWindow()->GetWindow(), &w, &h);
 
 	if (WindowResized(w, h)) {
 		glViewport(0,0,w,h);
@@ -129,7 +129,7 @@ update_status ModuleOpenGL::Update()
 
 update_status ModuleOpenGL::PostUpdate()
 {
-	SDL_GL_SwapWindow(App->GetWindow() ->window);
+	SDL_GL_SwapWindow(App->GetWindow() ->GetWindow());
 	return UPDATE_CONTINUE;
 }
 
@@ -145,7 +145,7 @@ bool ModuleOpenGL::CleanUp()
 
 bool ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 {
-	if (App->GetWindow()->currentWidth != width || App->GetWindow()->currentHeight != height) {
+	if (App->GetWindow()->GetCurrentWidth() != width || App->GetWindow()->GetCurrentHeight() != height) {
 		App->GetWindow()->SetCurrentWindowSize();
 		App->WriteIntoLog(SYSINFO_LOG, "Resized");
 		return true;

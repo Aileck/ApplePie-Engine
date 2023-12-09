@@ -54,7 +54,7 @@ bool ModuleCamera::Init()
 	camera->nearPlaneDistance = 0.1f;
 	camera->farPlaneDistance = 2100.0f;
 	camera->verticalFov = math::pi / 4.0f;
-	camera->horizontalFov = 2.f * atanf(tanf(camera->verticalFov * 0.5f) * (App->GetWindow()->currentWidth / App->GetWindow()->currentHeight));
+	camera->horizontalFov = 2.f * atanf(tanf(camera->verticalFov * 0.5f) * (App->GetWindow()->GetCurrentWidth() / App->GetWindow()->GetCurrentHeight()));
 
 	float4x4 view = LookAt(float3(0.0f, 0.0f, 0.0f), camera->pos, float3::unitY);
 	camera->front = -view.WorldZ();

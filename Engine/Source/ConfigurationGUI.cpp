@@ -7,6 +7,21 @@
 #include "DirectXTex.h"
 #include <cmath>
 #include "windows.h"
+
+ConfigurationGUI::ConfigurationGUI()
+{
+    temporalHeight = App->GetWindow()->GetCurrentHeight();
+    temporalWidth = App->GetWindow()->GetCurrentWidth();
+}
+int InputSizeCallback(ImGuiInputTextCallbackData* data)
+{
+    // if is not digit
+    if (data->EventChar != 0 && !isdigit(data->EventChar))
+        return 1; 
+    
+    return 0; 
+}
+
 void ConfigurationGUI::Draw(FrameRateData frames)
 {
     ImGuiWindowFlags window_flags = 0;
@@ -25,8 +40,58 @@ void ConfigurationGUI::Draw(FrameRateData frames)
         ImGui::Text("Average %f", std::round(frames.average));
         ImGui::PlotHistogram("FPS", frames.dataArray, IM_ARRAYSIZE(frames.dataArray), 0, NULL, 0.0f, frames.max, ImVec2(0, 80.0f));
 	}
-	if (ImGui::CollapsingHeader("Variables Congiguration")) {
+	if (ImGui::CollapsingHeader("Window Configuration")) {
+        // Case: have unsubmit input
+        if (App->GetWindow()->GetCurrentHeight() != temporalHeight ||
+            App->GetWindow()->GetCurrentWidth() != temporalWidth)
+        {
+            hasNoFinishedInput = true;
+        }
 
+        // Number to set size
+        static char bufHeight[5];
+        static char bufWidth[5];
+        sprintf_s(bufHeight, sizeof(bufHeight), "%d", temporalHeight);
+        sprintf_s(bufWidth, sizeof(bufWidth), "%d", temporalWidth);
+
+        ImGui::SetNextItemWidth(50);
+        ImGui::InputText("Height", bufHeight, 5, ImGuiInputTextFlags_CallbackEdit, InputSizeCallback);
+        ImGui::SameLine();
+        ImGui::Text("x");
+        ImGui::SameLine();
+        ImGui::SetNextItemWidth(50);
+        ImGui::InputText("Width", bufWidth, 5, ImGuiInputTextFlags_CallbackEdit, InputSizeCallback);
+
+        temporalHeight = std::atoi(bufHeight);
+        temporalWidth = std::atoi(bufWidth);
+
+        // Set or reset
+        setWindow = ImGui::Button("Set Window Size");
+        if (setWindow) 
+        {
+            App->GetWindow()->SetWindowSize(temporalHeight, temporalWidth);
+            hasNoFinishedInput = false;
+        }
+        if (hasNoFinishedInput) 
+        {
+            ImGui::SameLine();
+            resetWindow = ImGui::Button("Reset values");
+            if (resetWindow) {
+                temporalHeight = App->GetWindow()->GetCurrentHeight();
+                temporalWidth = App->GetWindow()->GetCurrentWidth();
+                hasNoFinishedInput = false;
+            }
+        }
+        // FullScreen
+        if (ImGui::Checkbox("Editor Fullscreen", &editorFullcreen)) {
+            App->GetWindow()->SetFullscreen(editorFullcreen);   
+        }
+
+        // Borderless
+        if (ImGui::Checkbox("Editor No Border", &editorNoBorder)) 
+        {
+            App->GetWindow()->SetBorderless(editorNoBorder);
+        }
 	}
 	if (ImGui::CollapsingHeader("System Information")) {
         // RAM
@@ -65,10 +130,10 @@ void ConfigurationGUI::DrawMainMenu()
             if (ImGui::MenuItem("Hide Editor windows", NULL, hideEditor)) {
                 hideEditor = !hideEditor;
                 if (hideEditor) {
-                    SDL_HideWindow(App->GetWindow()->window);
+                    SDL_HideWindow(App->GetWindow()->GetWindow());
                 }
                 else {
-                    SDL_ShowWindow(App->GetWindow()->window);
+                    SDL_ShowWindow(App->GetWindow()->GetWindow());
                 }
                
             }

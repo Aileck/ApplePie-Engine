@@ -21,8 +21,16 @@ public:
 	bool CleanUp();
 
 	void SetCurrentWindowSize();
+	void SetWindowSize(int height, int width);
+	void SetFullscreen(bool active);
+	void SetBorderless(bool active);
 
-public:
+	inline SDL_Window* GetWindow() const { return window; }
+	inline int GetCurrentHeight() const { return currentHeight; }
+	inline int GetCurrentWidth() const { return currentWidth; }
+	
+
+private:
 	//The window we'll be rendering to
 	SDL_Window* window = nullptr;
 

@@ -82,4 +82,31 @@ void ModuleWindow::SetCurrentWindowSize()
 	currentWidth = w;
 }
 
+void ModuleWindow::SetWindowSize(int height, int width)
+{
+	SDL_SetWindowSize(window, width, height);
+}
+
+void ModuleWindow::SetFullscreen(bool active)
+{
+	if (active) {
+		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+	}
+	else {
+		SDL_SetWindowFullscreen(window, 0);
+	}
+	
+}
+
+void ModuleWindow::SetBorderless(bool active)
+{
+	if (active)
+	{
+		SDL_SetWindowBordered( window, SDL_FALSE);
+	}
+	else {
+		SDL_SetWindowBordered(window, SDL_TRUE);
+	}
+}
+
 

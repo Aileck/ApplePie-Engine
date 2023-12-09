@@ -36,7 +36,7 @@ bool ModuleImGUI::Init()
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 
-    ImGui_ImplSDL2_InitForOpenGL(App->GetWindow()->window, App->GetOpenGL()->context);
+    ImGui_ImplSDL2_InitForOpenGL(App->GetWindow()->GetWindow(), App->GetOpenGL()->context);
     ImGui_ImplOpenGL3_Init(nullptr);
 
     logConsole = new ConsoleGUI();
@@ -49,7 +49,7 @@ bool ModuleImGUI::Init()
 update_status ModuleImGUI::PreUpdate()
 {
     ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplSDL2_NewFrame(App->GetWindow()->window);
+    ImGui_ImplSDL2_NewFrame(App->GetWindow()->GetWindow());
     NewFrame();
     //ShowDemoWindow();
     // GET FRAME
@@ -94,7 +94,7 @@ update_status ModuleImGUI::PostUpdate()
         UpdatePlatformWindows();
         RenderPlatformWindowsDefault();
     }
-    SDL_GL_MakeCurrent(App->GetWindow()->window, App->GetOpenGL()->context);
+    SDL_GL_MakeCurrent(App->GetWindow()->GetWindow(), App->GetOpenGL()->context);
     EndFrame();
     return UPDATE_CONTINUE;
 }
