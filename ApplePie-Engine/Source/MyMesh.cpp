@@ -138,6 +138,13 @@ void MyMesh::LoadVBO(const Model& model, const Mesh& mesh, const Primitive& prim
 			}
 			glUnmapBuffer(GL_ARRAY_BUFFER);
 
+			// Load Texture index
+			const Material& material = model.materials[primitive.material];
+			const PbrMetallicRoughness& pbrMR = material.pbrMetallicRoughness;
+			const TextureInfo& baseColorTextureInfo = pbrMR.baseColorTexture;
+			int baseColorTextureIndex = baseColorTextureInfo.index;
+			textureID = baseColorTextureInfo.texCoord;
+
 			App->WriteIntoLog(INFO_LOG, "Texture Coordinates Loaded");
 		}
 	}
@@ -202,7 +209,7 @@ void MyMesh::Draw(const std::vector<MyTexture*>& textures)
 	// Fragment shader
 	if (enableTexture) {
 		glActiveTexture(GL_TEXTURE5);
-		glBindTexture(GL_TEXTURE_2D, textures[0]->getTextureID());
+		glBindTexture(GL_TEXTURE_2D, textures[textureID]->getTextureID());
 	}
 
 	glBindVertexArray(vao);
