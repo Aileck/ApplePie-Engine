@@ -1,7 +1,7 @@
 #include "ModuleLoadModel.h"
 #include "ModuleCamera.h"
 
-#include "./include/MathGeoLib/Math/MathAll.h"
+
 #include <cmath>
 ModuleLoadModel::ModuleLoadModel()
 {
@@ -19,7 +19,7 @@ bool ModuleLoadModel::Init()
     //model->Load("BoxTextured.gltf");
     model->Load("BakerHouse/BakerHouse.gltf");
     //model->Load("Duck/Duck.gltf");
-    
+    CalculateCenter();
     return true;
 }
 
@@ -56,15 +56,19 @@ void ModuleLoadModel::LoadExteriorModel(const char* fullpath)
 
 void ModuleLoadModel::AdjustCameraPosition()
 {
-    float3 minBound = float3(model->GetMinX(), model->GetMinY(), model->GetMinZ());
     float3 maxBound = float3(model->GetMaxX(), model->GetMaxY(), model->GetMaxZ());
-    float3 sceneCenter = (minBound + maxBound) * 0.5f;
-
     float distance = sceneCenter.Distance(maxBound);
 
     float3 newCameraPos = sceneCenter + float3(0.0f, 0.0f, distance*4);
     App->GetCamera()->SetCameraPosX(newCameraPos.x);
     App->GetCamera()->SetCameraPosY(newCameraPos.y);
     App->GetCamera()->SetCameraPosZ(newCameraPos.z);
+}
+
+void ModuleLoadModel::CalculateCenter()
+{
+    float3 minBound = float3(model->GetMinX(), model->GetMinY(), model->GetMinZ());
+    float3 maxBound = float3(model->GetMaxX(), model->GetMaxY(), model->GetMaxZ());
+    sceneCenter = (minBound + maxBound) * 0.5f;
 }
 

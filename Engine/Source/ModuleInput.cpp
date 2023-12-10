@@ -74,6 +74,12 @@ update_status ModuleInput::PreUpdate()
                 if (it == pressedButtonsMouse.end()) {
                     pressedButtonsMouse.push_back(sdlEvent.button.button);
                 }
+
+                if (sdlEvent.button.button == SDL_BUTTON_LEFT) 
+                {
+                    startX = sdlEvent.button.x;
+                    dragging = true;
+                }
                 break;
             }
 
@@ -83,12 +89,29 @@ update_status ModuleInput::PreUpdate()
                 if (it != pressedButtonsMouse.end()) {
                     pressedButtonsMouse.erase(it);
                 }
+
+                if (sdlEvent.button.button == SDL_BUTTON_LEFT)
+                {
+                    dragging = false;
+                    dragDistance = 0;
+                }
                 break;
             }
 
             case SDL_MOUSEWHEEL:
             {
                 wheelValueMouse = sdlEvent.wheel.y;
+                break;
+            }
+
+            case SDL_MOUSEMOTION:
+            {
+                if (dragging)
+                {
+                    int endX = sdlEvent.motion.x;
+                    dragDistance = endX - startX;
+                }
+
                 break;
             }
         }
@@ -130,10 +153,6 @@ bool ModuleInput::CheckIfMouseDown(Uint8 mouseEvent)
     return false;
 }
 
-int ModuleInput::GetMouseWheelValue()
-{
-    return wheelValueMouse;
-}
 
 
 void ModuleInput::HandleDropEvent(SDL_Event event)

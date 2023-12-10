@@ -161,17 +161,27 @@ void ModuleCamera::HandleFocus()
 	if (App->GetModelLoader()->GetModel() != nullptr) {
 
 		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_F)) {
-			//ModifyCameraPosX(-finalSpeed);
-			FocusOn(float3(0.0f, 0.0f, 0.0f));
+			App->GetModelLoader()->AdjustCameraPosition();
+		}
+		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_LALT)) {
+			if(App->GetInput()->GetDragDistance() !=  0)
+			OrbitOn(App->GetModelLoader()->GetCenter());
 		}
 	}
 }
 
-void ModuleCamera::FocusOn(float3 target)
+void ModuleCamera::OrbitOn(float3 target)
 {
-	float4x4 view = LookAt(target, camera->pos, float3::unitY);
-	camera->front = -view.WorldZ();
-	camera->up = view.WorldY();
+	float rotationAngle = CAMERA_ROT_SPEED * App->GetInput()->GetDragDistance() * 0.01 * DELTA_TIME;
+	float3 toCenter = target - camera->pos;
+
+	Quat rotationQuat = Quat::RotateAxisAngle(float3::unitY, rotationAngle);
+
+	toCenter = rotationQuat * toCenter;
+
+	camera->pos = target - toCenter;
+	camera->front = (target - camera->pos).Normalized();
+	camera->up = float3::unitY;
 }
 
 void ModuleCamera::ModifyCameraPosX(float X)

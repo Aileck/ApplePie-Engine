@@ -21,14 +21,24 @@ public:
 
 	bool CheckIfPressed(SDL_Scancode keycode);
 	bool CheckIfMouseDown(Uint8 mouseEvent);
-	int GetMouseWheelValue();
-	void HandleDropEvent(SDL_Event event);
+	int GetMouseWheelValue() const { return wheelValueMouse; };
+	int GetDragDistance() const { LOG("%i", dragDistance); return dragDistance; };
+
+
 
 private:
+
+	void HandleDropEvent(SDL_Event event);
+
 	const Uint8 *keyboard = nullptr;
 
 	// MouseEvents
 	std::list<Uint8> pressedButtonsMouse;
 	Sint32 wheelValueMouse;
+	float startX;
+	bool dragging;
+	int dragDistance = 0;
+
+
 
 };

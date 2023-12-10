@@ -50,6 +50,7 @@ private:
 	void HandleRotation();
 	void HandleFocus();
 	void FocusOn(float3 target);
+	void OrbitOn(float3 target);
 	Frustum* camera = nullptr;
 
 };

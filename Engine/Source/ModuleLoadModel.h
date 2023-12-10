@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "MyModel.h"
 
+#include "./include/MathGeoLib/Math/MathAll.h"
 class ModuleLoadModel :
     public Module
 {
@@ -19,7 +20,11 @@ public:
 	void AdjustCameraPosition();
 
 	inline MyModel* GetModel() const {return model;}
+	inline float3 GetCenter() const {return sceneCenter;}
 private:
+	void CalculateCenter();
+
 	MyModel* model;
+	float3 sceneCenter;
 };
 
