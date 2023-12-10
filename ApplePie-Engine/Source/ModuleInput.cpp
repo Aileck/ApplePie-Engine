@@ -167,6 +167,9 @@ void ModuleInput::HandleDropEvent(SDL_Event event)
     if (strcmp(fileExtension,"gltf") == 0) {
         App->GetModelLoader()->LoadExteriorModel(dropped_filedir);
     }
+    else if (strcmp(fileExtension, "png") == 0 || strcmp(fileExtension, "ppm") == 0) {
+        App->GetModelLoader()->LoadExteriorTexture(dropped_filedir);
+    }
     else {
         App->WriteIntoLog(ERROR_LOG, "Unsupported extension: %s", fileExtension);
     }

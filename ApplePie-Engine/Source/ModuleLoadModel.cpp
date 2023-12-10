@@ -47,11 +47,16 @@ bool ModuleLoadModel::CleanUp()
 
 void ModuleLoadModel::LoadExteriorModel(const char* fullpath)
 {
-    App->WriteIntoLog(INFO_LOG, "Deleting the current model");
+    
     delete model;
     model = nullptr;
     model = new MyModel(fullpath,true);
     AdjustCameraPosition();
+}
+
+void ModuleLoadModel::LoadExteriorTexture(const char* fullpath)
+{
+    model->LoadExternalTexture(fullpath);
 }
 
 void ModuleLoadModel::AdjustCameraPosition()

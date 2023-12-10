@@ -16,7 +16,7 @@ public:
 	update_status Update();
 	update_status PostUpdate();
 
-	MyTexture* LoadTexture(const char* textureName);
+	MyTexture* LoadTexture(const char* textureName, const bool external = false);
 
 };
 

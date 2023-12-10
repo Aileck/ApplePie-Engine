@@ -8,8 +8,6 @@
 
 using namespace DirectX;
 
-
-
 ModuleTexture::ModuleTexture()
 {
 }
@@ -38,13 +36,15 @@ update_status ModuleTexture::PostUpdate()
     return UPDATE_CONTINUE;
 }
 
-MyTexture* ModuleTexture::LoadTexture(const char* textureName)
+MyTexture* ModuleTexture::LoadTexture(const char* textureName, const bool exterior)
 {
+    const wchar_t* filePath = FileComponent::CreateWideFilePath(TEXTURE_PATH, textureName);
+    if (exterior)
+    {
+        filePath = FileComponent::ConvertToWideFilePath(textureName);
+    }
     //1. Load image data with external library into CPU
     HRESULT result = E_FAIL;
-
-    const wchar_t* filePath = FileComponent::CreateWideFilePath(TEXTURE_PATH, textureName);
-    //ScratchImage* imageData = new ScratchImage();
     ScratchImage imageData;
     result = LoadFromDDSFile(filePath, DDS_FLAGS_NONE, nullptr, imageData);
     if (result != S_OK) {

@@ -1,5 +1,5 @@
 #include "FileComponent.h"
-
+#include <cwchar>
 #include<string>
 
 using namespace std;
@@ -40,6 +40,16 @@ const wchar_t* FileComponent::CreateWideFilePath(const char* address, const char
 	delete[] wideFileName;
 
 	return fullPath;
+}
+
+const wchar_t* FileComponent::ConvertToWideFilePath(const char* fileName) {
+	size_t fileNameLen = 0;
+	mbstowcs_s(&fileNameLen, nullptr, 0, fileName, 0);
+
+	wchar_t* wideFileName = new wchar_t[fileNameLen + 1];
+	mbstowcs_s(nullptr, wideFileName, fileNameLen + 1, fileName, fileNameLen);
+
+	return wideFileName;
 }
 
 void FileComponent::AnalyseFilePath(const char* fullpath, char* filePath, char* fileName, char* fileExtension) {

@@ -23,6 +23,7 @@ MyModel::MyModel(const char* assetFileName, bool exterior) {
 }
 
 MyModel::~MyModel() {
+	App->WriteIntoLog(INFO_LOG, "Deleting the current model");
 	for (MyMesh* mesh : Meshes)
 	{
 		delete mesh;
@@ -102,6 +103,18 @@ void MyModel::LoadMaterials(const tinygltf::Model& srcModel)
 		
 		
 	}
+}
+
+void MyModel::LoadExternalTexture(const char* assetFileName)
+{
+	// Delete texture
+	for (MyTexture* texture : Textures)
+	{
+		delete texture;
+	}
+
+	Textures.clear();
+	Textures.push_back((App->GeTexture()->LoadTexture(assetFileName, true)));
 }
 
 void MyModel::Draw()

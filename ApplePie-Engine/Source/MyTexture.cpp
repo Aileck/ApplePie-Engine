@@ -1,5 +1,6 @@
 #include "MyTexture.h"
-
+#include "Application.h"
+#include "Globals.h"
 MyTexture::MyTexture(GLuint id, GLsizei width, GLsizei height)
 {
     textureID = id;
@@ -9,6 +10,7 @@ MyTexture::MyTexture(GLuint id, GLsizei width, GLsizei height)
 
 MyTexture::~MyTexture()
 {
+    App->WriteIntoLog(INFO_LOG, "Deleting the current texture");
     glDeleteTextures(1, &textureID);
 }
 

@@ -67,9 +67,6 @@ update_status ModuleImGUI::PreUpdate()
 
     // GEOMETRY
     gometryProperties->Draw(App->GetModelLoader()->GetModel());
-    // DEMO
-    ShowDemoWindow();
-    
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(GetDrawData());

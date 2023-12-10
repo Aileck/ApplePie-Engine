@@ -17,9 +17,12 @@ class MyModel
 public:
 	MyModel();
 	MyModel(const char* assetFileName, bool exterior = false);
+
 	~MyModel();
+
 	void Load(const char* assetFileName, bool exterior = false);
 	void LoadMaterials(const tinygltf::Model& srcModel);
+	void LoadExternalTexture(const char* assetFileName);
 	void Draw();
 
 	inline std::vector<MyMesh*> GetMeshed() const { return Meshes; }
