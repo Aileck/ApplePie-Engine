@@ -3,6 +3,7 @@
 #include "ModuleWindow.h"
 #include "ModuleImGUI.h"
 #include "ModuleCamera.h"
+#include "ModuleTimer.h"
 #include "SDL.h"
 #include "GL\glew.h"
 #include "DirectXTex.h"
@@ -23,7 +24,7 @@ int InputSizeCallback(ImGuiInputTextCallbackData* data)
     return 0; 
 }
 
-void ConfigurationGUI::Draw(FrameRateData frames)
+void ConfigurationGUI::Draw()
 {
     ImGuiWindowFlags window_flags = 0;
     const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
@@ -38,9 +39,10 @@ void ConfigurationGUI::Draw(FrameRateData frames)
     }
     DrawMainMenu();
 	if (ImGui::CollapsingHeader("FPS graph")) {
-        ImGui::Text("Average %f", std::round(frames.average));
-        ImGui::PlotHistogram("FPS", frames.dataArray, IM_ARRAYSIZE(frames.dataArray), 0, NULL, 0.0f, frames.max, ImVec2(0, 80.0f));
-	}
+        FrameRateData* frameHistory = App->GetTimer()->GetFrameRateData();
+        ImGui::Text("Average %f", std::round(frameHistory->average));
+        ImGui::PlotHistogram("FPS", frameHistory->dataArray, IM_ARRAYSIZE(frameHistory->dataArray), 0, NULL, 0.0f, frameHistory->max, ImVec2(0, 80.0f));
+	}	
 	if (ImGui::CollapsingHeader("Window Configuration")) {
         // Case: have unsubmit input
         if (App->GetWindow()->GetCurrentHeight() != temporalHeight ||

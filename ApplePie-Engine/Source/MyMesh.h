@@ -18,13 +18,8 @@ public:
 	inline int GetIndexCount() const { return  indexCount; }
 	inline int GetTextureID() const { return  textureID; }
 
-	inline float GetMaxX() const { return maxX; }
-	inline float GetMaxY() const { return maxY; }
-	inline float GetMaxZ() const { return maxZ; }
-
-	inline float GetMinX() const { return minX; }
-	inline float GetMinY() const { return minY; }
-	inline float GetMinZ() const { return minZ; }
+	inline float3 GetMaxXYZ() const { return maxXYZ; }
+	inline float3 GetMinXYZ() const { return minXYZ; }
 
 private:
 	void LoadVAO();
@@ -44,14 +39,13 @@ private:
 	bool enableTexture = false;
 	bool enableEBO = false;
 
-	float maxX;
-	float maxY;
-	float maxZ;
-
-	float minX;
-	float minY;
-	float minZ;
+	float3 maxXYZ;
+	float3 minXYZ;
 
 	// MVP
-	float4x4 modelMatrix = float4x4::identity;
+	float4x4 modelMatrix = float4x4::FromTRS(float3(2.0f, 0.0f, 0.0f),
+										float4x4::RotateZ(pi / 4.0f),
+										float3(2.0f, 1.0f, 1.0f)
+									);
+	//float4x4 modelMatrix = float4x4::identity;
 };

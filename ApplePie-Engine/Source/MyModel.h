@@ -21,7 +21,7 @@ public:
 	~MyModel();
 
 	void Load(const char* assetFileName, bool exterior = false);
-	void LoadMaterials(const tinygltf::Model& srcModel);
+
 	void LoadExternalTexture(const char* assetFileName);
 	void Draw();
 
@@ -35,7 +35,13 @@ public:
 	inline float GetMinX() const { return minBoundX; }
 	inline float GetMinY() const { return minBoundY; }
 	inline float GetMinZ() const { return minBoundZ; }
+	inline float3 GetCenter() const { return centerModel; }
+
 private:
+
+	void LoadMaterials(const tinygltf::Model& srcModel);
+	void ComputeCenterOfModel();
+
 	std::vector<MyMesh*> Meshes;
 	std::vector<MyTexture*> Textures;
 
@@ -43,8 +49,10 @@ private:
 	float maxBoundY = -std::numeric_limits<float>::infinity();
 	float maxBoundZ = -std::numeric_limits<float>::infinity();
 	
-	float minBoundX = std::numeric_limits<float>::infinity();;
-	float minBoundY = std::numeric_limits<float>::infinity();;
-	float minBoundZ = std::numeric_limits<float>::infinity();;
+	float minBoundX = std::numeric_limits<float>::infinity();
+	float minBoundY = std::numeric_limits<float>::infinity();
+	float minBoundZ = std::numeric_limits<float>::infinity();
+
+	float3 centerModel;
 };
 

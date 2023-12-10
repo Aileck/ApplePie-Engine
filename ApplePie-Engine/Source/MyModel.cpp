@@ -68,19 +68,20 @@ void MyModel::Load(const char* assetFileName, bool exterior)
 				numMesh++;
 
 				// Compute max/min points
-				maxBoundX = (maxBoundX < mesh->GetMaxX()) ? mesh->GetMaxX() : maxBoundX;
-				maxBoundY = (maxBoundY < mesh->GetMaxY()) ? mesh->GetMaxY() : maxBoundY;
-				maxBoundZ = (maxBoundZ < mesh->GetMaxZ()) ? mesh->GetMaxZ() : maxBoundZ;
+				maxBoundX = (maxBoundX < mesh->GetMaxXYZ().x) ? mesh->GetMaxXYZ().x : maxBoundX;
+				maxBoundY = (maxBoundY < mesh->GetMaxXYZ().y) ? mesh->GetMaxXYZ().y : maxBoundY;
+				maxBoundZ = (maxBoundZ < mesh->GetMaxXYZ().z) ? mesh->GetMaxXYZ().z : maxBoundZ;
 
-				minBoundX = (minBoundX > mesh->GetMinX()) ? mesh->GetMinX() : minBoundX;
-				minBoundY = (minBoundY > mesh->GetMinY()) ? mesh->GetMinY() : minBoundY;
-				minBoundZ = (minBoundZ > mesh->GetMinZ()) ? mesh->GetMinZ() : minBoundZ;
+				minBoundX = (minBoundX > mesh->GetMinXYZ().x) ? mesh->GetMinXYZ().x : minBoundX;
+				minBoundY = (minBoundY > mesh->GetMinXYZ().y) ? mesh->GetMinXYZ().y : minBoundY;
+				minBoundZ = (minBoundZ > mesh->GetMinXYZ().z) ? mesh->GetMinXYZ().z : minBoundZ;
 
 
 			}
 		}
 	}
 	LoadMaterials(model);
+	ComputeCenterOfModel();
 	App->WriteIntoLog(INFO_LOG, " %s Loaded", filePath);
 }
 
@@ -101,9 +102,7 @@ void MyModel::LoadMaterials(const tinygltf::Model& srcModel)
 			myTexture->LoadTexture(imageUri);
 			Textures.push_back(myTexture);
 			numTex++;
-		}
-		
-		
+		}	
 	}
 }
 
@@ -122,9 +121,18 @@ void MyModel::LoadExternalTexture(const char* assetFileName)
 	Textures.push_back(myTexture);
 }
 
+void MyModel::ComputeCenterOfModel()
+{
+	float3 minBound = float3(minBoundX, minBoundY, minBoundZ);
+	float3 maxBound = float3(maxBoundX, maxBoundY, maxBoundZ);
+	centerModel = (minBound + maxBound) * 0.5f;
+}
+
+
 void MyModel::Draw()
 {
-	for (int i = Meshes.size() - 1; i >= 0; i--) {
+	for (int i = 0; i < Meshes.size(); i++) {
 		Meshes[i]->Draw(Textures);
 	}
 }
+

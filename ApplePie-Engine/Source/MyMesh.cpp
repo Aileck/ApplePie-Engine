@@ -110,13 +110,19 @@ void MyMesh::LoadVBO(const Model& model, const Mesh& mesh, const Primitive& prim
 		vertexCount += posAcc.count;
 
 		// Get Verteix Max and Min
-		maxX = posAcc.maxValues[0];
-		maxY = posAcc.maxValues[1];
-		maxZ = posAcc.maxValues[2];
+		float maxX = posAcc.maxValues[0];
+		float maxY = posAcc.maxValues[1];
+		float maxZ = posAcc.maxValues[2];
 
-		minX = posAcc.minValues[0];
-		minY = posAcc.minValues[1];
-		minZ = posAcc.minValues[2];
+		float minX = posAcc.minValues[0];
+		float minY = posAcc.minValues[1];
+		float minZ = posAcc.minValues[2];
+
+		maxXYZ = float3(maxX, maxY, maxZ);
+		minXYZ = float3(minX, minY, minZ);
+
+		maxXYZ = modelMatrix.MulPos(maxXYZ);
+		minXYZ = modelMatrix.MulPos(minXYZ);
 
 		App->WriteIntoLog(INFO_LOG, "Vertex Data Loaded");
 		if (enableTexture) {

@@ -1,6 +1,6 @@
 #include "ModuleTimer.h"
 #include "Application.h"
-
+#include "SDL.h"
 ModuleTimer::ModuleTimer()
 {
 }
@@ -11,12 +11,15 @@ ModuleTimer::~ModuleTimer()
 
 bool ModuleTimer::Init()
 {
+    frameHisroty = new FrameRateData();
+    lastTicks = SDL_GetTicks();
     return true;
 }
 
 update_status ModuleTimer::PreUpdate()
 {
     ComputeDeltaTime();
+    frameHisroty->AddNewFrame(GetFrame());
     return UPDATE_CONTINUE;
 }
 
@@ -28,8 +31,8 @@ bool ModuleTimer::CleanUp()
 void ModuleTimer::ComputeDeltaTime()
 {
     // The interval in seconds from the last frame to the current one (Unity).
-    auto currentFrameTime = high_resolution_clock::now();
-    duration<float> duration = currentFrameTime - lastFrameTime;
-    deltaTime = duration.count();
-    lastFrameTime = currentFrameTime;
+    Uint32 currentTicks = SDL_GetTicks();
+
+    deltaTime = (currentTicks - lastTicks) / 1000.0f; // ud = second
+    lastTicks = currentTicks;
 }

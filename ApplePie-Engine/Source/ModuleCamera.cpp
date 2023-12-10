@@ -96,31 +96,25 @@ void ModuleCamera::HandleMovement()
 
 		// UP - DOWN
 		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_Q)) {
-			//ModifyCameraPosY(0.001f);
 			ModifyCameraPosY(finalSpeed);
 		}
 		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_E)) {
-			//ModifyCameraPosY(-0.001f);
 			ModifyCameraPosY(-finalSpeed);
 		}
 
 		// GO FOWARD - BACK
 		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_W)) {
-			//ModifyCameraPosY(0.001f);
 			ModifyCameraPosZ(finalSpeed);
 		}
 		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_S)) {
-			//ModifyCameraPosY(-0.001f);
 			ModifyCameraPosZ(-finalSpeed);
 		}
 
 		// GO LEFT - RIGHT
 		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_A)) {
-			//ModifyCameraPosY(0.001f);
 			ModifyCameraPosX(-finalSpeed);
 		}
 		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_D)) {
-			//ModifyCameraPosY(-0.001f);
 			ModifyCameraPosX(finalSpeed);
 		}
 	}
@@ -134,17 +128,15 @@ void ModuleCamera::HandleMovement()
 void ModuleCamera::HandleRotation()
 {
 	if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_LEFT)) {
-		float3x3 rotationDeltaMatrix = float3x3::RotateY(CAMERA_ROT_SPEED * DELTA_TIME); // = some rotation delta value
+		float3x3 rotationDeltaMatrix = float3x3::RotateY(CAMERA_ROT_SPEED * DELTA_TIME); 
 		float3 oldFront = camera->front.Normalized();
 		camera->front = rotationDeltaMatrix * oldFront;
 		float3 oldUp = camera->up.Normalized();
 		camera->up = rotationDeltaMatrix * oldUp;
-		//float4x4 newView = LookAt(float3(camera->pos.x + , camera->pos.y, camera->pos.z), camera->pos, float3::unitY);
-		//camera->front = -newView.WorldZ();
-		//camera->up = newView.WorldY();
+
 	}
 	if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_RIGHT)) {
-		float3x3 rotationDeltaMatrix = float3x3::RotateY(-CAMERA_ROT_SPEED * DELTA_TIME); // = some rotation delta value
+		float3x3 rotationDeltaMatrix = float3x3::RotateY(-CAMERA_ROT_SPEED * DELTA_TIME); 
 		float3 oldFront = camera->front.Normalized();
 		camera->front = rotationDeltaMatrix * oldFront;
 		float3 oldUp = camera->up.Normalized();
@@ -158,13 +150,26 @@ void ModuleCamera::HandleFocus()
 	if (App->GetModelLoader()->GetModel() != nullptr) {
 
 		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_F)) {
-			App->GetModelLoader()->AdjustCameraPosition();
+			LookAt(App->GetModelLoader()->GetModel()->GetCenter(), camera->pos, camera->up);
+			FocusOn(App->GetModelLoader()->GetModel()->GetCenter());
 		}
 		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_LALT)) {
 			if(App->GetInput()->GetDragDistance() !=  0)
-			OrbitOn(App->GetModelLoader()->GetCenter());
+			OrbitOn(App->GetModelLoader()->GetModel()->GetCenter());
 		}
 	}
+}
+
+void ModuleCamera::FocusOn(float3 target)
+{
+	MyModel* model = (App->GetModelLoader()->GetModel());
+	float3 maxBound = float3(model->GetMaxX(), model->GetMaxY(), model->GetMaxZ());
+	float distance = target.Distance(maxBound);
+
+	float3 newCameraPos = target + float3(0.0f, 0.0f, distance * 4);
+	App->GetCamera()->SetCameraPosX(newCameraPos.x);
+	App->GetCamera()->SetCameraPosY(newCameraPos.y);
+	App->GetCamera()->SetCameraPosZ(newCameraPos.z);
 }
 
 void ModuleCamera::OrbitOn(float3 target)

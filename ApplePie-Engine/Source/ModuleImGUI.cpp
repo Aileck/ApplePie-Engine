@@ -51,9 +51,6 @@ update_status ModuleImGUI::PreUpdate()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame(App->GetWindow()->GetWindow());
     NewFrame();
-    //ShowDemoWindow();
-    // GET FRAME
-    frameRates.AddNewFrame(App->GetTimer()->GetFrame());
 
     // MAIN MENU
     DrawMainMenu();
@@ -63,7 +60,7 @@ update_status ModuleImGUI::PreUpdate()
     logConsole->Draw("Debug/Error log", &(logOpen));
 
     // CONF
-    conf->Draw(frameRates);
+    conf->Draw();
 
     // GEOMETRY
     gometryProperties->Draw(App->GetModelLoader()->GetModel());

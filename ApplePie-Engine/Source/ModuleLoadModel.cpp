@@ -19,7 +19,7 @@ bool ModuleLoadModel::Init()
     //model->Load("BoxTextured.gltf");
     model->Load("BakerHouse/BakerHouse.gltf");
     //model->Load("Duck/Duck.gltf");
-    CalculateCenter();
+
     return true;
 }
 
@@ -51,7 +51,7 @@ void ModuleLoadModel::LoadExteriorModel(const char* fullpath)
     delete model;
     model = nullptr;
     model = new MyModel(fullpath,true);
-    AdjustCameraPosition();
+    //AdjustCameraPosition();
 }
 
 void ModuleLoadModel::LoadExteriorTexture(const char* fullpath)
@@ -59,21 +59,7 @@ void ModuleLoadModel::LoadExteriorTexture(const char* fullpath)
     model->LoadExternalTexture(fullpath);
 }
 
-void ModuleLoadModel::AdjustCameraPosition()
-{
-    float3 maxBound = float3(model->GetMaxX(), model->GetMaxY(), model->GetMaxZ());
-    float distance = sceneCenter.Distance(maxBound);
 
-    float3 newCameraPos = sceneCenter + float3(0.0f, 0.0f, distance*4);
-    App->GetCamera()->SetCameraPosX(newCameraPos.x);
-    App->GetCamera()->SetCameraPosY(newCameraPos.y);
-    App->GetCamera()->SetCameraPosZ(newCameraPos.z);
-}
 
-void ModuleLoadModel::CalculateCenter()
-{
-    float3 minBound = float3(model->GetMinX(), model->GetMinY(), model->GetMinZ());
-    float3 maxBound = float3(model->GetMaxX(), model->GetMaxY(), model->GetMaxZ());
-    sceneCenter = (minBound + maxBound) * 0.5f;
-}
+
 

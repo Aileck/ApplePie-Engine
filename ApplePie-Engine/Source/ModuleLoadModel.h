@@ -18,12 +18,10 @@ public:
 
 	void LoadExteriorModel(const char* fullpath);
 	void LoadExteriorTexture(const char* fullpath);
-	void AdjustCameraPosition();
 
 	inline MyModel* GetModel() const {return model;}
 	inline float3 GetCenter() const {return sceneCenter;}
 private:
-	void CalculateCenter();
 
 	MyModel* model;
 	float3 sceneCenter;
