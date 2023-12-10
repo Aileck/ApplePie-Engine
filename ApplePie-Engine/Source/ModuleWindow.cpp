@@ -83,16 +83,6 @@ bool ModuleWindow::CleanUp()
 	return true;
 }
 
-//void ModuleWindow::SetCurrentWindowSize()
-//{
-//	int h;
-//	int w;
-//
-//	SDL_GetWindowSize(App->GetWindow()->window, &w, &h);
-//
-//	currentHeight = h;
-//	currentWidth = w;
-//}
 
 void ModuleWindow::SetWindowSize(int height, int width)
 {

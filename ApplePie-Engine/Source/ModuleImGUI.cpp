@@ -2,7 +2,6 @@
 #include "ModuleOpenGL.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
-#include "ModuleTimer.h"
 #include "ModuleLoadModel.h"
 #include "Globals.h"
 #include "Application.h"
@@ -145,5 +144,9 @@ bool ModuleImGUI::CleanUp()
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     DestroyContext();
-    return false;
+
+    delete logConsole;
+    delete conf;
+    delete gometryProperties;
+    return true;
 }

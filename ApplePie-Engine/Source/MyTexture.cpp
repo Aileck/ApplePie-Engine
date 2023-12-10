@@ -9,13 +9,6 @@
 
 using namespace DirectX;
 
-MyTexture::MyTexture(GLuint id, GLsizei width, GLsizei height)
-{
-    textureID = id;
-    imWidth = width;
-    imHeight = height;
-}
-
 MyTexture::MyTexture()
 {
 }
@@ -106,9 +99,10 @@ void MyTexture::LoadTexture(const char* textureName, const bool exterior)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-
     textureID = textureId;
     imWidth = imWidth;
     imHeight = imHeigh;
+
+    delete[] filePath;
 }
 

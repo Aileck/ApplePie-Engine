@@ -81,6 +81,8 @@ void MyModel::Load(const char* assetFileName, bool exterior)
 	LoadMaterials(model);
 	ComputeCenterOfModel();
 	App->WriteIntoLog(INFO_LOG, " %s Loaded", filePath);
+
+	delete[] filePath;
 }
 
 void MyModel::LoadMaterials(const tinygltf::Model& srcModel)
@@ -127,7 +129,7 @@ void MyModel::ComputeCenterOfModel()
 }
 
 
-void MyModel::Draw()
+void MyModel::Draw() const
 {
 	for (int i = 0; i < Meshes.size(); i++) {
 		Meshes[i]->Draw(Textures);

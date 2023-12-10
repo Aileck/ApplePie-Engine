@@ -1,8 +1,6 @@
 #include "ModuleProgram.h"
 #include "Globals.h"
 #include "Application.h"
-#include "ModuleOpenGL.h"
-#include "ModuleWindow.h"
 #include "FileComponent.h"
 #include "SDL.h"
 #include "GL\glew.h"
@@ -66,7 +64,8 @@ bool ModuleProgram::Init() {
 
 	program = CreateProgram(vertex, fragment);
 
-	delete[] (VerteixShaderFile, FragmentShaderFile);
+	delete[] VerteixShaderFile;
+	delete[] FragmentShaderFile;
 	return true;
 
 }

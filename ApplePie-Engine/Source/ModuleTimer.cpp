@@ -7,6 +7,7 @@ ModuleTimer::ModuleTimer()
 
 ModuleTimer::~ModuleTimer()
 {
+    delete frameHisroty;
 }
 
 bool ModuleTimer::Init()

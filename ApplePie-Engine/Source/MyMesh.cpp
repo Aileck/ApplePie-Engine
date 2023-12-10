@@ -7,6 +7,7 @@
 #include "ModuleProgram.h"
 #include "ModuleCamera.h"
 #include "MyTexture.h"
+#include "./include/tinygltf/tiny_gltf.h"
 #include "./include/MathGeoLib/Math/MathAll.h"
 
 MyMesh::MyMesh()

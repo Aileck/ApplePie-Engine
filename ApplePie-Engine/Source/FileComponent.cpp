@@ -52,6 +52,7 @@ const wchar_t* FileComponent::ConvertToWideFilePath(const char* fileName) {
 	return wideFileName;
 }
 
+
 void FileComponent::AnalyseFilePath(const char* fullpath, char* filePath, char* fileName, char* fileExtension) {
 	string fullPathString(fullpath);
 

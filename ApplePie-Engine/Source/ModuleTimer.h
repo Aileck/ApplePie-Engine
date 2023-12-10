@@ -38,11 +38,15 @@ private:
 
     void CalculateAverage() {
         float sum = 0.0f;
+        int count = 0;
         for (int i = 0; i <= top; ++i) {
-            sum += dataArray[i];
+            if (isfinite(dataArray[i])) {
+                sum += dataArray[i];
+                count++;
+            }
         }
 
-        average = (top >= 0) ? (sum / (top + 1)) : 0;
+        average = (count > 0) ? (sum / count) : 0;
     }
 
     void UpdateMax(float newValue) {

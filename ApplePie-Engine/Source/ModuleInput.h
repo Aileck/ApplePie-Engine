@@ -22,7 +22,7 @@ public:
 	bool CheckIfPressed(SDL_Scancode keycode);
 	bool CheckIfMouseDown(Uint8 mouseEvent);
 	int GetMouseWheelValue() const { return wheelValueMouse; };
-	int GetDragDistance() const { LOG("%i", dragDistance); return dragDistance; };
+	int GetDragDistance() const { return dragDistance; };
 
 
 

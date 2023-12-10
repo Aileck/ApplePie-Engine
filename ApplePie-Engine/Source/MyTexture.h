@@ -1,17 +1,14 @@
 #pragma once
-#include <GL/glew.h>
-
 class MyTexture {
 public:
-    MyTexture(GLuint id, GLsizei width, GLsizei height);
     MyTexture();
     ~MyTexture();
 
     void LoadTexture(const char* textureName, const bool exterior = false);
 
-    inline GLuint getTextureID() const { return textureID; }
-    inline GLsizei getWidth() const { return imWidth; }
-    inline GLsizei getHeight() const { return imHeight; }
+    inline unsigned getTextureID() const { return textureID; }
+    inline unsigned getWidth() const { return imWidth; }
+    inline unsigned getHeight() const { return imHeight; }
 
 private:
     unsigned textureID;

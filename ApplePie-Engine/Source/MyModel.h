@@ -23,7 +23,7 @@ public:
 	void Load(const char* assetFileName, bool exterior = false);
 
 	void LoadExternalTexture(const char* assetFileName);
-	void Draw();
+	void Draw() const;
 
 	void UpdateMeshPositionX(float newValue);
 	void UpdateMeshPositionY(float newValue);

@@ -1,7 +1,6 @@
 #include "ModuleCamera.h"
 
 #include "Application.h"
-#include "ModuleOpenGL.h"
 #include "ModuleWindow.h"
 #include "ModuleProgram.h"
 #include "ModuleInput.h"
@@ -25,20 +24,7 @@ ModuleCamera::ModuleCamera()
 
 ModuleCamera::~ModuleCamera()
 {
-
-}
-
-float4x4 LookAt(float3 target, float3 eye, float3 up) {
-	float4x4 matrix;
-	math::float3 f(target - eye); f.Normalize();
-	math::float3 s(f.Cross(up)); s.Normalize();
-	math::float3 u(s.Cross(f));
-	matrix[0][0] = s.x; matrix[0][1] = s.y; matrix[0][2] = s.z;
-	matrix[1][0] = u.x; matrix[1][1] = u.y; matrix[1][2] = u.z;
-	matrix[2][0] = -f.x; matrix[2][1] = -f.y; matrix[2][2] = -f.z;
-	matrix[0][3] = -s.Dot(eye); matrix[1][3] = -u.Dot(eye); matrix[2][3] = f.Dot(eye);
-	matrix[3][0] = 0.0f; matrix[3][1] = 0.0f; matrix[3][2] = 0.0f; matrix[3][3] = 1.0f;
-	return matrix;
+	
 }
 
 bool ModuleCamera::Init()
@@ -81,6 +67,7 @@ update_status ModuleCamera::PostUpdate()
 
 bool ModuleCamera::CleanUp()
 {
+	delete camera;
 	return true;
 }
 
