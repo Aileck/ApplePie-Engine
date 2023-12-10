@@ -6,15 +6,10 @@ ConsoleGUI::ConsoleGUI()
     ClearLog();
     memset(InputBuf, 0, sizeof(InputBuf));
     HistoryPos = -1;
-
-    // "CLASSIFY" is here to provide the test case where "C"+[tab] completes to "CL" and display multiple matches.
-    Commands.push_back("HELP");
-    Commands.push_back("HISTORY");
-    Commands.push_back("CLEAR");
-    Commands.push_back("CLASSIFY");
     AutoScroll = true;
     ScrollToBottom = false;
     Items = {};
+    AddLog("--- LOG OPEN ---", SYSINFO_LOG);
 }
 
 ConsoleGUI::~ConsoleGUI()
@@ -67,23 +62,8 @@ void ConsoleGUI::Draw(const char* title, bool* p_open)
         ImGui::EndPopup();
     }
 
-    ImGui::TextWrapped(
-        "This example implements a console with basic coloring, completion (TAB key) and history (Up/Down keys). A more elaborate "
-        "implementation may want to store entries along with extra data such as timestamp, emitter, etc.");
-    ImGui::TextWrapped("Enter 'HELP' for help.");
-
-    // TODO: display items starting from the bottom
-
-    if (ImGui::SmallButton("Add Debug Text")) { AddLog("%d some text", INFO_LOG, Items.Size); AddLog("some more text", INFO_LOG); AddLog("display very important message here!", INFO_LOG); }
-    ImGui::SameLine();
-    if (ImGui::SmallButton("Add Debug Error")) { AddLog("[error] something went wrong", ERROR_LOG); }
-    ImGui::SameLine();
-    if (ImGui::SmallButton("Add Debug Warning")) { AddLog("[warning] something went strange", WARNING_LOG); }
-    ImGui::SameLine();
     if (ImGui::SmallButton("Clear")) { ClearLog(); }
     ImGui::SameLine();
-    bool copy_to_clipboard = ImGui::SmallButton("Copy");
-    //static float t = 0.0f; if (ImGui::GetTime() - t > 0.02f) { t = ImGui::GetTime(); AddLog("Spam %f", t); }
 
     ImGui::Separator();
 
@@ -136,8 +116,7 @@ void ConsoleGUI::Draw(const char* title, bool* p_open)
         // - Split them into same height items would be simpler and facilitate random-seeking into your list.
         // - Consider using manual call to IsRectVisible() and skipping extraneous decoration from your items.
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
-        if (copy_to_clipboard)
-            ImGui::LogToClipboard();
+
         for (const LogUnit* item : Items)
         {
             if (!Filter.PassFilter(item->logText))
@@ -158,8 +137,6 @@ void ConsoleGUI::Draw(const char* title, bool* p_open)
             if (has_color)
                 ImGui::PopStyleColor();
         }
-        if (copy_to_clipboard)
-            ImGui::LogFinish();
 
         // Keep up at the bottom of the scroll region if we were already at the bottom at the beginning of the frame.
         // Using a scrollbar or mouse-wheel will take away from the bottom edge.
