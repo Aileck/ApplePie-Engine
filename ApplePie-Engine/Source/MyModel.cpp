@@ -23,7 +23,18 @@ MyModel::MyModel(const char* assetFileName, bool exterior) {
 }
 
 MyModel::~MyModel() {
+	for (MyMesh* mesh : Meshes)
+	{
+		delete mesh;
+	}
 
+	for (MyTexture* texture : Textures)
+	{
+		delete texture;
+	}
+
+	Meshes.clear();
+	Textures.clear();
 }
 
 void MyModel::Load(const char* assetFileName, bool exterior)

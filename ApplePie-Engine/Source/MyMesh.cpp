@@ -15,6 +15,13 @@ MyMesh::MyMesh()
 
 MyMesh::~MyMesh()
 {
+	// Release the VAO, VBO, and EBO
+	glDeleteVertexArrays(1, &vao);
+	glDeleteBuffers(1, &vbo);
+
+	if (enableEBO) {
+		glDeleteBuffers(1, &ebo);
+	}
 }
 
 void MyMesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive)

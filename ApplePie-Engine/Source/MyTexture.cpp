@@ -9,5 +9,6 @@ MyTexture::MyTexture(GLuint id, GLsizei width, GLsizei height)
 
 MyTexture::~MyTexture()
 {
+    glDeleteTextures(1, &textureID);
 }
 
