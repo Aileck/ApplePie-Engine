@@ -4,10 +4,12 @@
 #include "ModuleImGUI.h"
 #include "ModuleCamera.h"
 #include "ModuleTimer.h"
+#include "ModuleLoadModel.h"
 #include "SDL.h"
 #include "GL\glew.h"
 #include "DirectXTex.h"
 #include <cmath>
+#include <vector>
 #include "windows.h"
 
 ConfigurationGUI::ConfigurationGUI()
@@ -118,10 +120,6 @@ void ConfigurationGUI::Draw()
         static char bufUpZ[80];       
         sprintf_s(bufUpZ, sizeof(bufUpZ), "%f", App->GetCamera()->GetCamera()->up.z);
         
-        //sprintf_s(bufHeight, sizeof(bufHeight), "%d", temporalHeight);
-        //sprintf_s(bufWidth, sizeof(bufWidth), "%d", temporalWidth);
-
-
         ImGui::Text("Position");
         ImGui::Text("X");
         ImGui::SameLine();
@@ -205,8 +203,14 @@ void ConfigurationGUI::Draw()
             App->GetCamera()->SetUpZ(std::atof(bufUpZ));
         }
 
+        focusOnModel = ImGui::Button("Focus on model");
+        if (focusOnModel)
+        {
+            App->GetCamera()->FocusOn(App->GetModelLoader()->GetModel()->GetCenter());
+        }
 
     }
+
 	if (ImGui::CollapsingHeader("System Information")) {
         // RAM
         try {

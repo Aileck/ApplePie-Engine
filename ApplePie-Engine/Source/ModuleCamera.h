@@ -17,6 +17,9 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
+	void FocusOn(float3 target);
+	void OrbitOn(float3 target);
+
 	inline Frustum* GetCamera() { return camera; };
 
 	void SetCameraPosX(float X) const { camera->pos.x = X; };
@@ -49,8 +52,7 @@ private:
 	void HandleMovement();
 	void HandleRotation();
 	void HandleFocus();
-	void FocusOn(float3 target);
-	void OrbitOn(float3 target);
+
 	Frustum* camera = nullptr;
 
 };

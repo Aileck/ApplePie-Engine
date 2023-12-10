@@ -51,7 +51,7 @@ void ModuleLoadModel::LoadExteriorModel(const char* fullpath)
     delete model;
     model = nullptr;
     model = new MyModel(fullpath,true);
-    //AdjustCameraPosition();
+    App->GetCamera()->FocusOn(model->GetCenter());
 }
 
 void ModuleLoadModel::LoadExteriorTexture(const char* fullpath)

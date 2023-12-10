@@ -25,7 +25,15 @@ public:
 	void LoadExternalTexture(const char* assetFileName);
 	void Draw();
 
-	inline std::vector<MyMesh*> GetMeshed() const { return Meshes; }
+	void UpdateMeshPositionX(float newValue);
+	void UpdateMeshPositionY(float newValue);
+	void UpdateMeshPositionZ(float newValue);
+	
+	void UpdateMeshScaleX(float newValue);
+	void UpdateMeshScaleY(float newValue);
+	void UpdateMeshScaleZ(float newValue);
+
+	inline std::vector<MyMesh*> GetMeshes() const { return Meshes; }
 	inline std::vector<MyTexture*> GetTextures() const { return Textures; }
 
 	inline float GetMaxX() const { return maxBoundX; }

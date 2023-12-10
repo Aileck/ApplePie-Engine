@@ -15,7 +15,7 @@ void PropertiesGUI::Draw(const MyModel* model)
     }
     if (model != nullptr) {
         if (ImGui::CollapsingHeader("Geometry")) {
-            std::vector<MyMesh*> meshes = model->GetMeshed();
+            std::vector<MyMesh*> meshes = model->GetMeshes();
             for (size_t i = 0; i < meshes.size(); ++i) {
                 const MyMesh* mesh = meshes[i];
 

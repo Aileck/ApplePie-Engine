@@ -21,6 +21,8 @@ public:
 	inline float3 GetMaxXYZ() const { return maxXYZ; }
 	inline float3 GetMinXYZ() const { return minXYZ; }
 
+	inline float4x4 GetMeshTransform() const {return modelMatrix;}
+
 private:
 	void LoadVAO();
 	void LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
@@ -43,9 +45,9 @@ private:
 	float3 minXYZ;
 
 	// MVP
-	float4x4 modelMatrix = float4x4::FromTRS(float3(2.0f, 0.0f, 0.0f),
-										float4x4::RotateZ(pi / 4.0f),
-										float3(2.0f, 1.0f, 1.0f)
-									);
-	//float4x4 modelMatrix = float4x4::identity;
+	//float4x4 modelMatrix = float4x4::FromTRS(float3(2.0f, 0.0f, 0.0f),
+	//									float4x4::RotateZ(pi / 4.0f),
+	//									float3(2.0f, 1.0f, 1.0f)
+	//								);
+	float4x4 modelMatrix = float4x4::identity;
 };

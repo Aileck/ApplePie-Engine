@@ -75,8 +75,6 @@ void MyModel::Load(const char* assetFileName, bool exterior)
 				minBoundX = (minBoundX > mesh->GetMinXYZ().x) ? mesh->GetMinXYZ().x : minBoundX;
 				minBoundY = (minBoundY > mesh->GetMinXYZ().y) ? mesh->GetMinXYZ().y : minBoundY;
 				minBoundZ = (minBoundZ > mesh->GetMinXYZ().z) ? mesh->GetMinXYZ().z : minBoundZ;
-
-
 			}
 		}
 	}

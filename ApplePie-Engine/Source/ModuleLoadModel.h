@@ -20,10 +20,8 @@ public:
 	void LoadExteriorTexture(const char* fullpath);
 
 	inline MyModel* GetModel() const {return model;}
-	inline float3 GetCenter() const {return sceneCenter;}
 private:
 
 	MyModel* model;
-	float3 sceneCenter;
 };
 

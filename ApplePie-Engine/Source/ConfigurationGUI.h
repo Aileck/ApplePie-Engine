@@ -19,9 +19,13 @@ private:
 	bool editorNoBorder = false;
 	bool editorFullcreen = false;
 
+	// Window conf
 	bool setWindow;
 	bool resetWindow;
 	int temporalHeight;
 	int temporalWidth;
+
+	// Camera conf
+	bool focusOnModel;
 };
 

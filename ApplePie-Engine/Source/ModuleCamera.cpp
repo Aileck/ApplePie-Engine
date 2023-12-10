@@ -150,7 +150,6 @@ void ModuleCamera::HandleFocus()
 	if (App->GetModelLoader()->GetModel() != nullptr) {
 
 		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_F)) {
-			LookAt(App->GetModelLoader()->GetModel()->GetCenter(), camera->pos, camera->up);
 			FocusOn(App->GetModelLoader()->GetModel()->GetCenter());
 		}
 		if (App->GetInput()->CheckIfPressed(SDL_SCANCODE_LALT)) {
