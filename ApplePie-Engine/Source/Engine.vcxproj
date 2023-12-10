@@ -84,6 +84,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <ReferencePath>C:\Users\Aikeck\Desktop\Memories\UPC School\02.Cpp\Engine\Engine\imgui-1.89.9-docking\imgui-1.89.9-docking;$(ReferencePath)</ReferencePath>
+    <OutDir>../</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
