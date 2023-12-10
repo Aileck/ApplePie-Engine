@@ -4,7 +4,10 @@
 class MyTexture {
 public:
     MyTexture(GLuint id, GLsizei width, GLsizei height);
+    MyTexture();
     ~MyTexture();
+
+    void LoadTexture(const char* textureName, const bool exterior = false);
 
     inline GLuint getTextureID() const { return textureID; }
     inline GLsizei getWidth() const { return imWidth; }

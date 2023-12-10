@@ -7,7 +7,6 @@
 
 class ModuleOpenGL;
 class ModuleWindow;
-class ModuleTexture;
 class ModuleInput;
 class ModuleRenderExercise;
 class ModuleProgram;
@@ -36,7 +35,6 @@ public:
     ModuleImGUI* GetEditor() { return editor; }
     ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
     ModuleCamera* GetCamera() { return camera; }
-    ModuleTexture* GeTexture() { return texture; }
     ModuleLoadModel* GetModelLoader() { return modelLoader; }
     ModuleTimer* GetTimer() { return timer; }
 
@@ -53,7 +51,6 @@ private:
     ModuleImGUI* editor = nullptr;
     ModuleDebugDraw* debugDraw = nullptr;
     ModuleCamera* camera = nullptr;
-    ModuleTexture* texture = nullptr;
     ModuleLoadModel* modelLoader = nullptr;
     ModuleTimer* timer = nullptr;
 

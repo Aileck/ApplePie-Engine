@@ -1,7 +1,6 @@
 #include "Globals.h"
 #include "MyModel.h"
 #include "Application.h"
-#include "ModuleTexture.h"
 #include "MyTexture.h"
 
 #define TINYGLTF_NO_STB_IMAGE_WRITE
@@ -97,7 +96,10 @@ void MyModel::LoadMaterials(const tinygltf::Model& srcModel)
 			const Image& image = srcModel.images[texture.source];
 			
 			const char* imageUri = image.uri.c_str();
-			Textures.push_back((App->GeTexture()->LoadTexture(imageUri)));
+
+			MyTexture* myTexture = new MyTexture();
+			myTexture->LoadTexture(imageUri);
+			Textures.push_back(myTexture);
 			numTex++;
 		}
 		
@@ -114,7 +116,10 @@ void MyModel::LoadExternalTexture(const char* assetFileName)
 	}
 
 	Textures.clear();
-	Textures.push_back((App->GeTexture()->LoadTexture(assetFileName, true)));
+
+	MyTexture* myTexture = new MyTexture();
+	myTexture->LoadTexture(assetFileName);
+	Textures.push_back(myTexture);
 }
 
 void MyModel::Draw()

@@ -133,9 +133,6 @@
     <ClCompile Include="ModuleProgram.cpp">
       <Filter>modules\source</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleRenderExercise.cpp">
-      <Filter>modules\source</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleWindow.cpp">
       <Filter>modules\source</Filter>
     </ClCompile>
@@ -143,9 +140,6 @@
       <Filter>modules\source</Filter>
     </ClCompile>
     <ClCompile Include="ModuleCamera.cpp">
-      <Filter>modules\source</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleTexture.cpp">
       <Filter>modules\source</Filter>
     </ClCompile>
     <ClCompile Include="MyMesh.cpp">
@@ -172,7 +166,9 @@
     <ClCompile Include="PropertiesGUI.cpp">
       <Filter>editor components\source</Filter>
     </ClCompile>
-    <ClCompile Include="MyTexture.cpp" />
+    <ClCompile Include="MyTexture.cpp">
+      <Filter>components\source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -391,9 +387,6 @@
     <ClInclude Include="ModuleProgram.h">
       <Filter>modules\header</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleRenderExercise.h">
-      <Filter>modules\header</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleWindow.h">
       <Filter>modules\header</Filter>
     </ClInclude>
@@ -401,9 +394,6 @@
       <Filter>modules\header</Filter>
     </ClInclude>
     <ClInclude Include="ModuleCamera.h">
-      <Filter>modules\header</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleTexture.h">
       <Filter>modules\header</Filter>
     </ClInclude>
     <ClInclude Include="MyMesh.h">
@@ -442,7 +432,9 @@
     <ClInclude Include="PropertiesGUI.h">
       <Filter>editor components\header</Filter>
     </ClInclude>
-    <ClInclude Include="MyTexture.h" />
+    <ClInclude Include="MyTexture.h">
+      <Filter>components\header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="modules">
