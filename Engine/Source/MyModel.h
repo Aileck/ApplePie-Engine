@@ -7,6 +7,7 @@
 
 #include "MyMesh.h"
 #include <vector>
+#include <limits>
 
 class MyTexture;
 
@@ -23,8 +24,24 @@ public:
 
 	inline std::vector<MyMesh*> GetMeshed() const { return Meshes; }
 	inline std::vector<MyTexture*> GetTextures() const { return Textures; }
+
+	inline float GetMaxX() const { return maxBoundX; }
+	inline float GetMaxY() const { return maxBoundY; }
+	inline float GetMaxZ() const { return maxBoundZ; }
+
+	inline float GetMinX() const { return minBoundX; }
+	inline float GetMinY() const { return minBoundY; }
+	inline float GetMinZ() const { return minBoundZ; }
 private:
 	std::vector<MyMesh*> Meshes;
 	std::vector<MyTexture*> Textures;
+
+	float maxBoundX = -std::numeric_limits<float>::infinity();
+	float maxBoundY = -std::numeric_limits<float>::infinity();
+	float maxBoundZ = -std::numeric_limits<float>::infinity();
+	
+	float minBoundX = std::numeric_limits<float>::infinity();;
+	float minBoundY = std::numeric_limits<float>::infinity();;
+	float minBoundZ = std::numeric_limits<float>::infinity();;
 };
 

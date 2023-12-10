@@ -135,7 +135,7 @@ void ConfigurationGUI::Draw(FrameRateData frames)
         ImGui::SetNextItemWidth(50);
         if (ImGui::InputText("##Y1", bufY, 80, ImGuiInputTextFlags_CallbackEdit, InputSizeCallback))
         {
-            App->GetCamera()->SetCameraPosX(std::atof(bufY));
+            App->GetCamera()->SetCameraPosY(std::atof(bufY));
         }
         ImGui::SameLine();
 
@@ -144,6 +144,7 @@ void ConfigurationGUI::Draw(FrameRateData frames)
         ImGui::SetNextItemWidth(50);
         if (ImGui::InputText("##Z1", bufZ, 80, ImGuiInputTextFlags_CallbackEdit, InputSizeCallback))
         {
+            App->GetCamera()->SetCameraPosZ(std::atof(bufZ));
         }
 
         ImGui::Text("Front");
@@ -152,7 +153,7 @@ void ConfigurationGUI::Draw(FrameRateData frames)
         ImGui::SetNextItemWidth(50);
         if(ImGui::InputText("##X2", bufFrontX, 80, ImGuiInputTextFlags_CallbackEdit, InputSizeCallback))
         {
-        
+            App->GetCamera()->SetFrontX(std::atof(bufFrontX));
         }
         ImGui::SameLine();
 
@@ -161,6 +162,7 @@ void ConfigurationGUI::Draw(FrameRateData frames)
         ImGui::SetNextItemWidth(50);
         if (ImGui::InputText("##Y2", bufFrontY, 80, ImGuiInputTextFlags_CallbackEdit, InputSizeCallback))
         {
+            App->GetCamera()->SetFrontY(std::atof(bufFrontY));
         }
         ImGui::SameLine();
 
@@ -169,6 +171,7 @@ void ConfigurationGUI::Draw(FrameRateData frames)
         ImGui::SetNextItemWidth(50);
         if (ImGui::InputText("##Z2", bufFrontZ, 80, ImGuiInputTextFlags_CallbackEdit, InputSizeCallback)) 
         {
+            App->GetCamera()->SetFrontZ(std::atof(bufFrontZ));
         }
 
 
@@ -178,6 +181,7 @@ void ConfigurationGUI::Draw(FrameRateData frames)
         ImGui::SetNextItemWidth(50);
         if (ImGui::InputText("##X3", bufUpX, 80, ImGuiInputTextFlags_CallbackEdit, InputSizeCallback))
         {
+            App->GetCamera()->SetUpX(std::atof(bufUpX));
         }
 
         ImGui::SameLine();
@@ -187,6 +191,7 @@ void ConfigurationGUI::Draw(FrameRateData frames)
         ImGui::SetNextItemWidth(50);
         if (ImGui::InputText("##Y3", bufUpY, 80, ImGuiInputTextFlags_CallbackEdit, InputSizeCallback))
         {
+            App->GetCamera()->SetUpY(std::atof(bufUpY));
         }
         ImGui::SameLine();
 
@@ -195,6 +200,7 @@ void ConfigurationGUI::Draw(FrameRateData frames)
         ImGui::SetNextItemWidth(50);
         if (ImGui::InputText("##Z3", bufUpZ, 80, ImGuiInputTextFlags_CallbackEdit, InputSizeCallback))
         {
+            App->GetCamera()->SetUpZ(std::atof(bufUpZ));
         }
 
 

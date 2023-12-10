@@ -40,9 +40,6 @@ void MyMesh::LoadVAO()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * vertexCount));
 
 	glBindVertexArray(0);
-
-
-
 }
 
 void MyMesh::LoadVBO(const Model& model, const Mesh& mesh, const Primitive& primitive)
@@ -85,12 +82,21 @@ void MyMesh::LoadPosition(const Model& model, const Mesh& mesh, const Primitive&
 
 		currentVerteixPosition += posAcc.count;
 		offsetVBO = sizeof(float) * 3 * posAcc.count;
-		//ptr[posAcc.count + 2000] = float3(1.f, 2.f, 1.f);
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 		// Set local variables
 		vertexCount += posAcc.count;
-		App->WriteIntoLog(INFO_LOG, "Vertex Data Loades");
+		App->WriteIntoLog(INFO_LOG, "Vertex Data Loaded");
 		const auto& itUV = primitive.attributes.find("TEXCOORD_0");
+		
+		// Get Verteix Max and Min
+		maxX = posAcc.maxValues[0];
+		maxY = posAcc.maxValues[1];
+		maxZ = posAcc.maxValues[2];
+
+		minX = posAcc.minValues[0];
+		minY = posAcc.minValues[1];
+		minZ = posAcc.minValues[2];
+
 		if (itUV != primitive.attributes.end()) {
 			enableTexture = true;
 			const Accessor& uvAcc = model.accessors[itUV->second];
@@ -110,7 +116,7 @@ void MyMesh::LoadPosition(const Model& model, const Mesh& mesh, const Primitive&
 				bufferUV += sizeof(float) * 2;
 			}
 			glUnmapBuffer(GL_ARRAY_BUFFER);
-			App->WriteIntoLog(INFO_LOG, "Texture Coordinates Loades");
+			App->WriteIntoLog(INFO_LOG, "Texture Coordinates Loaded");
 		}
 	}
 

@@ -16,6 +16,7 @@ public:
 	bool CleanUp();
 
 	void LoadExteriorModel(const char* fullpath);
+	void AdjustCameraPosition();
 
 	inline MyModel* GetModel() const {return model;}
 private:

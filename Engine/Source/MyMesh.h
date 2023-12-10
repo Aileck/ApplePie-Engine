@@ -36,6 +36,15 @@ public:
 	inline int GetVerticesCount() const { return  vertexCount; }
 	inline int GetIndexCount() const { return  indexCount; }
 	inline int GetTextureID() const { return  textureID; }
+
+	inline float GetMaxX() const { return maxX; }
+	inline float GetMaxY() const { return maxY; }
+	inline float GetMaxZ() const { return maxZ; }
+
+	inline float GetMinX() const { return minX; }
+	inline float GetMinY() const { return minY; }
+	inline float GetMinZ() const { return minZ; }
+
 private:
 	unsigned vbo = 0;
 	unsigned vao = 0;
@@ -53,6 +62,14 @@ private:
 	unsigned numVerteixForBuffer = 0;
 	int currentVerteixPosition = 0;
 	unsigned offsetVBO = 0;
+
+	float maxX;
+	float maxY;
+	float maxZ;
+
+	float minX;
+	float minY;
+	float minZ;
 
 
 

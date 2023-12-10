@@ -55,10 +55,19 @@ void MyModel::Load(const char* assetFileName, bool exterior)
 
 				Meshes.push_back(mesh);
 				numMesh++;
+
+				// Compute max/min points
+				maxBoundX = (maxBoundX < mesh->GetMaxX()) ? mesh->GetMaxX() : maxBoundX;
+				maxBoundY = (maxBoundY < mesh->GetMaxY()) ? mesh->GetMaxY() : maxBoundY;
+				maxBoundZ = (maxBoundZ < mesh->GetMaxZ()) ? mesh->GetMaxZ() : maxBoundZ;
+
+				minBoundX = (minBoundX > mesh->GetMinX()) ? mesh->GetMinX() : minBoundX;
+				minBoundY = (minBoundY > mesh->GetMinY()) ? mesh->GetMinY() : minBoundY;
+				minBoundZ = (minBoundZ > mesh->GetMinZ()) ? mesh->GetMinZ() : minBoundZ;
+
+
 			}
 		}
-
-		
 	}
 	LoadMaterials(model);
 	App->WriteIntoLog(INFO_LOG, " %s Loaded", filePath);
