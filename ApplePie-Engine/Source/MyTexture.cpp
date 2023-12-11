@@ -24,6 +24,7 @@ void MyTexture::LoadTexture(const char* textureName, const bool exterior)
     const wchar_t* filePath = FileComponent::CreateWideFilePath(TEXTURE_PATH, textureName);
     if (exterior)
     {
+        delete[] filePath;
         filePath = FileComponent::ConvertToWideFilePath(textureName);
     }
     //1. Load image data with external library into CPU
@@ -103,6 +104,7 @@ void MyTexture::LoadTexture(const char* textureName, const bool exterior)
     imWidth = imWidth;
     imHeight = imHeigh;
 
-    delete[] filePath;
+    if(!exterior)
+        delete[] filePath;
 }
 
