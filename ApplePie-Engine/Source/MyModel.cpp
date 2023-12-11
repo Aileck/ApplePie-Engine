@@ -42,6 +42,7 @@ void MyModel::Load(const char* assetFileName, bool exterior)
 	const char* filePath = FileComponent::CreateFilePath(MODEL_PATH, assetFileName);
 	if (exterior)
 	{
+		delete[] filePath;
 		filePath = assetFileName;
 	}
 	App->WriteIntoLog(INFO_LOG, "Loading from %s", filePath);
@@ -82,7 +83,10 @@ void MyModel::Load(const char* assetFileName, bool exterior)
 	ComputeCenterOfModel();
 	App->WriteIntoLog(INFO_LOG, " %s Loaded", filePath);
 
-	delete[] filePath;
+	if (!exterior) {
+		delete[] filePath;
+	}
+	
 }
 
 void MyModel::LoadMaterials(const tinygltf::Model& srcModel)
