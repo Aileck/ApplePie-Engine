@@ -6,6 +6,7 @@
 #include "./include/tinygltf/tiny_gltf.h"
 
 #include "MyMesh.h"
+#include "MyMaterial.h"
 #include <vector>
 #include <limits>
 
@@ -24,14 +25,6 @@ public:
 
 	void LoadExternalTexture(const char* assetFileName);
 	void Draw() const;
-
-	void UpdateMeshPositionX(float newValue);
-	void UpdateMeshPositionY(float newValue);
-	void UpdateMeshPositionZ(float newValue);
-	
-	void UpdateMeshScaleX(float newValue);
-	void UpdateMeshScaleY(float newValue);
-	void UpdateMeshScaleZ(float newValue);
 
 	inline std::vector<MyMesh*> GetMeshes() const { return Meshes; }
 	inline std::vector<MyTexture*> GetTextures() const { return Textures; }
@@ -52,6 +45,7 @@ private:
 
 	std::vector<MyMesh*> Meshes;
 	std::vector<MyTexture*> Textures;
+	std::vector <MyMaterial*> Materiales;
 
 	float maxBoundX = -std::numeric_limits<float>::infinity();
 	float maxBoundY = -std::numeric_limits<float>::infinity();

@@ -48,8 +48,8 @@ ModuleProgram::~ModuleProgram()
 bool ModuleProgram::Init() {
 	char *vtx_shader, *frg_shader = nullptr;
 	
-	const char* VerteixShaderFile = FileComponent::CreateFilePath(SHADER_PATH, "triangleExerciceVertexTexture.glsl");
-	const char* FragmentShaderFile = FileComponent::CreateFilePath(SHADER_PATH, "triangleExerciceFragmentTexture.glsl");
+	const char* VerteixShaderFile = FileComponent::CreateFilePath(SHADER_PATH, "phongvs.glsl");
+	const char* FragmentShaderFile = FileComponent::CreateFilePath(SHADER_PATH, "phongfs.glsl");
 	//const char* VerteixShaderFile = App->CreateFilePath(SHADER_PATH, "triangleExerciceVertex.glsl");
 	//const char* FragmentShaderFile = App->CreateFilePath(SHADER_PATH, "triangleExerciceFragment.glsl");
 	vtx_shader = LoadShaderSource(VerteixShaderFile, true);

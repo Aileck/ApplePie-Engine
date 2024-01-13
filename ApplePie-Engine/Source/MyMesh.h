@@ -3,6 +3,7 @@
 #include "./include/MathGeoLib/Math/MathAll.h"
 
 class MyTexture;
+class MyMaterial;
 
 using namespace tinygltf;
 class MyMesh
@@ -12,7 +13,7 @@ public:
 	~MyMesh();
 
 	void LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
-	void Draw(const std::vector<MyTexture*>& textures);
+	void Draw(MyMaterial* material);
 
 	inline int GetVerticesCount() const { return  vertexCount; }
 	inline int GetIndexCount() const { return  indexCount; }

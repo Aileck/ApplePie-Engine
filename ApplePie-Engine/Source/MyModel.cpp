@@ -2,6 +2,8 @@
 #include "MyModel.h"
 #include "Application.h"
 #include "MyTexture.h"
+#include "MyMaterial.h"
+#include "ModuleProgram.h"
 
 #define TINYGLTF_NO_STB_IMAGE_WRITE
 #define TINYGLTF_NO_STB_IMAGE
@@ -10,9 +12,8 @@
 
 #include "./include/tinygltf/tiny_gltf.h"
 #include "FileComponent.h"
+#include "GL\glew.h"
 
-
-using namespace tinygltf;
 MyModel::MyModel() {
 
 }
@@ -95,18 +96,12 @@ void MyModel::LoadMaterials(const tinygltf::Model& srcModel)
 	for (const auto& srcMaterial : srcModel.materials)
 	{  
 		App->WriteIntoLog(INFO_LOG, "Loading texture no. %i", numTex);
-		if (srcMaterial.pbrMetallicRoughness.baseColorTexture.index >= 0)
-		{
-			const Texture& texture = srcModel.textures[srcMaterial.pbrMetallicRoughness.baseColorTexture.index];
-			const Image& image = srcModel.images[texture.source];
-			
-			const char* imageUri = image.uri.c_str();
+		//if (srcMaterial.pbrMetallicRoughness.baseColorTexture.index >= 0)
+		//{
+			MyMaterial* material = new MyMaterial();
+			material->LoadMaterial(srcModel,srcMaterial);
+			Materiales.push_back(material);
 
-			MyTexture* myTexture = new MyTexture();
-			myTexture->LoadTexture(imageUri);
-			Textures.push_back(myTexture);
-			numTex++;
-		}	
 	}
 }
 
@@ -136,7 +131,7 @@ void MyModel::ComputeCenterOfModel()
 void MyModel::Draw() const
 {
 	for (int i = 0; i < Meshes.size(); i++) {
-		Meshes[i]->Draw(Textures);
+		Meshes[i]->Draw(Materiales[i]);
 	}
 }
 

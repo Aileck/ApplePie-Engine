@@ -17,7 +17,8 @@ bool ModuleLoadModel::Init()
     model = new MyModel();
     //model->Load("Triangle.gltf");
     //model->Load("BoxTextured.gltf");
-    model->Load("BakerHouse/BakerHouse.gltf");
+    model->Load("ZomBunny/Zombunny.gltf");
+    //model->Load("Wall/Wall.gltf");
     //model->Load("Duck/Duck.gltf");
 
     return true;

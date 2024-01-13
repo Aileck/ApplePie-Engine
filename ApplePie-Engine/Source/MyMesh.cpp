@@ -7,6 +7,7 @@
 #include "ModuleProgram.h"
 #include "ModuleCamera.h"
 #include "MyTexture.h"
+#include "MyMaterial.h"
 #include "./include/tinygltf/tiny_gltf.h"
 #include "./include/MathGeoLib/Math/MathAll.h"
 
@@ -202,7 +203,7 @@ void MyMesh::LoadEBO(const Model& model, const Mesh& mesh, const Primitive& prim
 	}
 }
 
-void MyMesh::Draw(const std::vector<MyTexture*>& textures)
+void MyMesh::Draw(MyMaterial* material)
 {
 	// Verteix shader
 	float4x4 view = App->GetCamera()->GetCamera()->ViewMatrix();
@@ -214,9 +215,63 @@ void MyMesh::Draw(const std::vector<MyTexture*>& textures)
 	glUniformMatrix4fv(2, 1, GL_TRUE, &proj[0][0]);
 
 	// Fragment shader
-	if (enableTexture) {
-		glActiveTexture(GL_TEXTURE5);
-		glBindTexture(GL_TEXTURE_2D, textures[textureID]->getTextureID());
+	if (true) {
+		//glActiveTexture(GL_TEXTURE5);
+		//glBindTexture(GL_TEXTURE_2D, textures[textureID]->getTextureID());
+		glUniform3fv(
+			glGetUniformLocation(App->GetProgram()->program,
+				"material.diffuseColor"), 1, &material->GetDiffuseFactor().xyz()[0]);
+
+		glUniform3fv(
+			glGetUniformLocation(App->GetProgram()->program,
+				"material.specularColor"), 1, &material->GetSpecularFactor()[0]);
+
+		glUniform1i(
+			glGetUniformLocation(App->GetProgram()->program,
+				"material.shininess"), material->GetGlossinessFactor());
+
+
+		if (material->GetDiffuseMap() != nullptr)
+		{
+			glUniform1i(
+				glGetUniformLocation(App->GetProgram()->program,
+					"material.hasDiffuseMap"), true);
+			GLint diffuseTextureLoc =
+				glGetUniformLocation(App->GetProgram()->program, "material.diffuseTexture");
+			glUniform1i(diffuseTextureLoc, 0);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, material->GetDiffuseMap()->getTextureID());
+		}
+		else {
+			glUniform1i(
+				glGetUniformLocation(App->GetProgram()->program,
+					"material.hasDiffuseMap"), false);
+		}
+
+		if (material->GetSpecularMap() != nullptr)
+		{
+			glUniform1i(
+				glGetUniformLocation(App->GetProgram()->program,
+					"material.hasSpecularMap"), true);
+			GLint specularTextureLoc =
+				glGetUniformLocation(App->GetProgram()->program, "material.specularTexture");
+			glUniform1i(specularTextureLoc, 1);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, material->GetSpecularMap()->getTextureID());
+		}
+		else
+		{
+			glUniform1i(
+				glGetUniformLocation(App->GetProgram()->program,
+					"material.hasSpecularMap"), false);
+		}
+
+		// Light
+		//uniform vec3 lightDir;
+		//uniform vec3 lightColor;
+		//uniform float lightIntensity;
+		//vec3 material.ambientColor
+
 	}
 
 	glBindVertexArray(vao);
