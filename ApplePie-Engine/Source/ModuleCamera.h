@@ -22,6 +22,8 @@ public:
 
 	inline Frustum* GetCamera() { return camera; };
 
+	inline float3 GetCameraPosition() { return camera->pos; };
+
 	void SetCameraPosX(float X) const { camera->pos.x = X; };
 	void SetCameraPosY(float Y) const { camera->pos.y = Y; };
 	void SetCameraPosZ(float Z) const { camera->pos.z = Z; };

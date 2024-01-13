@@ -83,4 +83,5 @@ void main() {
 	
 	//Output
 	outColor = vec4(color, 1.0f);
+	
 }

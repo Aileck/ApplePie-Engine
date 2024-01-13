@@ -235,7 +235,7 @@ void MyMesh::Draw(MyMaterial* material)
 		{
 			glUniform1i(
 				glGetUniformLocation(App->GetProgram()->program,
-					"material.hasDiffuseMap"), true);
+					"material.hasDiffuseMap"), 1);
 			GLint diffuseTextureLoc =
 				glGetUniformLocation(App->GetProgram()->program, "material.diffuseTexture");
 			glUniform1i(diffuseTextureLoc, 0);
@@ -245,14 +245,14 @@ void MyMesh::Draw(MyMaterial* material)
 		else {
 			glUniform1i(
 				glGetUniformLocation(App->GetProgram()->program,
-					"material.hasDiffuseMap"), false);
+					"material.hasDiffuseMap"), 0);
 		}
 
 		if (material->GetSpecularMap() != nullptr)
 		{
 			glUniform1i(
 				glGetUniformLocation(App->GetProgram()->program,
-					"material.hasSpecularMap"), true);
+					"material.hasSpecularMap"), 1);
 			GLint specularTextureLoc =
 				glGetUniformLocation(App->GetProgram()->program, "material.specularTexture");
 			glUniform1i(specularTextureLoc, 1);
@@ -263,14 +263,51 @@ void MyMesh::Draw(MyMaterial* material)
 		{
 			glUniform1i(
 				glGetUniformLocation(App->GetProgram()->program,
-					"material.hasSpecularMap"), false);
+					"material.hasSpecularMap"), 0);
 		}
 
 		// Light
-		//uniform vec3 lightDir;
-		//uniform vec3 lightColor;
-		//uniform float lightIntensity;
-		//vec3 material.ambientColor
+
+		float3 lightDir = float3(1.0, 1.0, 1.0);
+		//float3 lightColor = float3(1.0, 1.0, 1.0);
+		float3 ambientColor(1.0, 1.0,1.0);
+		float lightIntensity(20.0);
+
+		GLint cameraPosLocation = glGetUniformLocation(App->GetProgram()->program, "cameraPos"); // 3'
+		GLint lightColorLocation = glGetUniformLocation(App->GetProgram()->program, "lightColor"); // 4
+		GLint lightDirLocation = glGetUniformLocation(App->GetProgram()->program, "lightDir"); // 5
+		GLint llightIntensityLocation = glGetUniformLocation(App->GetProgram()->program, "lightIntensity"); // 6
+		GLint ambientColorLocation = glGetUniformLocation(App->GetProgram()->program, "material.ambientColor"); // 10
+		
+
+		//glUniform3fv(
+		//	cameraPosLocation, 1, &App->GetCamera()->GetCameraPosition()[0]);
+
+		//glUniform3fv(
+		//	glGetUniformLocation(App->GetProgram()->program,
+		//		"lightDir"), 1, &lightDir[0]);
+		//GLfloat lightColor[] = { 1.0f, 1.0f, 1.0f };
+		//glUniform3fv(
+		//	glGetUniformLocation(App->GetProgram()->program,
+		//		"lightColor"), 1, lightColor);
+
+		GLuint lightDirLoc = glGetUniformLocation(App->GetProgram()->program, "lightDir");
+		GLuint lightColorLoc = glGetUniformLocation(App->GetProgram()->program, "lightColor");
+
+		GLfloat lightDirValue[] = { 1.0, 1.0, 1.0 };
+		GLfloat lightColorValue[] = { 1.0, 1.0, 1.0 };
+
+		glUniform3fv(lightDirLoc, 1, lightDirValue);
+		//glUniform3fv(lightColorLoc, 1, lightDirValue);
+
+		glUniform1f(
+			glGetUniformLocation(App->GetProgram()->program,
+				"lightIntensity"), lightIntensity);
+
+
+		glUniform3fv(
+			glGetUniformLocation(App->GetProgram()->program,
+				"material.ambientColor"), 1, &ambientColor[0]);
 
 	}
 
@@ -281,5 +318,4 @@ void MyMesh::Draw(MyMaterial* material)
 	else {
 		glDrawArrays(GL_TRIANGLES, 0, vertexCount);
 	}
-
 }
