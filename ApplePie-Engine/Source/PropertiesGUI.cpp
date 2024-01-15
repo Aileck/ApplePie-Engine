@@ -29,9 +29,21 @@ void PropertiesGUI::Draw(const MyModel* model)
                     ImGui::Text("UV1");
                 }
 
+                if (mesh->GetMaterial() != nullptr)
+                {
+                    MyMaterial* material = mesh->GetMaterial();
+                    ImGui::Text("Diffuse  [%f] [%f] [%f]", 
+                        material->GetDiffuseFactor().x, material->GetDiffuseFactor().y, material->GetDiffuseFactor().z);
+                    ImGui::Text("Specular [%f] [%f] [%f] ", 
+                        material->GetSpecularFactor().x, material->GetSpecularFactor().y, material->GetSpecularFactor().z);
+                    ImGui::Text("Shininess [%i] ", material->GetGlossinessFactor());
+                    
+                }
+
                 ImGui::Separator();
             }
             // Verteix, triangle, uv1
+            ImGui::Separator();
         }
         if (ImGui::CollapsingHeader("Texture")) {
             

@@ -21,9 +21,6 @@ private:
     float3 mSpecularFactor;
     float mGlossinessFactor;
 
-    int mDiffuseTextureIndex; // Diffuse map
-    int mSpecularGlossinessTextureIndex; // Specular map
-
     MyTexture* mDiffuseTexture = nullptr;
     MyTexture* mSpecularGlossinessTexture = nullptr;
 };

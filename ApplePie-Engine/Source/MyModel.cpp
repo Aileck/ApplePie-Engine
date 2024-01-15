@@ -69,6 +69,14 @@ void MyModel::Load(const char* assetFileName, bool exterior)
 				Meshes.push_back(mesh);
 				numMesh++;
 
+				int materialID = primitive.material;
+
+				if (materialID != -1) {
+					MyMaterial* material = new MyMaterial();
+					material->LoadMaterial(model, model.materials[materialID]);
+					mesh->SetMaterial(material);
+				}
+
 				// Compute max/min points
 				maxBoundX = (maxBoundX < mesh->GetMaxXYZ().x) ? mesh->GetMaxXYZ().x : maxBoundX;
 				maxBoundY = (maxBoundY < mesh->GetMaxXYZ().y) ? mesh->GetMaxXYZ().y : maxBoundY;
@@ -80,7 +88,7 @@ void MyModel::Load(const char* assetFileName, bool exterior)
 			}
 		}
 	}
-	LoadMaterials(model);
+	//LoadMaterials(model);
 	ComputeCenterOfModel();
 	App->WriteIntoLog(INFO_LOG, " %s Loaded", filePath);
 
@@ -131,7 +139,7 @@ void MyModel::ComputeCenterOfModel()
 void MyModel::Draw() const
 {
 	for (int i = 0; i < Meshes.size(); i++) {
-		Meshes[i]->Draw(Materiales[i]);
+		Meshes[i]->Draw();
 	}
 }
 

@@ -203,7 +203,7 @@ void MyMesh::LoadEBO(const Model& model, const Mesh& mesh, const Primitive& prim
 	}
 }
 
-void MyMesh::Draw(MyMaterial* material)
+void MyMesh::Draw()
 {
 	// Verteix shader
 	float4x4 view = App->GetCamera()->GetCamera()->ViewMatrix();
@@ -215,23 +215,23 @@ void MyMesh::Draw(MyMaterial* material)
 	glUniformMatrix4fv(2, 1, GL_TRUE, &proj[0][0]);
 
 	// Fragment shader
-	if (true) {
+	if (mMaterial != nullptr) {
 		//glActiveTexture(GL_TEXTURE5);
 		//glBindTexture(GL_TEXTURE_2D, textures[textureID]->getTextureID());
 		glUniform3fv(
 			glGetUniformLocation(App->GetProgram()->program,
-				"material.diffuseColor"), 1, &material->GetDiffuseFactor().xyz()[0]);
+				"material.diffuseColor"), 1, &mMaterial->GetDiffuseFactor().xyz()[0]);
 
 		glUniform3fv(
 			glGetUniformLocation(App->GetProgram()->program,
-				"material.specularColor"), 1, &material->GetSpecularFactor()[0]);
+				"material.specularColor"), 1, &mMaterial->GetSpecularFactor()[0]);
 
 		glUniform1i(
 			glGetUniformLocation(App->GetProgram()->program,
-				"material.shininess"), material->GetGlossinessFactor());
+				"material.shininess"), mMaterial->GetGlossinessFactor());
 
 
-		if (material->GetDiffuseMap() != nullptr)
+		if (mMaterial->GetDiffuseMap() != nullptr)
 		{
 			glUniform1i(
 				glGetUniformLocation(App->GetProgram()->program,
@@ -240,7 +240,7 @@ void MyMesh::Draw(MyMaterial* material)
 				glGetUniformLocation(App->GetProgram()->program, "material.diffuseTexture");
 			glUniform1i(diffuseTextureLoc, 0);
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, material->GetDiffuseMap()->getTextureID());
+			glBindTexture(GL_TEXTURE_2D, mMaterial->GetDiffuseMap()->getTextureID());
 		}
 		else {
 			glUniform1i(
@@ -248,7 +248,7 @@ void MyMesh::Draw(MyMaterial* material)
 					"material.hasDiffuseMap"), 0);
 		}
 
-		if (material->GetSpecularMap() != nullptr)
+		if (mMaterial->GetSpecularMap() != nullptr)
 		{
 			glUniform1i(
 				glGetUniformLocation(App->GetProgram()->program,
@@ -257,7 +257,7 @@ void MyMesh::Draw(MyMaterial* material)
 				glGetUniformLocation(App->GetProgram()->program, "material.specularTexture");
 			glUniform1i(specularTextureLoc, 1);
 			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, material->GetSpecularMap()->getTextureID());
+			glBindTexture(GL_TEXTURE_2D, mMaterial->GetSpecularMap()->getTextureID());
 		}
 		else
 		{

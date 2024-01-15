@@ -13,11 +13,14 @@ public:
 	~MyMesh();
 
 	void LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
-	void Draw(MyMaterial* material);
+	void Draw();
+
+	void SetMaterial(MyMaterial* material) { mMaterial = material; }
 
 	inline int GetVerticesCount() const { return  vertexCount; }
 	inline int GetIndexCount() const { return  indexCount; }
 	inline int GetTextureID() const { return  textureID; }
+	inline MyMaterial* GetMaterial() const { return  mMaterial; }
 
 	inline float3 GetMaxXYZ() const { return maxXYZ; }
 	inline float3 GetMinXYZ() const { return minXYZ; }
@@ -29,6 +32,7 @@ private:
 	void LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
 	void LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
 
+	MyMaterial* mMaterial = nullptr;
 	unsigned vbo = 0;
 	unsigned vao = 0;
 	unsigned ebo = 0;

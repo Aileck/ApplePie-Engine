@@ -172,6 +172,9 @@
     <ClCompile Include="MyMaterial.cpp">
       <Filter>components\source</Filter>
     </ClCompile>
+    <ClCompile Include="MaterialGUI.cpp">
+      <Filter>editor components\source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -440,6 +443,9 @@
     </ClInclude>
     <ClInclude Include="MyMaterial.h">
       <Filter>components\header</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialGUI.h">
+      <Filter>editor components\header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

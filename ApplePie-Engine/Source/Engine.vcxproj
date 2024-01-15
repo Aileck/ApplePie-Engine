@@ -200,6 +200,7 @@
     <ClCompile Include="include\MathGeoLib\Time\Clock.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MaterialGUI.cpp" />
     <ClCompile Include="ModuleLoadModel.cpp" />
     <ClCompile Include="ModuleTimer.cpp" />
     <ClCompile Include="MyMaterial.cpp" />
@@ -292,6 +293,7 @@
     <ClInclude Include="include\tinygltf\stb_image.h" />
     <ClInclude Include="include\tinygltf\stb_image_write.h" />
     <ClInclude Include="include\tinygltf\tiny_gltf.h" />
+    <ClInclude Include="MaterialGUI.h" />
     <ClInclude Include="ModuleLoadModel.h" />
     <ClInclude Include="ModuleTimer.h" />
     <ClInclude Include="MyMaterial.h" />
